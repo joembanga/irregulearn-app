@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('verbs', function (Blueprint $table) {
             $table->id();
-            $table->string('infinitive')->unique(); // Arise
-            $table->string('past_simple');         // Arose
-            $table->string('past_participle');     // Arisen
-            $table->string('translation');         // Survenir
-            $table->string('level')->default('beginner'); // beginner, intermediate, expert
-            $table->string('category')->nullable(); // Business, Survival...
+            $table->string('slug', 255)->unique();
+            $table->string('infinitive')->unique();
+            $table->string('past_simple');
+            $table->string('past_participle');
+            $table->enum('level', ['beginner', 'intermediate', 'expert'])->default('beginner');
             $table->timestamps();
         });
     }

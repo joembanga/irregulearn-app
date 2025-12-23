@@ -24,8 +24,8 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
+            'firstname' => fake()->firstName(),
+            'lastname' => fake()->lastName(),
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -33,11 +33,12 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
 
             // Données aléatoires pour le classement
-            'xp_total' => fake()->numberBetween(100, 5000),
+            'xp_weekly' => fake()->numberBetween(100, 5000),
             'xp_balance' => fake()->numberBetween(0, 500),
             'lives' => fake()->numberBetween(1, 5),
             'current_streak' => fake()->numberBetween(0, 15),
             'role' => 'user',
+            'last_life_lost_at' => fake()->dateTimeBetween('-3 hours'),
         ];
     }
 
@@ -47,7 +48,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

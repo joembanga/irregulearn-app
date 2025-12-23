@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('exercise_verb', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('exercise_id')->constrained()->onDelete('cascade');
-            $table->foreignId('verb_id')->constrained()->onDelete('cascade');
+            $table->foreignId('exercise_id')->constrained('exercises')->cascadeOnDelete();
+            $table->foreignId('verb_id')->constrained('verbs')->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

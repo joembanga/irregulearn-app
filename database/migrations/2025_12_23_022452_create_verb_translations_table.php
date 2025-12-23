@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('streak_freezes')->default(0); // Nombre de gels possédés
+        Schema::create('verb_translations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('verb_id')->constrained('verbs')->cascadeOnDelete();
+            $table->string('lang')->default('fr');
+            $table->string('translation');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('verb_translation');
     }
 };

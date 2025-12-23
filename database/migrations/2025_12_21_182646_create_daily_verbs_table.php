@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('verb_id')->constrained()->cascadeOnDelete();
-            $table->date('day'); // La date du jour (ex: 2025-12-21)
-            $table->boolean('is_learned')->default(false); // Si l'exo a été réussi
+            $table->date('day');
+            $table->boolean('is_learned')->default(false); // If at least one verb exercise is done, switch to "true"
             $table->timestamps();
         });
     }

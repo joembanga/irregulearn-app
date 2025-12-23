@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tableau de Bord de') }} {{ $user->first_name }}
+            {{ __('Tableau de Bord de') }} {{ $user->firstname }}
         </h2>
     </x-slot>
 
@@ -22,7 +22,7 @@
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                     <p class="text-sm font-medium text-gray-500 uppercase">Vies restantes</p>
                     <p class="text-3xl font-black text-red-500">{{ $user->lives }} / 5 ❤️</p>
-                
+
                     @if($user->lives < 5) @php $nextLifeAt=\Carbon\Carbon::parse($user->last_life_lost_at)->addHour();
                         @endphp
                         <p class="text-xs text-gray-400 mt-2 italic">
@@ -71,11 +71,11 @@
                         Voir le classement →
                     </a>
                 </div>
-            
+
                 @php
                 $classmates = auth()->user()->classmates; // Assure-toi d'avoir la relation dans User.php
                 @endphp
-            
+
                 <div class="flex flex-wrap gap-4">
                     @forelse($classmates as $friend)
                     <a href="{{ route('profile.public', $friend->username) }}" class="group flex flex-col items-center">
@@ -83,7 +83,8 @@
                             class="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border-2 border-transparent group-hover:border-indigo-500 transition shadow-sm mb-2 text-lg">
                             {{ substr($friend->username, 0, 1) }}
                         </div>
-                        <span class="text-xs font-medium text-gray-600 group-hover:text-indigo-600">{{ $friend->username }}</span>
+                        <span
+                            class="text-xs font-medium text-gray-600 group-hover:text-indigo-600">{{ $friend->username }}</span>
                     </a>
                     @empty
                     <div class="flex items-center gap-4 text-gray-400 italic text-sm">

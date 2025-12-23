@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Verb;
 use App\Models\Exercise;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class VerbSeeder extends Seeder
 {
@@ -15,29 +16,21 @@ class VerbSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. On ouvre le fichier CSV
         $csvFile = fopen(database_path('seeders/verbs.csv'), 'r');
-
-        // On saute la première ligne (les en-têtes : infinitive, past_simple...)
         fgetcsv($csvFile);
 
-        // 2. On parcourt chaque ligne
         while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
-            
-            // Mapping des colonnes du CSV
-            // 0: infinitive, 1: past_simple, 2: past_participle, 3: translation, 4: level
+            $slug = Str::lower($data[0]);
             $infinitive = $data[0];
             $pastSimple = $data[1];
             $pastParticiple = $data[2];
-            $translation = $data[3];
             $level = $data[4];
-
-            // Création du Verbe
+            
             $verb = Verb::create([
+                'slug' => $slug,
                 'infinitive' => $infinitive,
                 'past_simple' => $pastSimple,
                 'past_participle' => $pastParticiple,
-                'translation' => $translation,
                 'level' => $level,
             ]);
 
@@ -62,16 +55,16 @@ class VerbSeeder extends Seeder
             ]);
             $verb->exercises()->attach($ex2->id);
 
-            // Exercice 3 : Traduction Inverse (QCM - Simplifié pour le seed)
-            // Note: Pour un vrai QCM, il faudrait générer des fausses réponses aléatoires.
-            // Pour l'instant, on fait un input simple pour la traduction.
-            $ex3 = Exercise::create([
-                'type' => 'input',
-                'question' => "What is the English translation of '$translation' (Infinitive) ?",
-                'correct_answer' => $infinitive,
-                'points' => 5,
-            ]);
-            $verb->exercises()->attach($ex3->id);
+            // // Exercice 3 : Traduction Inverse (QCM - Simplifié pour le seed)
+            // // Note: Pour un vrai QCM, il faudrait générer des fausses réponses aléatoires.
+            // // Pour l'instant, on fait un input simple pour la traduction.
+            // $ex3 = Exercise::create([
+            //     'type' => 'input',
+            //     'question' => "What is the English translation of '$translation' (Infinitive) ?",
+            //     'correct_answer' => $infinitive,
+            //     'points' => 5,
+            // ]);
+            // $verb->exercises()->attach($ex3->id);
         }
 
         fclose($csvFile);
