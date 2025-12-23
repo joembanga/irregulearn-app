@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('leaderboards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->integer('week'); // Numéro de semaine (1-52)
-            $table->integer('year'); // 2025
-            $table->integer('points')->default(0); // Points gagnés CETTE SEMAINE là
+            $table->foreignId('first_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('first_points')->unsigned();
+            $table->foreignId('second_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('second_points')->unsigned();
+            $table->foreignId('third_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('third_points')->unsigned();
+            $table->tinyInteger('week')->unsigned(); // Week number
+            $table->tinyInteger('year');
             $table->timestamps();
-
-            // Index unique pour qu'un user n'ait qu'une ligne par semaine
-            $table->unique(['user_id', 'week', 'year']);
         });
     }
 

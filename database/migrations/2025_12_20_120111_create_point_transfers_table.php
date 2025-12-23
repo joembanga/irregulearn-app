@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('receiver_id')->constrained('users');
-            $table->integer('amount'); // Combien de points donnés ?
-            $table->text('message')->nullable(); // Petit mot sympa optionnel
+            $table->mediumInteger('amount')->max(50000); // Howmany points
             $table->timestamps();
         });
     }

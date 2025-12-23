@@ -13,29 +13,34 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique(); // Pour les URLs (irregulearn.com/u/junior)
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('username', 255)->unique();
+            $table->string('firstname', 255);
+            $table->string('lastname', 255);
+            $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
             // --- GAMIFICATION & PROGRESSION ---
-            $table->integer('xp_total')->default(0);      // Score global (Classement)
-            $table->integer('xp_balance')->default(0);    // Monnaie virtuelle (Achats)
-            $table->integer('current_streak')->default(0); // Série en cours
-            $table->date('last_activity_date')->nullable(); // Pour calculer le streak
-            $table->integer('lives')->default(5);         // Vies (Max 5)
-            $table->integer('daily_target')->default(5);  // Objectif de verbes/jour
+            $table->bigInteger('xp_weekly')->default(0)->unsigned(); // Curent week points
+            $table->bigInteger('xp_balance')->default(0)->unsigned(); // Available points
+            $table->integer('current_streak')->default(0)->unsigned(); // Série en cours
+            $table->boolean('streak_is_freezed')->default(false);
+            $table->date('streak_freezed_at')->nullable();
+            $table->tinyInteger('streak_freezes')->default(0)->unsigned();
+            // A user keep his streak when he learn day's verbs or do at least one exercise
+            $table->date('last_activity_date')->nullable();
+            $table->tinyInteger('lives')->unsigned()->default(5)->max(5);
+            $table->timestamp('last_life_lost_at')->nullable();
+            $table->tinyInteger('daily_target')->default(5)->max(10);
 
-            // --- PROFIL & RÔLE ---
-            $table->string('avatar')->nullable();         // URL de la photo
-            $table->string('role')->default('user');      // 'admin' ou 'user'
+            // --- PROFILE & ROLE ---
+            $table->string('avatar')->nullable();
+            $table->enum('role', ['user', 'admin'])->default('user');
             $table->boolean('is_premium')->default(false);
 
             // --- PARRAINAGE ---
             $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
-            
+
             $table->rememberToken();
             $table->timestamps();
         });

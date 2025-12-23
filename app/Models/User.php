@@ -21,16 +21,12 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'username',
-        'first_name',
-        'last_name',
+        'firstname',
+        'lastname',
         'email',
         'password',
-        'xp_total',
-        'xp_balance',
-        'lives',
         'role',
         'avatar',
-        'current_streak',
         'daily_target'
     ];
 
@@ -62,20 +58,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function classmates()
     {
         // On récupère les utilisateurs présents dans la table classmates pour cet utilisateur
-        return $this->belongsToMany(User::class, 'classmates', 'user_id', 'friend_id');
+        // return $this->belongsToMany(User::class, 'classmates', 'user_id', 'friend_id');
     }
 
     // Récupérer les demandes d'amis en attente (qu'on a reçues)
     public function friendRequests()
     {
-        return $this->hasMany(Friendship::class, 'recipient_id')
-            ->where('status', 'pending');
+        // return $this->hasMany(Friendship::class, 'recipient_id')
+            // ->where('status', 'pending');
     }
 
     // Historique des points reçus
     public function receivedTransfers()
     {
-        return $this->hasMany(PointTransfer::class, 'receiver_id');
+        // return $this->hasMany(PointTransfer::class, 'receiver_id');
     }
 
     public function dailyVerbs()

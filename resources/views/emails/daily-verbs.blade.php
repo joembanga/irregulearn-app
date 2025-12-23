@@ -1,11 +1,12 @@
-<h1>Hello {{ $user->first_name }} ! 🚀</h1>
+<h1>Hello {{ $user->firstname }} ! 🚀</h1>
 <p>Voici tes 5 verbes à maîtriser aujourd'hui pour garder ta série de <strong>{{ $user->current_streak }} jours</strong>
     :</p>
 
 <ul>
     @foreach($verbs as $verb)
     <li><strong>{{ $verb->infinitive }}</strong> ({{ $verb->translation }}) : {{ $verb->past_simple }},
-        {{ $verb->past_participle }}</li>
+        {{ $verb->past_participle }}
+    </li>
     @endforeach
 </ul>
 

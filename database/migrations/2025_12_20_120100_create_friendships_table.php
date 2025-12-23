@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('recipient_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('status', ['pending', 'accepted', 'blocked'])->default('pending');
+            $table->enum('status', ['pending', 'accepted', 'revoked'])->default('pending');
             $table->timestamps();
 
-            // Un utilisateur ne peut pas demander 2 fois la même personne
+            // A user can't send a friend requests 2 times
             $table->unique(['sender_id', 'recipient_id']);
         });
     }
