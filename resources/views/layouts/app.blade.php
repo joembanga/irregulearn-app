@@ -16,7 +16,7 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -33,6 +33,7 @@
                 {{ $slot }}
             </main>
         </div>
+        @include('layouts.footer')
         @livewireScripts
     </body>
 </html>
