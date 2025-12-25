@@ -17,7 +17,7 @@ if ($user->xp_total >= 0 && $user->xp_total < 5000 ) { $userLevel="Apprenti" ; }
                     <div class="py-12 bg-gray-50">
                         <div class="max-w-7xl mx-auto sm:px-8 lg:px-8 space-y-8">
 
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3  gap-6">
                                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                                     <p class="text-sm font-medium text-gray-500 uppercase">XP Disponibles</p>
                                     <p class="text-3xl font-black text-indigo-600">

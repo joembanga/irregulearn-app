@@ -16,48 +16,75 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
-
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
-
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+        <div class="grid grid-cols-1 gap-8">
+            <div>
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+                    <x-input-label for="firstname" :value="__('Firstname')" />
+                    <x-text-input id="firstname" name="firstname" type="text" class="mt-1 block w-full" :value="old('firstname', $user->firstname)" required autofocus autocomplete="firstname" />
+                    <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
+                </div>
+                
+                <div>
+                    <x-input-label for="lastname" :value="__('Lastname')" />
+                    <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full" :value="old('lastname', $user->lastname)" required autofocus autocomplete="lastname" />
+                    <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
+                </div>
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+                <div>
+                    <x-input-label for="email" :value="__('Email')" />
+                    <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+                    <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
+                    @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+                        <div>
+                            <p class="text-sm mt-2 text-gray-800">
+                                {{ __('Your email address is unverified.') }}
+
+                                <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    {{ __('Click here to re-send the verification email.') }}
+                                </button>
+                            </p>
+
+                            @if (session('status') === 'verification-link-sent')
+                                <p class="mt-2 font-medium text-sm text-green-600">
+                                    {{ __('A new verification link has been sent to your email address.') }}
+                                </p>
+                            @endif
+                        </div>
                     @endif
                 </div>
-            @endif
+            </div>
+            <div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-2xl border border-gray-100">
+                    <div class="max-w-xl">
+                        <section>
+                            <header>
+                                <h2 class="text-lg font-medium text-gray-900">Objectif Quotidien</h2>
+                                <p class="mt-1 text-sm text-gray-600">Combien de nouveaux verbes veux-tu apprendre chaque jour ?</p>
+                            </header>
+                            <div>
+                                <select name="daily_target"
+                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm w-full">
+                                    <option value="3" {{ auth()->user()->daily_target === 3 ? 'selected' : '' }}>3 verbes
+                                    </option>
+                                    <option value="5" {{ auth()->user()->daily_target === 5 ? 'selected' : '' }}>5 verbes
+                                    </option>
+                                    <option value="10" {{ auth()->user()->daily_target === 10 ? 'selected' : '' }}>10 verbes
+                                    </option>
+                                </select>
+                                <x-input-error class="mt-2" :messages="$errors->get('daily_target')" />
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
         </div>
-
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
-
+        
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                class="text-sm text-gray-600">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>
