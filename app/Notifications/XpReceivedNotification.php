@@ -16,7 +16,7 @@ class XpReceivedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public User $sender, public int $amount)
+    public function __construct(public User $sender, public User $receiver, public int $amount)
     {
         //
     }
@@ -52,8 +52,8 @@ class XpReceivedNotification extends Notification
         return [
             'message' => "{$this->sender->username} t'a offert {$this->amount} XP ! 🎁",
             'icon' => '🎁',
-            'url' => '/shop', // Il peut aller les dépenser
-            'new_balance' => Auth::user()->xp_balance
+            'url' => '/shop',
+            'new_balance' => $this->receiver->xp_balance
         ];
     }
 }

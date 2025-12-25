@@ -11,7 +11,6 @@ class LeaderboardController extends Controller
 {
     public function load (Request $request) {
         $user = Auth::user();
-        dd($user->id);
         $filter = $request->input('filter', 'global');
         $period = $request->input('period', 'weekly');
 
@@ -27,7 +26,7 @@ class LeaderboardController extends Controller
                 ->where('status', 'accepted')
                 ->get()
                 ->map(function ($row) use ($user) {
-                    return $row->sender_id === $user->id ? $row->recipient_id : $row->user_id;
+                    return $row->sender_id === $user->id ? $row->recipient_id : $row->sender_id;
                 })
                 ->toArray();
 
