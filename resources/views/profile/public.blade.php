@@ -1,15 +1,15 @@
 <x-app-layout>
     @php
-        $isFriend = DB::table('classmates')
-        ->where(function($q) use ($user) {
-        $q->where('user_id', auth()->id())->where('friend_id', $user->id);
-        })
-        ->where('status', 'accepted')
-        ->exists();
+    $isFriend = DB::table('friendships')
+    ->where(function($q) use ($user) {
+    $q->where('sender_id', auth()->id())->where('recipient_id', $user->id);
+    })
+    ->where('status', 'accepted')
+    ->exists();
     @endphp
-    
+
     @if($isFriend)
-        <livewire:transfer-points :receiver="$user" />
+    <livewire:transfer-points :receiver="$user" />
     @endif
     <div class="py-12 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6">
@@ -34,8 +34,8 @@
                     <p class="text-2xl font-black">{{ $user->current_streak }} jours</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl shadow-sm text-center">
-                    <p class="text-sm text-gray-400 uppercase font-bold">XP Total ✨</p>
-                    <p class="text-2xl font-black">{{ number_format($user->xp_total) }}</p>
+                    <p class="text-sm text-gray-400 uppercase font-bold">XP obtenus cette semaine ✨</p>
+                    <p class="text-2xl font-black">{{ number_format($user->xp_weekly) }}</p>
                 </div>
                 <div class="bg-white p-6 rounded-3xl shadow-sm text-center">
                     <p class="text-sm text-gray-400 uppercase font-bold">Verbes vus 📖</p>

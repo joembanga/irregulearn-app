@@ -22,6 +22,7 @@ return new class extends Migration
 
             // --- GAMIFICATION & PROGRESSION ---
             $table->bigInteger('xp_weekly')->default(0)->unsigned(); // Curent week points
+            $table->bigInteger('xp_total')->default(0)->unsigned(); // Curent week points
             $table->bigInteger('xp_balance')->default(0)->unsigned(); // Available points
             $table->integer('current_streak')->default(0)->unsigned(); // Série en cours
             $table->boolean('streak_is_freezed')->default(false);
@@ -29,8 +30,6 @@ return new class extends Migration
             $table->tinyInteger('streak_freezes')->default(0)->unsigned();
             // A user keep his streak when he learn day's verbs or do at least one exercise
             $table->date('last_activity_date')->nullable();
-            $table->tinyInteger('lives')->unsigned()->default(5)->max(5);
-            $table->timestamp('last_life_lost_at')->nullable();
             $table->tinyInteger('daily_target')->default(5)->max(10);
 
             // --- PROFILE & ROLE ---

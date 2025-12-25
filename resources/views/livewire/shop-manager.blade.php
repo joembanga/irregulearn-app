@@ -21,16 +21,6 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-            <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center text-4xl mb-4">❤️</div>
-            <h3 class="text-xl font-bold text-gray-800">Recharge de Vies</h3>
-            <p class="text-gray-500 text-sm mb-6">Remonte instantanément à 5 vies pour continuer à jouer.</p>
-            <button wire:click="buyLives"
-                class="mt-auto w-full bg-gray-900 text-white py-4 rounded-2xl font-black hover:bg-black transition flex justify-between px-6">
-                <span>ACHETER</span>
-                <span>500 XP</span>
-            </button>
-        </div>
 
         <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
             <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-4xl mb-4">❄️</div>

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Verb;
 use App\Models\VerbTranslation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;

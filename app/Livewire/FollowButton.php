@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Notifications\NewFriendNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FollowButton extends Component
@@ -19,9 +21,9 @@ class FollowButton extends Component
 
     public function checkStatus()
     {
-        $contact = DB::table('classmates')
-            ->where('user_id', auth()->id())
-            ->where('friend_id', $this->user->id)
+        $contact = DB::table('friendships')
+            ->where('sender_id', Auth::id())
+            ->where('recipient_id', $this->user->id)
             ->first();
 
         $this->status = $contact ? $contact->status : 'none';
@@ -30,19 +32,19 @@ class FollowButton extends Component
     public function toggleFollow()
     {
         if ($this->status === 'none') {
-            DB::table('classmates')->insert([
-                'user_id' => auth()->id(),
-                'friend_id' => $this->user->id,
+            DB::table('friendships')->insert([
+                'sender_id' => Auth::id(),
+                'recipient_id' => $this->user->id,
                 'status' => 'accepted', // Pour simplifier au début, on accepte direct
                 'created_at' => now(),
             ]);
 
             // On peut envoyer une notification ici
-            $this->user->notify(new \App\Notifications\NewClassmateNotification(auth()->user()));
+            $this->user->notify(new NewFriendNotification(Auth::user()));
         } else {
-            DB::table('classmates')
-                ->where('user_id', auth()->id())
-                ->where('friend_id', $this->user->id)
+            DB::table('friendships')
+                ->where('sender_id', Auth::id())
+                ->where('recipient_id', $this->user->id)
                 ->delete();
         }
 

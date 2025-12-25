@@ -1,34 +1,12 @@
 <x-app-layout>
     <div class="py-12 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             <div class="lg:col-span-2 space-y-6">
                 <h2 class="text-3xl font-black text-gray-900">Entraînement Libre</h2>
-                <p class="text-gray-600">Choisis une catégorie pour réviser. Chaque bonne réponse te rapporte des XP !
-                </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <livewire:quiz-engine :level="'beginner'" />
-                    {{-- <button
-                        class="bg-white p-6 rounded-3xl shadow-sm border-2 border-transparent hover:border-indigo-500 transition text-left group">
-                        <div class="text-3xl mb-2">🌱</div>
-                        <h3 class="text-xl font-bold">Les Essentiels</h3>
-                        <p class="text-sm text-gray-500">{{ $stats['beginner'] }} verbes fréquents</p>
-                        <div
-                            class="mt-4 inline-block bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                            Démarrer</div>
-                    </button> --}}
-                    
-                    <livewire:quiz-engine :level="'expert'" />
-                    {{-- <button
-                        class="bg-white p-6 rounded-3xl shadow-sm border-2 border-transparent hover:border-purple-500 transition text-left">
-                        <div class="text-3xl mb-2">⚡</div>
-                        <h3 class="text-xl font-bold">Mode Expert</h3>
-                        <p class="text-sm text-gray-500">{{ $stats['expert'] }} verbes complexes</p>
-                        <div
-                            class="mt-4 inline-block bg-purple-100 text-purple-700 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                            Démarrer</div>
-                    </button> --}}
+                    <livewire:quiz-engine/>
                 </div>
             </div>
 

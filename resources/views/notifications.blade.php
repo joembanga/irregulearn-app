@@ -25,18 +25,41 @@
                                     {{ $notification->created_at->diffForHumans() }}
                                 </span>
                             </div>
-
-                            <p class="text-sm text-gray-600 mt-1">
-                                Tu as {{ $notification->data['verb_count'] ?? 0 }} nouveaux verbes à découvrir
-                                aujourd'hui.
-                            </p>
-
-                            <div class="mt-3">
-                                <a href="{{ url($notification->data['url'] ?? '/dashboard') }}"
-                                    class="text-sm font-bold text-indigo-600 hover:underline">
-                                    Voir maintenant →
-                                </a>
-                            </div>
+                            @if ($notification->type === 'App\Notifications\DailyVerbsNotification')
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Tu as {{ $notification->data['verb_count'] ?? 0 }} nouveaux verbes à découvrir
+                                    aujourd'hui.
+                                </p>
+                                
+                                <div class="mt-3">
+                                    <a href="{{ url($notification->data['url'] ?? '/dashboard') }}"
+                                        class="text-sm font-bold text-indigo-600 hover:underline">
+                                        Voir maintenant →
+                                    </a>
+                                </div>
+                            @elseif ($notification->type === 'App\Notifications\NewFriendNotification')
+                                <p class="text-sm text-gray-600 mt-1">
+                                    <span class="text-sm text-gray-800 mt-1">{{ $notification->data['sender_username'] ?? __('Un utilisateur') }}</span> a commencé à te suivre !
+                                </p>
+                                
+                                <div class="mt-3">
+                                    <a href="{{ url($notification->data['url'] ?? '/dashboard') }}"
+                                        class="text-sm font-bold text-indigo-600 hover:underline">
+                                        Voir son profil →
+                                    </a>
+                                </div>
+                            @elseif ($notification->type === 'App\Notifications\XpReceivedNotification')
+                                <p class="text-sm text-gray-600 mt-1">
+                                    Tu as maintenant <span class="text-sm text-gray-800 mt-1">{{ $notification->data['new_balance'] ?? __('') }}</span> XP disponibles
+                                </p>
+                                
+                                <div class="mt-3">
+                                    <a href="{{ url($notification->data['url'] ?? '/shop') }}"
+                                        class="text-sm font-bold text-indigo-600 hover:underline">
+                                        Aller à la boutique →
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     @empty

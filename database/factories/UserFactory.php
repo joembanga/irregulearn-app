@@ -34,11 +34,10 @@ class UserFactory extends Factory
 
             // Données aléatoires pour le classement
             'xp_weekly' => fake()->numberBetween(100, 5000),
+            'xp_total' => fake()->numberBetween(1000, 10000),
             'xp_balance' => fake()->numberBetween(0, 500),
-            'lives' => fake()->numberBetween(1, 5),
             'current_streak' => fake()->numberBetween(0, 15),
             'role' => 'user',
-            'last_life_lost_at' => fake()->dateTimeBetween('-3 hours'),
         ];
     }
 

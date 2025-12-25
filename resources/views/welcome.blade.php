@@ -37,7 +37,7 @@
         </div>
     </nav>
 
-    <section class="mt-16 mx-auto max-w-7xl px-6 sm:mt-24 lg:mt-32 flex flex-col lg:flex-row items-center gap-12">
+    <section class="mt-4 mx-auto max-w-7xl px-6 sm:mt-4 lg:mt-6 flex flex-col lg:flex-row items-center gap-12">
         <div class="lg:w-1/2 text-center lg:text-left">
             <div
                 class="inline-flex items-center px-3 py-1 rounded-full border border-indigo-100 bg-indigo-50 text-indigo-600 text-sm font-medium mb-6">
@@ -50,7 +50,7 @@
             </h1>
             <p class="mt-6 text-lg leading-8 text-gray-600">
                 Arrête d'apprendre par cœur bêtement. Rejoins tes <span
-                    class="font-bold text-gray-800">Classmates</span>, gagne des XP, maintiens ton Streak et deviens
+                    class="font-bold text-gray-800">friendships</span>, gagne des XP, maintiens ton Streak et deviens
                 bilingue sans t'en rendre compte.
             </p>
             <div class="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
@@ -112,7 +112,7 @@
         </div>
     </section>
 
-    <section id="features" class="py-24 bg-gray-50 mt-24">
+    <section id="features" class="py-8 bg-gray-50 mt-6">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl lg:text-center">
                 <h2 class="text-base font-semibold leading-7 text-indigo-600">Méthode IrreguLearn</h2>
@@ -152,7 +152,7 @@
                                 class="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
                                 🤝
                             </div>
-                            Classmates
+                            friendships
                         </dt>
                         <dd class="mt-2 text-base leading-7 text-gray-600">Invite tes amis, échangez des points et
                             défiez-vous dans le classement hebdomadaire.</dd>
