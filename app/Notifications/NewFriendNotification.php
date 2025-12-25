@@ -7,16 +7,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
-class XpReceivedNotification extends Notification
+class NewFriendNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public User $sender, public int $amount)
+    public function __construct(public User $sender)
     {
         //
     }
@@ -28,7 +27,7 @@ class XpReceivedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -37,8 +36,9 @@ class XpReceivedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->subject('Vous avez une nouvelle connection')
+            ->line($this->sender->username . ' a commencé à vous suivre')
+            ->action('Voir son profil', url("/u/{$this->sender->username}"))
             ->line('Thank you for using our application!');
     }
 
@@ -47,13 +47,13 @@ class XpReceivedNotification extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray($notifiable)
+    public function toArray(object $notifiable): array
     {
         return [
-            'message' => "{$this->sender->username} t'a offert {$this->amount} XP ! 🎁",
-            'icon' => '🎁',
-            'url' => '/shop', // Il peut aller les dépenser
-            'new_balance' => Auth::user()->xp_balance
+            'message' => 'Vous avez une nouvelle connection',
+            'sender_username' => $this->sender->username,
+            'url' => "/u/{$this->sender->username}",
+            'icon' => '👥'
         ];
     }
 }

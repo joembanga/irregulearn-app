@@ -27,7 +27,6 @@ class TransferPoints extends Component
         // 2. Transaction (on retire au donneur, on donne au receveur)
         $sender->decrement('xp_balance', $this->amount);
         $this->receiver->increment('xp_balance', $this->amount);
-        $this->receiver->increment('xp_total', $this->amount); // Optionnel : augmente aussi son score global
 
         // 3. Notification pour le receveur
         $this->receiver->notify(new \App\Notifications\XpReceivedNotification($sender, $this->amount));

@@ -11,11 +11,10 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $user->refreshLives();
-        
+
         // Nombre total de verbes dans la base
         $totalVerbs = Verb::count();
-        
+
         // Nombre de verbes que l'utilisateur a réussi au moins une fois (is_learned = true)
         // On compte les entrées uniques dans la table daily_verbs pour cet utilisateur
         $learnedVerbsCount = DB::table('daily_verbs')

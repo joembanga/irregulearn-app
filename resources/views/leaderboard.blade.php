@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 bg-gray-50">
+    <div class="py-12 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
         <div class="max-w-5xl mx-auto px-6">
 
             <div class="flex flex-col md:flex-row justify-between gap-4 mb-8">
@@ -7,11 +7,11 @@
                     <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'global' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500' }}">🌎
                         Global</a>
-                    <a href="{{ route('leaderboard', ['filter' => 'classmates', 'period' => $period]) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'classmates' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500' }}">👥
+                    <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}"
+                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'friends' ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500' }}">👥
                         Amis</a>
                 </div>
-            
+
                 <div class="flex gap-2 bg-indigo-900 p-1 rounded-2xl">
                     <a href="{{ route('leaderboard', ['period' => 'weekly', 'filter' => $filter]) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $period === 'weekly' ? 'bg-indigo-500 text-white shadow-sm' : 'text-indigo-300' }}">Cette
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100">
+            <div class="bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
                 <table class="w-full text-left">
                     <thead class="bg-gray-900 text-white">
                         <tr>
@@ -50,7 +50,7 @@
                                 </a>
                             </td>
                             <td class="px-6 py-5 text-right font-mono font-bold text-indigo-600">
-                                {{ number_format($u->xp_total) }}
+                                {{ $period === 'weekly' || $period === null ? number_format($u->xp_weekly) : number_format($u->xp_total) }}
                             </td>
                         </tr>
                         @endforeach
