@@ -5,10 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VerbController;
 use Illuminate\Support\Facades\Route;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,7 +19,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 
     Route::get('/learn', function () {
         return view('learn');
@@ -42,6 +40,9 @@ Route::middleware('auth')->group(function () {
     })->name('notifications');
 
     Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
+
+    Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
+
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
