@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
 
     Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
+    
+    Route::get('/verbs', [VerbController::class, 'getList'])->name('verbslist');
 
 });
 
