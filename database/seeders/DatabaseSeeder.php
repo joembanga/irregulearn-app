@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // VerbSeeder::class,
             // VerbTranslationSeeder::class,
-            CategorySeeder::class,
+            // CategorySeeder::class,
+            BadgeSeeder::class,
         ]);
     }
 }

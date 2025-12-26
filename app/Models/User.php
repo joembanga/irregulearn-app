@@ -72,6 +72,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Category::class);
     }
 
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class);
+    }
+
     // Get user's friend requests
     public function friendRequests()
     {
