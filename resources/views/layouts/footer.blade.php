@@ -3,9 +3,9 @@
 
         <div class="mt-8 md:order-1 md:mt-0">
             <div class="flex items-center gap-2 mb-4">
-                <div class="bg-indigo-600 text-white p-1.5 rounded-lg font-bold text-lg">IL</div>
+                <div class="bg-primary text-white p-1.5 rounded-lg font-bold text-lg">IL</div>
                 <span class="font-bold text-xl tracking-tight text-gray-900 dark:text-white">Irregu<span
-                        class="text-indigo-600">Learn</span></span>
+                    class="text-primary">Learn</span></span>
             </div>
             <p class="text-xs leading-5 text-gray-500 dark:text-gray-400">
                 &copy; {{ date('Y') }} IrreguLearn, Kinshasa. <br class="hidden md:inline">Fait avec ❤️ pour les
@@ -13,22 +13,22 @@
             </p>
         </div>
 
-        <div class="flex justify-center space-x-6 md:order-2">
+            <div class="flex justify-center space-x-6 md:order-2">
             <a href="#"
-                class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">À
+                class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary/80 transition">À
                 propos</a>
             <a href="#"
-                class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">Politique
+                class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary/80 transition">Politique
                 de Confidentialité</a>
             <a href="#"
-                class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">CGU</a>
+                class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary/80 transition">CGU</a>
             <a href="#"
-                class="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">Contact</a>
+                class="text-sm text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary/80 transition">Contact</a>
         </div>
 
         <div class="flex justify-end md:order-3 mt-8 md:mt-0">
             <button id="theme-toggle" type="button"
-                class="group relative inline-flex h-9 w-16 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 dark:bg-gray-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                class="group relative inline-flex h-9 w-16 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 dark:bg-gray-700 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-900">
 
                 <span class="sr-only">Changer le thème</span>
 
@@ -46,7 +46,7 @@
 
                     <span id="moon-icon"
                         class="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-100 ease-out opacity-0 dark:opacity-100">
-                        <svg class="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        <svg class="h-4 w-4 text-primary/70" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />

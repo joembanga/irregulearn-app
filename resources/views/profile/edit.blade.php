@@ -1,8 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">{{ substr(Auth::user()->username,0,1) }}</div>
+            <div>
+                <h2 class="font-semibold text-xl text-gray-900 dark:text-white">{{ __('Profile') }}</h2>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Gère les informations de ton compte et ta sécurité</div>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12">

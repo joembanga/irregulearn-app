@@ -10,29 +10,22 @@
     </div>
     @endif
 
-    <div
-        class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+    <div class="rounded-3xl p-6 mb-8 text-white relative overflow-hidden" style="background: linear-gradient(90deg,var(--color-primary), #a78bfa)">
         <div class="relative z-10">
-            <h3 class="text-lg opacity-80 font-medium">Ton solde actuel</h3>
-            <p class="text-5xl font-black">{{ number_format(auth()->user()->xp_balance) }} <span
-                    class="text-2xl text-indigo-200">XP</span></p>
+            <h3 class="text-lg opacity-90 font-medium">Ton solde actuel</h3>
+            <p class="text-5xl font-black">{{ number_format(auth()->user()->xp_balance) }} <span class="text-2xl text-white/80">XP</span></p>
         </div>
         <div class="absolute -right-4 -bottom-4 text-9xl opacity-10 rotate-12">💎</div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-4xl mb-4">❄️</div>
-            <h3 class="text-xl font-bold text-gray-800">Gel de Série</h3>
-            <p class="text-gray-500 text-sm mb-2">Protège ta série si tu rates un jour d'entraînement.</p>
-            <p class="text-xs font-bold text-blue-600 mb-4 uppercase">Tu en possèdes :
-                {{ auth()->user()->streak_freezes }}</p>
-            <button wire:click="buyFreeze"
-                class="mt-auto w-full bg-blue-600 text-white py-4 rounded-2xl font-black hover:bg-blue-700 transition flex justify-between px-6">
-                <span>ACHETER</span>
-                <span>2,000 XP</span>
-            </button>
+        <div class="card-surface p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center">
+            <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-4xl mb-4">❄️</div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Gel de Série</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">Protège ta série si tu rates un jour d'entraînement.</p>
+            <p class="text-xs font-bold text-primary mb-4 uppercase">Tu en possèdes : {{ auth()->user()->streak_freezes }}</p>
+            <button wire:click="buyFreeze" class="mt-auto w-full bg-accent text-white py-4 rounded-2xl font-black hover:opacity-95 transition flex justify-between px-6"> <span>ACHETER</span> <span>2,000 XP</span></button>
         </div>
     </div>
 </div>

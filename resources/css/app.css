@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --color-primary: #7c3aed; /* vibrant purple */
+    --color-primary-rgb: 124 58 237;
+    --color-accent: #06b6d4; /* teal */
+    --color-accent-rgb: 6 182 212;
+    --color-surface: #ffffff;
+    --color-bg: #f8fafc; /* light neutral */
+    --color-muted: #6b7280;
+    --color-success: #10b981;
+    --color-success-rgb: 16 185 129;
+    --color-warning: #f59e0b;
+    --color-warning-rgb: 245 158 11;
+    --color-danger: #ef4444;
+    --color-danger-rgb: 239 68 68;
+    --radius-lg: 1rem;
+    --glass: rgba(255, 255, 255, 0.6);
+}
+
+.dark {
+    --color-primary: #5b21b6; /* slightly deeper for dark */
+    --color-primary-rgb: 91 33 182;
+    --color-accent: #06b6d4;
+    --color-accent-rgb: 6 182 212;
+    --color-surface: #0b1220;
+    --color-bg: #0b1220;
+    --color-muted: #9ca3af;
+    --color-success: #34d399;
+    --color-success-rgb: 52 211 153;
+    --color-warning: #fbbf24;
+    --color-warning-rgb: 251 191 36;
+    --color-danger: #f87171;
+    --color-danger-rgb: 248 113 113;
+    --glass: rgba(15, 23, 42, 0.6);
+}
+
+/* Handy helpers to encourage consistent use */
+.card-surface {
+    background-color: var(--color-surface);
+}
+.app-bg {
+    background-color: var(--color-bg);
+}
+.glass {
+    background-color: var(--glass);
+    backdrop-filter: blur(6px);
+}

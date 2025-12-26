@@ -24,7 +24,7 @@
                     <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')">
                         {{ __('Classement') }}
                     </x-nav-link>
-                    
+
                     <x-nav-link :href="route('verbslist')" :active="request()->routeIs('verbslist')">
                         {{ __('Liste de verbes') }}
                     </x-nav-link>
@@ -33,46 +33,35 @@
 
             <div class="flex">
                 <div class="flex items-center">
-                
+
                     <div class="hidden md:block mr-4">
                         <a href="{{ route('search') }}" class="group relative flex items-center">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400 group-hover:text-indigo-500 transition" fill="none"
+                                <svg class="h-5 w-5 text-gray-600 group-hover:text-primary transition" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                             <div
-                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 sm:text-sm rounded-full pl-10 pr-4 py-2 w-64 cursor-pointer hover:bg-white dark:hover:bg-gray-600 hover:ring-2 ring-indigo-500 transition border border-transparent">
+                                class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 sm:text-sm rounded-full pl-10 pr-4 py-2 w-64 cursor-pointer hover:bg-white dark:hover:bg-gray-600 hover:ring-2 ring-primary transition border border-transparent">
                                 Rechercher (Ctrl+K)...
                             </div>
                         </a>
                     </div>
-                
-                    <a href="{{ route('search') }}" class="md:hidden p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+
+                    <a href="{{ route('search') }}"
+                        class="md:hidden p-2 text-gray-600 hover:text-gray-700 dark:hover:text-gray-200">
                         <span class="sr-only">Rechercher</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </a>
-                
+
                 </div>
                 <div class="relative ml-3 flex items-center">
-                    <a href="{{ route('notifications') }}"
-                        class="relative p-2 text-gray-400 hover:text-indigo-600 transition group">
-                        <span class="text-2xl group-hover:scale-110 transition-transform inline-block">🔔</span>
-
-                        @php $count = auth()->user()->unreadNotifications->count(); @endphp
-
-                        @if($count > 0)
-                        <span
-                            class="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white">
-                            {{ $count }}
-                        </span>
-                        @endif
-                    </a>
+                    <livewire:notification-icon />
                 </div>
 
                 <!-- Settings Dropdown -->
@@ -80,8 +69,11 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
+                                class="inline-flex items-center gap-3 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-900 focus:outline-none transition ease-in-out duration-150">
+                                <div
+                                    class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                    {{ substr(Auth::user()->username,0,1) }}</div>
+                                <div class="hidden sm:block">{{ Auth::user()->username }}</div>
 
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +108,7 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-700 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -141,7 +133,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->username }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-sm text-gray-700">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
