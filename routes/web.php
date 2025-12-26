@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
         return view('learn');
     })->name('learn');
 
+    Route::get('/learn/{category:slug}', function () {
+        return view('learn');
+    })->name('learn.category');
+
     Route::get('/practice', [PracticeController::class, 'exercises'])->name('practice');
 
     Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');

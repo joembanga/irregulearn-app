@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use Livewire\Component;
 use App\Models\Exercise;
 use App\Models\User;
@@ -17,12 +18,25 @@ class QuizEngine extends Component
     public $restrictToVerbIds = [];
     public $exercisesId = [];
     public $exerciseVerbTable = null;
+    public $category = null;
+    public $verbsToLearn = null;
 
     public $currentExercise;
     public $userAnswer = '';
     public $feedback = '';
     public $isCorrect = null;
 
+    // Dans ton composant de Quiz/Learning
+    public function mount($categorySlug)
+    {
+        $this->category = Category::where('slug', $categorySlug)->firstOrFail();
+
+        // On ne charge que les verbes de CETTE catégorie
+        $this->verbsToLearn = $this->category->verbs()
+            ->wherePivotMastered(false) // Optionnel : verbes non maîtrisés
+            ->get();
+    }
+    
     public function __construct()
     {
         $user = Auth::user();
