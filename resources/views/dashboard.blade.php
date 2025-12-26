@@ -18,7 +18,8 @@ if ($user->xp_total >= 0 && $user->xp_total < 5000 ) {
             {{ __('Heureux de te revoir') }} {{ $user->firstname }}
         </h2>
     </x-slot>
-    <div class="py-12 bg-gray-50">
+
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-8 lg:px-8 space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-3  gap-6">
 
@@ -115,5 +116,8 @@ if ($user->xp_total >= 0 && $user->xp_total < 5000 ) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="">
+        <livewire:dashboard />
     </div>
 </x-app-layout>

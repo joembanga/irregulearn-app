@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+use function Illuminate\Support\now;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -60,6 +62,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(User::class, 'friendships', 'sender_id', 'recipient_id')->where('status', 'accepted')->get();
     }
 
+    public function verb()
+    {
+        return $this->belongsToMany(Verb::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     // Get user's friend requests
     public function friendRequests()
     {
@@ -92,5 +104,44 @@ class User extends Authenticatable implements MustVerifyEmail
                 $this->dailyVerbs()->attach($verb->id, ['day' => now()->toDateString()]);
             }
         }
+    }
+
+    public function masteredVerbs()
+    {
+        return $this->verb()
+        ->wherePivot('mastered', true);
+    }
+
+    public function canAccessCategory(Category $category): bool
+    {
+        // The first category is always unlocekd
+        if ($category->order === 0) return true;
+
+        $userUnclockedCategories = $this->category()
+            ->wherePivot('user_id', $this->id)
+            ->withPivotValue('category_id', $category->id)
+            ->get()->toArray();
+        
+        // If user had paid this category
+        if (count($userUnclockedCategories) > 0) {
+            foreach ($userUnclockedCategories as $userUnclockedCategory) {
+                if ($userUnclockedCategory['pivot']['category_id'] === $category->id) {
+                    return true;
+                };
+            }
+        };
+
+        $previousCategory = Category::where('order', $category->order - 1)->first();
+        if (!$previousCategory) return true;
+
+        // If he have done 70% of one category
+        $totalVerbs = $previousCategory->verbs()->count();
+        $masteredVerbs = $this->masteredVerbs()
+            ->whereHas('categories', function ($q) use ($previousCategory) {
+                $q->where('categories.id', $previousCategory->id);
+            })->count();
+        $masteryRate = ($totalVerbs > 0) ? ($masteredVerbs / $totalVerbs) * 100 : 0;
+
+        return $masteryRate >= 70;
     }
 }
