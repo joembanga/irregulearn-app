@@ -13,6 +13,13 @@ class Dashboard extends Component
     public function render(): View
     {
         $user = Auth::user();
+        // Ensure daily verbs are generated and available
+        if (method_exists($user, 'generateDailyVerbs')) {
+            $user->generateDailyVerbs();
+            $dailyVerbs = $user->dailyVerbs;
+        } else {
+            $dailyVerbs = collect();
+        }
         $categories = Category::orderBy('order')->get()->map(function ($category) use ($user) {
             // On calcule le % de maîtrise (verbes réussis / total verbes)
             $totalVerbs = $category->verbs()->count();
@@ -30,7 +37,8 @@ class Dashboard extends Component
         });
 
         return view('livewire.dashboard', [
-            'categories' => $categories
+            'categories' => $categories,
+            'dailyVerbs' => $dailyVerbs,
         ]);
     }
 

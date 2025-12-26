@@ -39,7 +39,7 @@
                 </div>
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm text-center">
                     <p class="text-sm text-gray-700 uppercase font-bold">Verbes vus 📖</p>
-                    <p class="text-2xl font-black">{{ $user->dailyVerbs()->where('is_learned', true)->count() }}</p>
+                    <p class="text-2xl font-black">{{ $user->verb()->wherePivot('mastered', true)->count() }}</p>
                 </div>
             </div>
 

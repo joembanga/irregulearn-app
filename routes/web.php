@@ -3,33 +3,26 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LeaderboardController;
-use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerbController;
-use App\Livewire\SearchPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LearnController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/learn', function () {
-        return view('learn');
-    })->name('learn');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/learn/{category:slug}', function () {
-        return view('learn');
-    })->name('learn.category');
+    Route::get('/learn', [LearnController::class, 'index'])->name('learn');
 
-    Route::get('/practice', [PracticeController::class, 'exercises'])->name('practice');
+    Route::get('/learn/{category:slug}', [LearnController::class, 'show'])->name('learn.category');
 
     Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');
 
