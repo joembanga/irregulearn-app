@@ -6,6 +6,7 @@ use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VerbController;
+use App\Livewire\SearchPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
     
     Route::get('/verbs', [VerbController::class, 'getList'])->name('verbslist');
+
+    Route::get('/search', function() {
+        return view('search');
+    })->name('search');
 
 });
 

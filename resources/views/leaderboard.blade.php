@@ -42,7 +42,7 @@
                                     class="flex items-center gap-3 group">
                                     <div
                                         class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border-2 border-transparent group-hover:border-indigo-500 transition shadow-sm">
-                                        {{ substr($u->username, 0, 1) }}
+                                        {{ substr(\Illuminate\Support\Str::upper($u->username), 0, 1) }}
                                     </div>
                                     <span class="font-bold text-gray-800 group-hover:text-indigo-600 transition">
                                         {{ $u->username }}

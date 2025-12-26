@@ -32,6 +32,33 @@
             </div>
 
             <div class="flex">
+                <div class="flex items-center">
+                
+                    <div class="hidden md:block mr-4">
+                        <a href="{{ route('search') }}" class="group relative flex items-center">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400 group-hover:text-indigo-500 transition" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <div
+                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 sm:text-sm rounded-full pl-10 pr-4 py-2 w-64 cursor-pointer hover:bg-white dark:hover:bg-gray-600 hover:ring-2 ring-indigo-500 transition border border-transparent">
+                                Rechercher (Ctrl+K)...
+                            </div>
+                        </a>
+                    </div>
+                
+                    <a href="{{ route('search') }}" class="md:hidden p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                        <span class="sr-only">Rechercher</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </a>
+                
+                </div>
                 <div class="relative ml-3 flex items-center">
                     <a href="{{ route('notifications') }}"
                         class="relative p-2 text-gray-400 hover:text-indigo-600 transition group">
