@@ -39,7 +39,7 @@ class Dashboard extends Component
         $user = Auth::user();
         if ($user->xp_balance >= $categoryCout) {
             $user->decrement('xp_balance', $categoryCout);
-            DB::insert('INSERT INTO category_user (category_id, user_id, created_at, updated_at) VALUES (:category_id, :user_id, CURRENT_DATE, CURRENT_DATE) ', [
+            DB::insert('INSERT INTO category_user (category_id, user_id, created_at, updated_at) VALUES (:category_id, :user_id, CURRENT_DATETIME, CURRENT_DATETIME) ', [
                 'category_id' => $categoryId,
                 'user_id' => $user->id,
             ]);
