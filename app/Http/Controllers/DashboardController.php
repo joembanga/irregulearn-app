@@ -18,11 +18,8 @@ class DashboardController extends Controller
 
         // Nombre de verbes que l'utilisateur a réussi au moins une fois (is_learned = true)
         // On compte les entrées uniques dans la table daily_verbs pour cet utilisateur
-        $learnedVerbsCount = DB::table('daily_verbs')
-            ->where('user_id', $user->id)
-            ->where('is_learned', true)
-            ->distinct('verb_id')
-            ->count();
+        $learnedVerbsCount = $user->verb()
+            ->wherePivot('mastered', true)->count();
 
         $progressPercent = $totalVerbs > 0 ? ($learnedVerbsCount / $totalVerbs) * 100 : 0;
 

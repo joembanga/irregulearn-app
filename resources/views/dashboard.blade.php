@@ -108,8 +108,8 @@ if ($user->xp_total >= 0 && $user->xp_total < 5000 ) {
                         <p class="text-primary/30 mb-6 text-sm">
                             Entraîne-toi sur tous les verbes que tu as déjà vus pour ne pas les oublier.
                         </p>
-                        <a href="{{ route('practice') }}" class="bg-white text-primary/95 px-6 py-3 rounded-xl font-bold text-sm hover:bg-primary/10 transition">
-                            Mode Entraînement
+                        <a href="{{ route('learn') }}" class="bg-white text-primary/95 px-6 py-3 rounded-xl font-bold text-sm hover:bg-primary/10 transition">
+                            Faire un quiz
                         </a>
                     </div>
                     <div class="absolute -right-10 -bottom-10 text-9xl opacity-10">📖</div>
