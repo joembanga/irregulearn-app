@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('notifications');
 
+    //Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
     Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
 
     Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
