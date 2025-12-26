@@ -13,8 +13,23 @@
 
         <div class="text-center mb-10">
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase">Conjugue au Prétérit (Past Simple)</p>
-            <h2 class="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">
+            {{-- <h2 class="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">
                 {{ $currentVerb->infinitive }}
+            </h2> --}}
+            <h2
+                class="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center justify-center gap-4">
+                {{ $currentVerb->infinitive }}
+            
+                <button
+                    onclick="let u = new SpeechSynthesisUtterance('{{ $currentVerb->infinitive }}'); u.lang='en-GB'; speechSynthesis.speak(u);"
+                    class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-gray-500 hover:text-indigo-600 transition shadow-sm"
+                    title="Écouter la prononciation">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                        </path>
+                    </svg>
+                </button>
             </h2>
             <p class="text-indigo-500 font-medium text-lg">{{ $currentVerb->translation }}</p>
         </div>
