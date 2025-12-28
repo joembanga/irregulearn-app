@@ -18,7 +18,7 @@ class ProfilePage extends Component
         $this->user = User::where('username', $username)->firstOrFail();
 
         // Calcul du nombre de verbes maîtrisés
-        $this->masteredCount = $this->user->verb()->wherePivot('mastered', true)->count();
+        $this->masteredCount = $this->user->masteredVerbs()->count();
 
         // Calcul du rang (Combientième est-il basé sur l'XP ?)
         $this->rank = User::where('xp_total', '>', $this->user->xp_total)->count() + 1;

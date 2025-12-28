@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Verb;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class VerbController extends Controller
 {
@@ -31,5 +33,25 @@ class VerbController extends Controller
         $verbs = $query->paginate(20)->withQueryString();
 
         return view('verbslist', compact('verbs', 'filter'));
+    }
+
+    public function exportPdf()
+    {
+        $user = Auth::user();
+        
+        $verbs = Verb::with(['users' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->orderBy('infinitive')->get();
+
+        $data = [
+            'user' => $user,
+            'verbs' => $verbs,
+            'date' => now()->format('d/m/Y'),
+            //'logo_path' => public_path('images/logo.png'), // Assure-toi d'avoir ton logo ici
+        ];
+
+        $pdf = Pdf::loadView('pdf.my-verbs', $data);
+
+        return $pdf->download("IrregularVerbs_list_Irregulearn.pdf");
     }
 }

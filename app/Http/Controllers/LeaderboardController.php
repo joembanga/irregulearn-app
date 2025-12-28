@@ -19,18 +19,16 @@ class LeaderboardController extends Controller
         $query = User::orderBy($sortColumn, 'desc');
 
         if ($filter === 'friends') {
-            $friendIds = DB::table('friendships')
+            $friendships = \App\Models\Friendship::where('status', 'accepted')
                 ->where(function ($q) use ($user) {
                     $q->where('sender_id', $user->id)->orWhere('recipient_id', $user->id);
-                })
-                ->where('status', 'accepted')
-                ->get()
-                ->map(function ($row) use ($user) {
-                    return $row->sender_id === $user->id ? $row->recipient_id : $row->sender_id;
-                })
-                ->toArray();
+                })->get();
 
-            // We add the current user
+            $friendIds = $friendships->map(function ($row) use ($user) {
+                return $row->sender_id === $user->id ? $row->recipient_id : $row->sender_id;
+            })->unique()->toArray();
+
+            // Add current user
             $friendIds[] = $user->id;
 
             $query->whereIn('id', $friendIds);

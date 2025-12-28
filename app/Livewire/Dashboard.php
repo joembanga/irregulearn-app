@@ -20,24 +20,7 @@ class Dashboard extends Component
         } else {
             $dailyVerbs = collect();
         }
-        $categories = Category::orderBy('order')->get()->map(function ($category) use ($user) {
-            // On calcule le % de maîtrise (verbes réussis / total verbes)
-            $totalVerbs = $category->verbs()->count();
-
-            // On suppose que tu as une table 'verb_user' ou 'progress'
-            // Ici, on compte les verbes de la catégorie déjà maîtrisés par l'user
-            $masteredCount = $user->verb()
-                ->wherePivot('mastered', true)
-                ->whereHas('categories', function ($q) use ($category) {
-                    $q->where('categories.id', $category->id);
-                })->count();
-            $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-            $category->is_locked = !$user->canAccessCategory($category);
-            return $category;
-        });
-
         return view('livewire.dashboard', [
-            'categories' => $categories,
             'dailyVerbs' => $dailyVerbs,
         ]);
     }

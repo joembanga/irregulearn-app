@@ -14,10 +14,6 @@
                             verbes</a>
                     </div>
                 </div>
-
-                <div class="mt-4">
-                    <livewire:quiz-engine :categorySlug="$category->slug" />
-                </div>
             </section>
             @else
             <section class="card-surface rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
@@ -36,11 +32,11 @@
                 </div>
 
                 <div class="mt-4">
-                    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="mt-8 grid gap-6 grid-cols-1">
                         @foreach($categories as $category)
                         <div
-                            class="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700 transition-transform hover:-translate-y-1">
-                            <div class="flex items-start">
+                            class="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700 transition-transform hover:-translate-y-1 flex flex-col h-full">
+                            <div class="flex items-start flex-1">
                                 <div @class([ 'flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center text-white text-2xl font-bold'
                                     , 'bg-gradient-to-br from-primary to-purple-500 shadow-md'=> !$category->is_locked,
                                     'bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300' =>
@@ -56,11 +52,13 @@
                                     @endif
                                 </div>
 
-                                <div class="ml-4 flex-1">
+                                <div class="ml-4 flex-1 flex flex-col">
                                     <h3 class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                                        {{ $category->name }}</h3>
+                                        {{ $category->name }}
+                                    </h3>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                                        {{ $category->description }}</p>
+                                        {{ $category->description }}
+                                    </p>
 
                                     @if(!$category->is_locked)
                                     <div
@@ -69,7 +67,7 @@
                                             style="width: {{ $category->progress }}%"></div>
                                     </div>
 
-                                    <div class="flex items-center justify-between gap-3">
+                                    <div class="flex items-center justify-between gap-3 mt-auto">
                                         <a href="{{ route('learn.category', $category->slug) }}"
                                             class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-shadow shadow-sm">
                                             Continuer
@@ -79,7 +77,8 @@
                                             </svg>
                                         </a>
                                         <div class="text-sm text-gray-700 dark:text-gray-300 font-semibold">
-                                            {{ $category->progress }}%</div>
+                                            {{ $category->progress }}%
+                                        </div>
                                     </div>
                                     @else
                                     <div class="flex items-center gap-3">

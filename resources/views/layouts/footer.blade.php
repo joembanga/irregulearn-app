@@ -6,10 +6,12 @@
                 <div class="bg-primary text-white p-2 rounded-md font-bold text-lg">IL</div>
                 <div>
                     <div class="font-bold text-lg text-gray-900 dark:text-white">IrreguLearn</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">Maîtrise les verbes irréguliers, pas à pas.</div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">Maîtrise les verbes irréguliers, pas à pas.
+                    </div>
                 </div>
             </div>
-            <p class="text-xs leading-5 text-gray-500 dark:text-gray-400">&copy; {{ date('Y') }} IrreguLearn — Tous droits réservés.</p>
+            <p class="text-xs leading-5 text-gray-500 dark:text-gray-400">&copy; {{ date('Y') }} IrreguLearn — Tous
+                droits réservés.</p>
             <div class="flex items-center gap-3 mt-3">
                 <a href="#" class="text-gray-500 hover:text-primary">Twitter</a>
                 <a href="#" class="text-gray-500 hover:text-primary">Instagram</a>
@@ -32,7 +34,8 @@
             <div class="flex items-center gap-3">
                 <button id="theme-toggle" type="button" aria-label="Changer le thème"
                     class="inline-flex h-9 w-16 items-center rounded-full bg-gray-200 dark:bg-gray-700 p-1">
-                    <span id="theme-toggle-circle" class="inline-block h-7 w-7 rounded-full bg-white dark:bg-gray-800 shadow transform transition-transform"></span>
+                    <span id="theme-toggle-circle"
+                        class="inline-block h-7 w-7 rounded-full bg-white dark:bg-gray-800 shadow transform transition-transform"></span>
                 </button>
             </div>
             <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">Mode clair/sombre — ton choix est sauvegardé.</p>
