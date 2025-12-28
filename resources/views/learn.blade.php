@@ -56,7 +56,7 @@
                                     @endif
                                 </div>
 
-                                <div class="ms-4 flex-1">
+                                <div class="ml-4 flex-1">
                                     <h3 class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
                                         {{ $category->name }}</h3>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">

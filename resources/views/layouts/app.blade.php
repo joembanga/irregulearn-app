@@ -36,6 +36,14 @@
             </main>
         </div>
         @include('layouts.footer')
+        <script>
+            window.addEventListener('notify', event => {
+                // Tu peux utiliser une bibliothèque comme SweetAlert2 ou juste un toast custom
+                alert(event.detail.message); 
+                // Ou un toast plus élégant :
+                // toastr[event.detail.type](event.detail.message);
+            });
+        </script>
         @livewireScripts
     </body>
 </html>

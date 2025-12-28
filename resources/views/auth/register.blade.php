@@ -1,10 +1,23 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div class="px-6 text-center lg:text-left">
+            <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">🎓 Commence maintenant</div>
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">Créer un compte</h2>
+            <p class="text-gray-600 dark:text-gray-400">Rejoins la communauté, débloque des catégories et améliore ton anglais jour après jour.</p>
+
+            <ul class="mt-6 space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                <li>• 5 verbes du jour sélectionnés</li>
+                <li>• Suivi de progression et streaks</li>
+                <li>• Mode entraînement & quiz</li>
+            </ul>
+        </div>
+
+        <form method="POST" action="{{ route('register') }}" class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
         @csrf
 
         <div class="mb-6 text-center">
-            <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white">Créer un compte</h2>
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Rejoins la communauté et commence à t'entraîner.</p>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Inscription rapide</h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Quelques informations pour personnaliser ton expérience.</p>
         </div>
 
         <!-- Username -->
@@ -47,9 +60,10 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
+            <x-primary-button class="ml-4">
+                {{ __('Créer mon compte') }}
             </x-primary-button>
         </div>
-    </form>
+        </form>
+    </div>
 </x-guest-layout>

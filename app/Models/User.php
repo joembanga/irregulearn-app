@@ -117,6 +117,31 @@ class User extends Authenticatable implements MustVerifyEmail
         ->wherePivot('mastered', true);
     }
 
+    // app/Models/User.php
+
+    public function updateStreak()
+    {
+        $now = now()->startOfDay();
+        $lastPractice = $this->last_activity_date ? $this->last_activity_date->startOfDay() : null;
+
+        if (!$lastPractice) {
+            // Première fois
+            $this->current_streak = 1;
+        } elseif ($lastPractice->equalTo($now)) {
+            // Déjà pratiqué aujourd'hui, on ne fait rien
+            return;
+        } elseif ($lastPractice->equalTo($now->copy()->subDay())) {
+            // Pratiqué hier, la série continue !
+            $this->current_streak++;
+        } else {
+            // Plus d'un jour d'écart, on repart à 1
+            $this->current_streak = 1;
+        }
+
+        $this->last_activity_date = now();
+        $this->save();
+    }
+
     public function canAccessCategory(Category $category): bool
     {
         // The first category is always unlocekd
