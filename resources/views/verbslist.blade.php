@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-12 app-bg">
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-5xl mx-auto px-6 flex flex-col gap-2">
 
-            <div class="flex flex-col md:flex-row justify-between gap-4 mb-8">
+            <div class="flex flex-row items-center justify-between gap-4 mb-8">
                 <div class="flex gap-2 bg-gray-200 dark:bg-gray-800 p-1 rounded-3xl">
                     <a href="{{ route('verbslist', ['level' => 'beginner']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'beginner' ? 'bg-white dark:bg-primary/10 text-primary dark:text-primary/80 shadow-sm' : 'text-gray-700 dark:text-gray-300' }}">Beginner</a>
@@ -13,15 +13,9 @@
                     <a href="{{ route('verbslist', ['level' => 'all']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'all' ? 'bg-white dark:bg-primary/10 text-primary dark:text-primary/80 shadow-sm' : 'text-gray-700 dark:text-gray-300' }}">All</a>
                 </div>
-
-                <div class="flex items-center gap-3">
-                    <input type="search" placeholder="Rechercher un verbe..."
-                        class="px-4 py-2 rounded-full border border-gray-200 focus:ring-2 focus:ring-accent" />
-                </div>
             </div>
 
-            <div
-                class="card-surface shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+            <div class="card-surface shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300">
                 <div class="hidden sm:block">
                     <table class="w-full text-left">
                         <thead class="bg-primary text-white">
@@ -77,6 +71,18 @@
 
                 <div class="p-6">{{ $verbs->links() }}</div>
             </div>
+            <div class="flex flex-row-reverse justify-between items-center mt-8 mb-6">
+                <a href="{{ route('verbs.export') }}"
+                    class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-4 rounded-xl text-sm font-bold shadow-lg shadow-indigo-200 transition transform active:scale-95">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    TÉLÉCHARGER LA LISTE (.PDF)
+                </a>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

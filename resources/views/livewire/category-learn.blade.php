@@ -11,11 +11,11 @@
             <span class="text-xs font-bold text-gray-400">VERBE {{ $currentIndex + 1 }}/{{ count($verbs) }}</span>
         </div>
 
+        @if($currentType !== 'odd_one_out')
         <div class="text-center mb-10">
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase">Conjugue au Prétérit (Past Simple)</p>
-            {{-- <h2 class="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">
-                {{ $currentVerb->infinitive }}
-            </h2> --}}
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase">
+                    Conjugue au <span class="text-indigo-500 font-bold">{{ str_replace('_', ' ', $currentTargetForm) }}</span>
+                </p>
             <h2
                 class="text-5xl font-black text-gray-900 dark:text-white mb-2 tracking-tight flex items-center justify-center gap-4">
                 {{ $currentVerb->infinitive }}
@@ -55,10 +55,10 @@
             @elseif($currentType === 'quiz')
             <div class="grid grid-cols-2 gap-4">
                 @foreach($choices as $choice)
-                <button wire:click="checkAnswer('{{ $choice }}')" @disabled($isCorrect !==null) class="p-6 rounded-2xl font-bold text-lg border-2 transition-all duration-200 transform hover:scale-105
+                <button wire:click="checkAnswer('{{ $choice }}')" class="p-6 rounded-2xl font-bold text-lg border-2 transition-all duration-200 transform hover:scale-105
                                 {{ 
-                                    $isCorrect === true && strtolower($choice) == strtolower($currentVerb->past_simple) ? 'bg-green-500 border-green-500 text-white shadow-green-200' : 
-                                    ($isCorrect === false && strtolower($choice) == strtolower($currentVerb->past_simple) ? 'bg-green-500 border-green-500 text-white' : 
+                                    $isCorrect === true && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-green-500 border-green-500 text-white shadow-green-200' : 
+                                    ($isCorrect === false && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-green-500 border-green-500 text-white' : 
                                     ($isCorrect === false ? 'bg-red-100 border-red-100 text-red-400 opacity-50' : 
                                     'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-indigo-500 hover:text-indigo-600 shadow-sm'))
                                 }}">
@@ -101,6 +101,22 @@
             @endif
 
         </div>
+        @else
+        <div class="text-center animate-fade-in">
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white mb-8">
+                Lequel de ces verbes prend <span class="text-indigo-600">-ed</span> au passé ?
+            </h2>
+        
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                @foreach($choices as $choice)
+                <button wire:click="checkAnswer('{{ $choice }}')"
+                    class="p-6 rounded-2xl font-bold text-lg transition-all border-2 bg-white dark:bg-gray-800 hover:border-indigo-500">
+                    {{ \Illuminate\Support\Str::title($choice) }}
+                </button>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         @if($isCorrect !== null)
         <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 animate-fade-in-up">
@@ -115,18 +131,19 @@
             <div class="flex flex-col text-red-500 font-bold mb-4">
                 <div class="flex items-center">
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                     Faux !
                 </div>
-                <span class="text-gray-600 dark:text-gray-400 text-sm mt-1">La réponse était : <span
-                        class="text-indigo-500 font-bold">{{ $currentVerb->past_simple }}</span></span>
+                <span class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                    La réponse était : <span class="text-indigo-500 font-bold">
+                        {{ $currentType !== 'odd_one_out' ? str_replace('/', ' ou enocre ', $currentVerb->{$currentTargetForm}) : \Illuminate\Support\Str::title($answer) }}
+                    </span>
+                </span>
             </div>
             @endif
 
-            <button wire:click="nextVerb"
-                class="w-full py-4 bg-gray-900 dark:bg-white dark:text-gray-900 text-white rounded-2xl font-bold text-lg hover:opacity-90 transition shadow-lg">
+            <button wire:click="nextVerb" class="w-full py-4 bg-gray-900 dark:bg-white dark:text-gray-900 text-white rounded-2xl font-bold text-lg hover:opacity-90 transition shadow-lg">
                 Question Suivante →
             </button>
         </div>
@@ -134,13 +151,13 @@
 
     </div>
     @else
-    <div
-        class="text-center bg-white dark:bg-gray-800 rounded-3xl p-12 shadow-xl border border-gray-100 dark:border-gray-700">
+    <div class="text-center bg-white dark:bg-gray-800 rounded-3xl p-12 shadow-xl border border-gray-100 dark:border-gray-700">
         <div class="text-7xl mb-6">🏆</div>
         <h2 class="text-3xl font-black dark:text-white mb-4">Session Terminée !</h2>
-        <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">Tu as gagné <span class="text-indigo-500 font-bold">+50
-                XP</span> bonus.</p>
-        <a href="{{ route('dashboard') }}"
+        <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">
+            Tu as gagné <span class="text-indigo-500 font-bold">{{ $finished_reward }} XP</span> bonus.
+        </p>
+        <a href="{{ route('learn') }}"
             class="inline-flex items-center px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg hover:bg-indigo-700 transition">
             Retour au parcours
         </a>

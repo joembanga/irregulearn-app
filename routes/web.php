@@ -21,7 +21,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/learn', [LearnController::class, 'index'])->name('learn');
-
     Route::get('/learn/{category:slug}', [LearnController::class, 'show'])->name('learn.category');
 
     Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');
@@ -40,9 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
     Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
 
-    Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
-    
     Route::get('/verbs', [VerbController::class, 'getList'])->name('verbslist');
+    Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
+    Route::get('/export', [VerbController::class, 'exportPdf'])->name('verbs.export');
 
     Route::get('/search', function() {
         return view('search');
@@ -53,5 +52,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
+
+// Pages publiques: confidentialité et conditions
+Route::view('/privacy', 'privacy')->name('privacy');
+Route::view('/terms', 'terms')->name('terms');
 
 require __DIR__ . '/auth.php';

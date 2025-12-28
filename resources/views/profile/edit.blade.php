@@ -14,20 +14,19 @@
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         
             <div
-                class="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm mb-8 flex flex-col items-center sm:flex-row sm:justify-between">
+                class="card-surface rounded-3xl p-8 shadow-sm mb-8 flex flex-col items-center sm:flex-row sm:justify-between border border-gray-100 dark:border-gray-700">
                 <div class="flex flex-col items-center sm:flex-row gap-6">
                     <div class="relative">
                         <div
                             class="absolute -inset-1 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-full blur opacity-25">
                         </div>
                         <img src="{{ $user->avatar_code }}"
-                            class="relative w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 shadow-xl">
+                            class="relative w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 shadow-xl object-cover">
                     </div>
         
                     <div class="text-center sm:text-left">
                         <h2 class="text-3xl font-black text-gray-900 dark:text-white">{{ $user->username }}</h2>
-                        <p class="text-indigo-600 font-bold uppercase text-xs tracking-widest">Niveau
-                            {{ floor($user->xp_total / 100) }} • {{ $user->xp_total }} XP</p>
+                        <p class="text-primary font-bold uppercase text-xs tracking-widest">Niveau {{ floor($user->xp_total / 100) }} • {{ $user->xp_total }} XP</p>
                     </div>
                 </div>
         

@@ -14,14 +14,19 @@ class Verb extends Model
         'level',
         'category'
     ];
-
-    public function exercises()
+    
+    public function users()
     {
-        return $this->belongsToMany(Exercise::class);
+        return $this->belongsToMany(User::class)->withPivot('mastered');
     }
     
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+    
+    public function isMasteredBy($user)
+    {
+        return $this->users->contains($user->id) && $this->users->find($user->id)->pivot->mastered;
     }
 }

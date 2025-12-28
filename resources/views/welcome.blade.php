@@ -168,6 +168,29 @@
         </div>
     </section>
 
+    <section id="testimonials" class="py-12">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mx-auto max-w-2xl lg:text-center">
+                <h2 class="text-base font-semibold leading-7 text-primary">Ils ont progressé</h2>
+                <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Témoignages</p>
+            </div>
+            <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <p class="text-gray-700 dark:text-gray-300">"Grâce à IrreguLearn j'ai enfin compris les verbes irréguliers. 10 minutes par jour et c'est réglé."</p>
+                    <div class="mt-4 font-bold">— Amina, Étudiante</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <p class="text-gray-700 dark:text-gray-300">"Le système d'XP m'a motivé à m'entraîner tous les jours. Mon niveau s'est clairement amélioré."</p>
+                    <div class="mt-4 font-bold">— Jean, Professeur</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <p class="text-gray-700 dark:text-gray-300">"Les sessions courtes et ciblées sont parfaites avant un examen."</p>
+                    <div class="mt-4 font-bold">— Fatou, Étudiante</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     @include('layouts.footer')
 
 </body>

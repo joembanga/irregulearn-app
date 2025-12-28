@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Notifications\NewFriendNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Friendship;
 
 class FollowButton extends Component
 {
@@ -21,10 +21,11 @@ class FollowButton extends Component
 
     public function checkStatus()
     {
-        $contact = DB::table('friendships')
-            ->where('sender_id', Auth::id())
-            ->where('recipient_id', $this->user->id)
-            ->first();
+        $contact = Friendship::where(function ($q) {
+            $q->where('sender_id', Auth::id())->where('recipient_id', $this->user->id);
+        })->orWhere(function ($q) {
+            $q->where('sender_id', $this->user->id)->where('recipient_id', Auth::id());
+        })->first();
 
         $this->status = $contact ? $contact->status : 'none';
     }
@@ -32,20 +33,20 @@ class FollowButton extends Component
     public function toggleFollow()
     {
         if ($this->status === 'none') {
-            DB::table('friendships')->insert([
+            Friendship::create([
                 'sender_id' => Auth::id(),
                 'recipient_id' => $this->user->id,
-                'status' => 'accepted', // Pour simplifier au début, on accepte direct
-                'created_at' => now(),
+                'status' => 'accepted',
             ]);
 
             // On peut envoyer une notification ici
             $this->user->notify(new NewFriendNotification(Auth::user()));
         } else {
-            DB::table('friendships')
-                ->where('sender_id', Auth::id())
-                ->where('recipient_id', $this->user->id)
-                ->delete();
+            Friendship::where(function ($q) {
+                $q->where('sender_id', Auth::id())->where('recipient_id', $this->user->id);
+            })->orWhere(function ($q) {
+                $q->where('sender_id', $this->user->id)->where('recipient_id', Auth::id());
+            })->delete();
         }
 
         $this->checkStatus();
