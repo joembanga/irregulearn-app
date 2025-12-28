@@ -1,3 +1,7 @@
+@php
+    // Dans ta Navbar.php
+    protected $listeners = ['avatarUpdated' => '$refresh'];
+@endphp
 <nav x-data="{ open: false }"
     class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 transition-colors duration-300">
     <!-- Primary Navigation Menu -->
