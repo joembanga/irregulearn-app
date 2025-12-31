@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LearnController;
 
-Route::get('/', function () {
+Route::middleware('guest')->get('/', function () {
     return view('welcome');
 });
 
@@ -47,6 +47,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('search');
     })->name('search');
 
+    Route::get('/{user:username}/favs', [ProfileController::class, 'listFavs'])->name('favorites');
+
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -56,5 +58,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Pages publiques: confidentialité et conditions
 Route::view('/privacy', 'privacy')->name('privacy');
 Route::view('/terms', 'terms')->name('terms');
+Route::view('/about', 'about')->name('about');
+Route::view('/contact', 'contact')->name('contact');
 
 require __DIR__ . '/auth.php';
