@@ -6,8 +6,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 use function Illuminate\Support\now;
 
@@ -86,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Badge::class);
     }
+    
+    public function favorites()
+    {
+        return $this->belongsToMany(StaredVerb::class);
+    }
 
     // Get user's friend requests
     public function friendRequests()
@@ -112,8 +115,8 @@ class User extends Authenticatable implements MustVerifyEmail
         // If user hasn't already dailyverbs
         if ($this->dailyVerbs()->count() === 0) {
 
-            // (Pour simplifier ici, on prend juste 5 verbes aléatoires)
-            $verbs = Verb::inRandomOrder()->take(5)->get();
+            
+            $verbs = Verb::inRandomOrder()->take($this->daily_target)->get();
 
             foreach ($verbs as $verb) {
                 $this->dailyVerbs()->attach($verb->id, ['day' => now()->toDateString()]);

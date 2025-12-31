@@ -24,6 +24,11 @@ class Verb extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function isFavoriteOf(User $user)
+    {
+        return $this->belongsToMany(StaredVerb::class);
+    }
     
     public function isMasteredBy($user)
     {
