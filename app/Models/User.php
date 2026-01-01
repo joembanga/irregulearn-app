@@ -87,7 +87,7 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function favorites()
     {
-        return $this->belongsToMany(StaredVerb::class);
+        return $this->belongsToMany(Verb::class, 'stared_verbs')->withTimestamps();
     }
 
     // Get user's friend requests
