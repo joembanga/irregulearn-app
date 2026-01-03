@@ -54,4 +54,15 @@ class VerbController extends Controller
 
         return $pdf->download("IrregularVerbs_list_Irregulearn.pdf");
     }
+
+
+    public function listFavs()
+    {
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = Auth::user();
+        $verbs = $user->favorites; // Récupère tous les verbes favoris de l'utilisateur
+        return view('favorites', compact('verbs'));
+    }
 }

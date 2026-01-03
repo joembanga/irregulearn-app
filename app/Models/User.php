@@ -90,6 +90,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Verb::class, 'stared_verbs')->withTimestamps();
     }
 
+    public function likedExamples()
+    {
+        return $this->belongsToMany(VerbExample::class, 'example_like_user', 'user_id', 'example_id')
+            ->withTimestamps();
+    }
+
+    public function hasLikedExample(VerbExample $example)
+    {
+        return $this->likedExamples()->where('example_id', $example->id)->exists();
+    }
+
     // Get user's friend requests
     public function friendRequests()
     {

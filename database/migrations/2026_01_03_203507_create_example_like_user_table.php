@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stared_verbs', function (Blueprint $table) {
+        Schema::create('example_like_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('verb_id')->constrained('verbs')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('example_id')->cascadeOnDelete();
+            $table->boolean('is_liked')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stared_verbs');
+        Schema::dropIfExists('example_like_user');
     }
 };

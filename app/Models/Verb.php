@@ -31,8 +31,6 @@ class Verb extends Model
         return $this->users->contains($user->id) && $this->users->find($user->id)->pivot->mastered;
     }
 
-    // app/Models/Verb.php
-
     public function favoritedByUsers()
     {
         // On lie le verbe aux utilisateurs via la table 'stared_verbs'
@@ -60,5 +58,10 @@ class Verb extends Model
             'friends' => $friendsWhoFavorited,
             'friends_count' => $this->favoritedByUsers()->whereIn('user_id', $friendIds)->count()
         ];
+    }
+
+    public function communityExamples()
+    {
+        return $this->hasMany(VerbExample::class)->orderBy('likes_count', 'desc');
     }
 }
