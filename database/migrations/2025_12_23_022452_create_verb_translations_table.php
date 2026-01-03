@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('verb_translations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('verb_id')->constrained('verbs')->cascadeOnDelete();
-            $table->string('lang')->default('fr');
+            $table->string('lang_code')->default('fr');
             $table->string('translation');
             $table->timestamps();
         });
