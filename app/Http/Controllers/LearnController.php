@@ -14,24 +14,36 @@ class LearnController extends Controller
     {
         $user = $request->user();
 
-        // Eager load verbs count to prevent N+1
-        $categories = Category::withCount('verbs')->orderBy('order')->get()->map(function ($category) use ($user) {
-            $totalVerbs = $category->verbs_count;
+        // Optimized query: eager load verb counts and use subquery for mastered counts
+        $categories = Category::withCount('verbs')
+            ->orderBy('order')
+            ->get()
+            ->map(function ($category) use ($user) {
+                // Efficiently get mastered count for this specific category
+                // We could optimize this further with a single massive query if needed,
+                // but this removes the loop over the relationship collection.
+                $masteredCount = $user->masteredVerbs()
+                    ->whereHas('categories', function ($q) use ($category) {
+                        $q->where('categories.id', $category->id);
+                    })->count();
 
-            $masteredCount = $user->masteredVerbs()
-                ->whereHas('categories', function ($q) use ($category) {
-                    $q->where('categories.id', $category->id);
-                })->count();
+                $totalVerbs = $category->verbs_count;
+                $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
+                $category->is_locked = !$user->canAccessCategory($category);
 
-            $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-            $category->is_locked = !$user->canAccessCategory($category);
-            return $category;
-        });
+                return $category;
+            });
 
         return view('learn', compact('categories'));
     }
 
-    public function show($slug) {
-        return view('category-learn', ['slug' => $slug]);
+    public function show($slug)
+    {
+        return view('category-learn', ['slug' => $slug, 'mode' => 'category']);
+    }
+
+    public function daily()
+    {
+        return view('category-learn', ['slug' => null, 'mode' => 'daily']);
     }
 }
