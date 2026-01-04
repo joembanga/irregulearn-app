@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('verbs')->name('verbs.')->group(function () {
         Route::get('/', [VerbController::class, 'getList'])->name('index');
+        Route::get('/today', [VerbController::class, 'today'])->name('today');
         Route::get('/describe/{verb:slug}', [VerbController::class, 'getVerb'])->name('show');
         Route::get('/export', [VerbController::class, 'exportPdf'])->name('export');
         Route::get('/favorites', [VerbController::class, 'listFavs'])->name('favorites');
