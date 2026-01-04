@@ -1,15 +1,16 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h1 class="font-semibold text-xl text-body leading-tight">{{ $verb->infinitive }}</h1>
-            <div class="hidden sm:flex items-center gap-3">
-                <a href="{{ route('learn') }}" class="px-3 py-2 bg-primary text-surface rounded-lg">Pratiquer</a>
-                <button class="px-3 py-2 bg-accent text-surface rounded-lg">Ajouter aux favoris</button>
-            </div>
-        </div>
-    </x-slot>
-
-    <div class="py-8">
+    <div x-data="{ touchstartX: 0, touchendX: 0, handleSwipe() {
+                        if (this.touchendX < this.touchstartX - 80) {
+                            @if($next) window.location.href = '{{ route('verb', $next->slug) }}' @endif
+                        }
+                        if (this.touchendX > this.touchstartX + 80) {
+                            @if($previous) window.location.href = '{{ route('verb', $previous->slug) }}' @endif
+                        }
+                    }
+                }"
+        @touchstart="touchstartX = $event.changedTouches[0].screenX"
+        @touchend="touchendX = $event.changedTouches[0].screenX; handleSwipe()"
+        class="min-h-screen bg-app py-8">
         <div class="max-w-4xl mx-auto px-6">
             <div class="card-surface rounded-2xl p-6 shadow-lg border border-muted">
                 <div class="flex flex-col md:flex-row md:items-center gap-6">
@@ -18,6 +19,11 @@
                         <div>
                             <h2 class="text-3xl font-extrabold text-body">{{ $verb->infinitive }}
                             </h2>
+                            @if($verb->description)
+                            <p class="mt-2 text-sm text-body/80 max-w-xl italic border-l-2 border-primary/30 pl-3">
+                                {{ $verb->description }}
+                            </p>
+                            @endif
                             <p class="mt-1 text-sm text-muted italic">Exemple: "I
                                 <strong>{{ $verb->past_simple }}</strong> to the market yesterday."
                             </p>
@@ -33,7 +39,7 @@
                                 {{ str_replace('/', ' or ', $verb->past_participle) }}
                             </div>
                         </div>
-                        <livewire:add-to-favs-button :$verb/>
+                        <livewire:add-to-favs-button :$verb />
                     </div>
                 </div>
 
@@ -49,6 +55,45 @@
                     </div>
                 </div>
             </div>
+
+            <div>
+                <livewire:verb-discussion :verb="$verb" />
+            </div>
         </div>
     </div>
+    <div class="hidden md:flex fixed inset-y-0 left-0 right-0 pointer-events-none items-center justify-between px-4 z-40">
+
+        @if($previous)
+        <a href="{{ route('verb', $previous->slug) }}"
+            class="pointer-events-auto p-3 rounded-full glass border border-muted text-body hover:scale-110 transition-all shadow-xl group"
+            title="Précédent : {{ $previous->infinitive }}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        @else
+        <div></div> @endif
+
+        @if($next)
+        <a href="{{ route('verb', $next->slug) }}"
+            class="pointer-events-auto p-3 rounded-full glass border border-muted text-body hover:scale-110 transition-all shadow-xl group"
+            title="Suivant : {{ $next->infinitive }}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+        @endif
+    </div>
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "ArrowLeft") {
+                @if($previous) window.location.href = "{{ route('verb', $previous->slug) }}";
+                @endif
+            }
+            if (e.key === "ArrowRight") {
+                @if($next) window.location.href = "{{ route('verb', $next->slug) }}";
+                @endif
+            }
+        });
+    </script>
 </x-app-layout>
