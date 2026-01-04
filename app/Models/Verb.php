@@ -13,19 +13,20 @@ class Verb extends Model
         'past_participle',
         'translation',
         'level',
-        'category'
+        'category',
+        'description'
     ];
-    
+
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('mastered');
     }
-    
+
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
-    
+
     public function isMasteredBy($user)
     {
         return $this->users->contains($user->id) && $this->users->find($user->id)->pivot->mastered;
@@ -33,20 +34,23 @@ class Verb extends Model
 
     public function favoritedByUsers()
     {
-        // On lie le verbe aux utilisateurs via la table 'stared_verbs'
+        // Link verb to users via 'stared_verbs' table
         return $this->belongsToMany(User::class, 'stared_verbs')
             ->withTimestamps();
     }
 
+    /**
+     * Get popularity stats for the verb.
+     */
     public function getPopularityStats()
     {
         $user = Auth::user();
         $totalUsers = User::count();
-        $favoritedByCount = $this->favoritedByUsers()->count(); // Assure-toi d'avoir la relation inverse dans Verb
+        $favoritedByCount = $this->favoritedByUsers()->count(); // Ensure inverse relationship exists in Verb
 
         $percentage = ($totalUsers > 0) ? ($favoritedByCount / $totalUsers) * 100 : 0;
 
-        // Récupérer les amis de l'utilisateur connecté qui aiment ce verbe
+        // Get friends of the connected user who like this verb
         $friendIds = $user->friends()->pluck('id');
         $friendsWhoFavorited = $this->favoritedByUsers()
             ->whereIn('user_id', $friendIds)
