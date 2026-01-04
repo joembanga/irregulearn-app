@@ -19,8 +19,8 @@ class EnsureUserIsAdmin
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        if (!(Auth::user()->role === 'admin')) {
-            return redirect($status = 403)->route('dashboard');
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
         }
         return $next($request);
     }
