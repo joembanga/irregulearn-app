@@ -51,7 +51,7 @@ class DailyVerbsNotification extends Notification
         return [
             'message' => 'Tes 5 verbes du jour sont arrivés !',
             'verb_count' => $this->verbs->count(),
-            'url' => '/learn',
+            'url' => route('verbs.today'),
             'icon' => '📚'
         ];
     }

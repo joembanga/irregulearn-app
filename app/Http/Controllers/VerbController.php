@@ -79,4 +79,12 @@ class VerbController extends Controller
         $verbs = $user->favorites; // Get all favorite verbs of the user
         return view('favorites', compact('verbs'));
     }
+
+    public function today()
+    {
+        $user = Auth::user();
+        $user->generateDailyVerbs();
+        $dailyVerbs = $user->dailyVerbs;
+        return view('daily-verbs', compact('dailyVerbs'));
+    }
 }

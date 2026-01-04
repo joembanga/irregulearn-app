@@ -243,17 +243,23 @@
                             <span class="font-medium text-sm md:text-base">Verbes / jour</span>
                             <span class="text-primary font-bold">{{ $user->daily_target }}</span>
                         </div>
-                        <p class="text-xs text-muted italic">Modifier l'objectif dans les paramètres du profil.</p>
+                        <div class="flex justify-between items-center">
+                            <p class="text-xs text-muted italic">Modifier l'objectif dans les paramètres du profil.</p>
+                            <a href="{{ route('verbs.today') }}"
+                                class="text-primary font-bold text-sm hover:underline">
+                                Voir les verbes du jour →
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-primary p-6 md:p-8 rounded-3xl shadow-xl text-surface relative overflow-hidden">
                     <div class="relative z-10">
-                        <h4 class="text-lg font-bold mb-2">Prêt pour un test ?</h4>
-                        <p class="text-primary/30 mb-6 text-sm">
+                        <h4 class="text-body text-lg font-bold mb-2">Prêt pour un test ?</h4>
+                        <p class="text-body mb-6 text-sm">
                             Entraîne-toi sur tous les verbes que tu as déjà vus pour ne pas les oublier.
                         </p>
                         <a href="{{ route('learn.index') }}"
-                            class="btn-invert px-6 py-3 rounded-xl font-bold text-sm hover:bg-primary-10 transition inline-block w-full text-center md:w-auto">
+                            class="text-primary btn-invert px-6 py-3 rounded-xl  font-bold text-sm bg-white hover:bg-muted transition inline-block w-full text-center md:w-auto">
                             Faire un quiz
                         </a>
                     </div>
@@ -261,8 +267,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="">
-        <livewire:dashboard />
     </div>
 </x-app-layout>
