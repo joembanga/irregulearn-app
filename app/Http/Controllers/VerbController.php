@@ -42,7 +42,7 @@ class VerbController extends Controller
         // but simple pagination is usually fine.
         $verbs = $query->paginate(20)->withQueryString();
 
-        return view('verbs.index', compact('verbs', 'filter'));
+        return view('verbslist ', compact('verbs', 'filter'));
     }
 
     /**
@@ -77,6 +77,6 @@ class VerbController extends Controller
          */
         $user = Auth::user();
         $verbs = $user->favorites; // Get all favorite verbs of the user
-        return view('verbs.favorites', compact('verbs'));
+        return view('favorites', compact('verbs'));
     }
 }

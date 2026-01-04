@@ -14,7 +14,7 @@
                 <div class="flex items-center space-x-4">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard
                     </x-nav-link>
-                    <x-nav-link :href="route('learn')" :active="request()->routeIs('learn')">Apprendre</x-nav-link>
+                    <x-nav-link :href="route('learn.index')" :active="request()->routeIs('learn.index')">Apprendre</x-nav-link>
                     <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')">Classement
                     </x-nav-link>
                     <x-nav-link :href="route('verbs.index')" :active="request()->routeIs('verbs.index')">Verbes</x-nav-link>
@@ -159,7 +159,7 @@
 
             <nav class="flex flex-col gap-3">
                 <a href="{{ route('dashboard') }}" class="px-4 py-3 rounded-md hover:bg-surface">Dashboard</a>
-                <a href="{{ route('learn') }}" class="px-4 py-3 rounded-md hover:bg-surface">Apprendre</a>
+                <a href="{{ route('learn.index') }}" class="px-4 py-3 rounded-md hover:bg-surface">Apprendre</a>
                 <a href="{{ route('leaderboard') }}" class="px-4 py-3 rounded-md hover:bg-surface">Classement</a>
                 <a href="{{ route('verbs.index') }}" class="px-4 py-3 rounded-md hover:bg-surface">Verbes</a>
                 <a href="{{ route('shop') }}" class="px-4 py-3 rounded-md hover:bg-surface">Boutique</a>

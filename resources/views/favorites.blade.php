@@ -11,7 +11,7 @@
                 </div>
 
                 @if($verbs->count() > 0)
-                <a href="{{ route('learn', ['mode' => 'favorites']) }}"
+                <a href="{{ route('learn.favorites') }}"
                     class="flex items-center gap-2 px-6 py-3 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
                     <span>🚀</span> Pratiquer tes favoris
                 </a>

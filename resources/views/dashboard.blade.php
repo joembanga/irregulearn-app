@@ -136,7 +136,7 @@
                             <strong>{{ $learnedVerbsCount }}</strong> verbes sur un total de
                             <strong>{{ $totalVerbs }}</strong>. Continue comme ça !
                         </p>
-                        <a href="{{ route('learn') }}" class="inline-flex items-center px-6 py-3 bg-primary text-surface font-bold rounded-xl hover:bg-primary/90 transition w-full md:w-auto justify-center">
+                        <a href="{{ route('learn.index') }}" class="inline-flex items-center px-6 py-3 bg-primary text-surface font-bold rounded-xl hover:bg-primary/90 transition w-full md:w-auto justify-center">
                             Continuer l'apprentissage
                         </a>
                     </div>
@@ -252,7 +252,7 @@
                         <p class="text-primary/30 mb-6 text-sm">
                             Entraîne-toi sur tous les verbes que tu as déjà vus pour ne pas les oublier.
                         </p>
-                        <a href="{{ route('learn') }}"
+                        <a href="{{ route('learn.index') }}"
                             class="btn-invert px-6 py-3 rounded-xl font-bold text-sm hover:bg-primary-10 transition inline-block w-full text-center md:w-auto">
                             Faire un quiz
                         </a>
