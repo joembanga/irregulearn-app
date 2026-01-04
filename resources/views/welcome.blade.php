@@ -23,21 +23,21 @@
 
         <div class="flex items-center gap-4">
             @if (Route::has('login'))
-            @auth
-            <a href="{{ url('/dashboard') }}"
-                class="font-semibold text-muted hover:text-primary transition">Dashboard</a>
-            @else
-            <a href="{{ route('login') }}" class="font-medium text-muted hover:text-body">Connexion</a>
-            <a href="{{ route('register') }}"
-                class="bg-primary hover:bg-primary/90 text-surface px-5 py-2 rounded-full font-bold transition shadow-lg">
-                S'inscrire
-            </a>
-            @endauth
+                @auth
+                    <a href="{{ url('/dashboard') }}"
+                        class="font-semibold text-muted hover:text-primary transition">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="font-medium text-muted hover:text-body">Connexion</a>
+                    <a href="{{ route('register') }}"
+                        class="bg-primary hover:bg-primary/90 text-surface px-5 py-2 rounded-full font-bold transition shadow-lg">
+                        S'inscrire
+                    </a>
+                @endauth
             @endif
         </div>
     </nav>
 
-    <section class="mt-4 mx-auto max-w-7xl px-6 sm:mt-4 lg:mt-6 flex flex-col lg:flex-row items-center gap-12">
+    <section class="mt-8 sm:mt-12 lg:mt-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
         <div class="lg:w-1/2 text-center lg:text-left">
             <div
                 class="inline-flex items-center px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-primary text-sm font-medium mb-6">

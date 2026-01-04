@@ -51,7 +51,7 @@ class ExampleLiked extends Notification
         return [
             'message' => "Ton exemple sur le verbe {$this->verb->infinitive} a reçu un like ! ❤️",
             'xp_gained' => 5,
-            'url' => route('verb', $this->verb->slug),
+            'url' => route('verbs.show', $this->verb->slug),
             'icon' => '❤️'
         ];
     }

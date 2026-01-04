@@ -4,13 +4,13 @@
 
             <div class="flex flex-row items-center justify-between gap-4 mb-8">
                 <div class="flex gap-2 bg-surface p-1 rounded-3xl">
-                    <a href="{{ route('verbslist', ['level' => 'beginner']) }}"
+                    <a href="{{ route('verbs.index', ['level' => 'beginner']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'beginner' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Beginner</a>
-                    <a href="{{ route('verbslist', ['level' => 'intermediate']) }}"
+                    <a href="{{ route('verbs.index', ['level' => 'intermediate']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'intermediate' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Intermediate</a>
-                    <a href="{{ route('verbslist', ['level' => 'expert']) }}"
+                    <a href="{{ route('verbs.index', ['level' => 'expert']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'expert' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Expert</a>
-                    <a href="{{ route('verbslist', ['level' => 'all']) }}"
+                    <a href="{{ route('verbs.index', ['level' => 'all']) }}"
                         class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'all' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">All</a>
                 </div>
             </div>
@@ -28,22 +28,21 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-muted">
-                            @foreach($verbs as $index => $verb)
-                            <tr class="hover:bg-surface">
-                                <td class="px-6 py-5 font-black text-muted">#{{ $verbs->firstItem() + $index }}</td>
-                                <td class="px-6 py-5">
-                                    <a href="{{ route('verb', $verb->slug) }}" class="flex items-center gap-3 group">
-                                        <span
-                                            class="font-bold text-body group-hover:text-primary transition">{{ $verb->infinitive }}</span>
-                                    </a>
-                                </td>
-                                <td class="px-6 py-5 text-left font-mono font-bold"><span
-                                        class="px-3 py-1 rounded-lg text-sm bg-primary-10 text-primary">{{ str_replace('/', ' or ', $verb->past_simple) }}</span>
-                                </td>
-                                <td class="px-6 py-5 text-left font-mono font-bold"><span
-                                        class="px-3 py-1 rounded-lg text-sm bg-success-10 text-success">{{ str_replace('/', ' or ', $verb->past_participle) }}</span>
-                                </td>
-                            </tr>
+                            @foreach ($verbs as $index => $verb)
+                                <tr class="hover:bg-surface">
+                                    <td class="px-6 py-5 font-black text-muted">#{{ $verbs->firstItem() + $index }}</td>
+                                    <td class="px-6 py-5">
+                                        <a href="{{ route('verbs.show', $verb->slug) }}" class="flex items-center gap-3 group">
+                                            <span class="font-bold text-body group-hover:text-primary transition">{{ $verb->infinitive }}</span>
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-5 text-left font-mono font-bold"><span
+                                            class="px-3 py-1 rounded-lg text-sm bg-primary-10 text-primary">{{ str_replace('/', ' or ', $verb->past_simple) }}</span>
+                                    </td>
+                                    <td class="px-6 py-5 text-left font-mono font-bold"><span
+                                            class="px-3 py-1 rounded-lg text-sm bg-success-10 text-success">{{ str_replace('/', ' or ', $verb->past_participle) }}</span>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -51,21 +50,20 @@
 
                 <div class="sm:hidden p-4">
                     <div class="space-y-3">
-                        @foreach($verbs as $index => $verb)
-                        <a href="{{ route('verb', $verb->slug) }}"
-                            class="block p-3 rounded-xl bg-surface border border-muted">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <div class="font-bold text-body">{{ $verb->infinitive }}</div>
-                                    <div class="text-sm text-muted">
-                                        {{ str_replace('/', ' or ', $verb->past_simple) }}
+                        @foreach ($verbs as $index => $verb)
+                            <a href="{{ route('verbs.show', $verb->slug) }}" class="block p-3 rounded-xl bg-surface border border-muted">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-body">{{ $verb->infinitive }}</div>
+                                        <div class="text-sm text-muted">
+                                            {{ str_replace('/', ' or ', $verb->past_simple) }}
+                                        </div>
+                                    </div>
+                                    <div class="text-sm font-mono text-muted">
+                                        {{ str_replace('/', ' or ', $verb->past_participle) }}
                                     </div>
                                 </div>
-                                <div class="text-sm font-mono text-muted">
-                                    {{ str_replace('/', ' or ', $verb->past_participle) }}
-                                </div>
-                            </div>
-                        </a>
+                            </a>
                         @endforeach
                     </div>
                 </div>

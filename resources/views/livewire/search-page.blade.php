@@ -21,7 +21,7 @@
             </h3>
             @forelse($verbs as $verb)
 
-            <div wire:click="selectResult('{{ $verb->infinitive }}', '{{ route('verb', $verb->slug) }}')"
+            <div wire:click="selectResult('{{ $verb->infinitive }}', '{{ route('verbs.show', $verb->slug) }}')"
                 class="cursor-pointer bg-surface hover:bg-primary-10 p-4 rounded-xl shadow-sm mb-2 transition flex items-center justify-between group">
 
                 <div class="flex items-center gap-3">

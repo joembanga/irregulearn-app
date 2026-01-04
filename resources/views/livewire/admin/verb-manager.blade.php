@@ -1,7 +1,7 @@
 <div>
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Verbs Library</h2>
-        <a href="{{ route('admin.verbs.create') }}" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2">
+        <a href="{{ route('admin.verbs.create') }}" class="w-full sm:w-auto px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
@@ -37,27 +37,27 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($verbs as $verb)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{{ $verb->infinitive }}</td>
-                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->past_simple }}</td>
-                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->past_participle }}</td>
-                        <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->translation }}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-1 text-xs rounded-full {{ $verb->level === 'beginner' ? 'bg-green-100 text-green-700' : ($verb->level === 'intermediate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
-                                {{ ucfirst($verb->level) }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right space-x-2">
-                            <a href="{{ route('admin.verbs.edit', $verb) }}" class="text-blue-500 hover:text-blue-700 text-sm font-medium">Edit</a>
-                            <button wire:click="confirmVerbDeletion({{ $verb->id }})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
-                        </td>
-                    </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{{ $verb->infinitive }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->past_simple }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->past_participle }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $verb->translation }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs rounded-full {{ $verb->level === 'beginner' ? 'bg-green-100 text-green-700' : ($verb->level === 'intermediate' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
+                                    {{ ucfirst($verb->level) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right space-x-2">
+                                <a href="{{ route('admin.verbs.edit', $verb) }}" class="text-blue-500 hover:text-blue-700 text-sm font-medium">Edit</a>
+                                <button wire:click="confirmVerbDeletion({{ $verb->id }})" class="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                            No verbs found matching your search.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                No verbs found matching your search.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -68,16 +68,16 @@
     </div>
 
     <!-- Delete Confirmation Modal (Native HTML/Alpine or simpler logic) -->
-    @if($confirmingVerbDeletion)
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full mx-4">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Delete Verb?</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">Are you sure you want to delete this verb? This action cannot be undone.</p>
-            <div class="flex justify-end gap-3">
-                <button wire:click="$set('confirmingVerbDeletion', false)" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
-                <button wire:click="deleteVerb" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
+    @if ($confirmingVerbDeletion)
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full mx-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Delete Verb?</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Are you sure you want to delete this verb? This action cannot be undone.</p>
+                <div class="flex justify-end gap-3">
+                    <button wire:click="$set('confirmingVerbDeletion', false)" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Cancel</button>
+                    <button wire:click="deleteVerb" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 </div>

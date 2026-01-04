@@ -17,7 +17,7 @@
                     <x-nav-link :href="route('learn')" :active="request()->routeIs('learn')">Apprendre</x-nav-link>
                     <x-nav-link :href="route('leaderboard')" :active="request()->routeIs('leaderboard')">Classement
                     </x-nav-link>
-                    <x-nav-link :href="route('verbslist')" :active="request()->routeIs('verbslist')">Verbes</x-nav-link>
+                    <x-nav-link :href="route('verbs.index')" :active="request()->routeIs('verbs.index')">Verbes</x-nav-link>
                 </div>
 
                 <form action="{{ route('search') }}" method="GET" class="ml-6">
@@ -41,8 +41,7 @@
                     class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-surface transition"
                     aria-label="Série actuelle">
                     <span class="text-xl" role="img" aria-hidden="true">🔥</span>
-                    <span
-                        class="text-sm font-semibold text-body">{{ Auth::user()->streak ?? Auth::user()->current_streak ?? 0 }}</span>
+                    <span class="text-sm font-semibold text-body">{{ Auth::user()->streak ?? (Auth::user()->current_streak ?? 0) }}</span>
                 </a>
 
                 <button @click="toggleTheme" class="p-2 rounded-md hover:bg-surface transition">
@@ -63,9 +62,8 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center gap-3 px-3 py-2 rounded-md bg-app border border-muted">
-                            <div
-                                class="h-8 w-8 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
-                                {{ substr(Auth::user()->username,0,1) }}
+                            <div class="h-8 w-8 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                {{ substr(Auth::user()->username, 0, 1) }}
                             </div>
                             <div class="hidden md:block text-body">{{ Auth::user()->username }}</div>
                         </button>
@@ -87,8 +85,7 @@
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-1 p-2 text-muted"
                     aria-label="Série actuelle">
                     <span class="text-lg" role="img" aria-hidden="true">🔥</span>
-                    <span
-                        class="text-xs font-semibold">{{ Auth::user()->streak ?? Auth::user()->current_streak ?? 0 }}</span>
+                    <span class="text-xs font-semibold">{{ Auth::user()->streak ?? (Auth::user()->current_streak ?? 0) }}</span>
                 </a>
 
                 <a href="{{ route('search') }}" class="p-2 text-muted">
@@ -128,15 +125,11 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <button @click="toggleTheme" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-                        <svg x-cloak x-show="!isDark" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3v2.25M12 18.75V21M4.22 4.22l1.59 1.59M18.19 18.19l1.59 1.59M1 12h2.25M20.75 12H23M4.22 19.78l1.59-1.59M18.19 5.81l1.59-1.59" />
+                        <svg x-cloak x-show="!isDark" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25M12 18.75V21M4.22 4.22l1.59 1.59M18.19 18.19l1.59 1.59M1 12h2.25M20.75 12H23M4.22 19.78l1.59-1.59M18.19 5.81l1.59-1.59" />
                         </svg>
-                        <svg x-cloak x-show="isDark" class="h-5 w-5 text-gray-200" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        <svg x-cloak x-show="isDark" class="h-5 w-5 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
                         </svg>
                     </button>
                     <button @click="open = false" class="p-2">
@@ -154,8 +147,7 @@
                     <div class="relative flex-1">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
                         <input name="q" type="search" placeholder="Rechercher..."
@@ -169,7 +161,7 @@
                 <a href="{{ route('dashboard') }}" class="px-4 py-3 rounded-md hover:bg-surface">Dashboard</a>
                 <a href="{{ route('learn') }}" class="px-4 py-3 rounded-md hover:bg-surface">Apprendre</a>
                 <a href="{{ route('leaderboard') }}" class="px-4 py-3 rounded-md hover:bg-surface">Classement</a>
-                <a href="{{ route('verbslist') }}" class="px-4 py-3 rounded-md hover:bg-surface">Verbes</a>
+                <a href="{{ route('verbs.index') }}" class="px-4 py-3 rounded-md hover:bg-surface">Verbes</a>
                 <a href="{{ route('shop') }}" class="px-4 py-3 rounded-md hover:bg-surface">Boutique</a>
                 <a href="{{ route('about') }}" class="px-4 py-3 rounded-md hover:bg-surface">À propos</a>
                 <a href="{{ route('privacy') }}" class="px-4 py-3 rounded-md hover:bg-surface">Confidentialité</a>
@@ -178,9 +170,9 @@
             <div class="mt-8 border-t border-muted pt-6">
                 <a href="{{ route('profile.edit') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-surface">
-                    <div
-                        class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                        {{ substr(Auth::user()->username,0,1) }}</div>
+                    <div class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                        {{ substr(Auth::user()->username, 0, 1) }}
+                    </div>
                     <div>
                         <div class="font-semibold text-body">{{ Auth::user()->username }}</div>
                         <div class="text-sm text-muted">Voir mon profil</div>
