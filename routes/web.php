@@ -9,22 +9,26 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LearnController;
 
+// Public pages: privacy and terms
+Route::view('/privacy', 'privacy')->name('privacy');
+Route::view('/terms', 'terms')->name('terms');
+Route::view('/about', 'about')->name('about');
+Route::view('/contact', 'contact')->name('contact');
+
 Route::middleware('guest')->get('/', function () {
     return view('welcome');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/learn', [LearnController::class, 'index'])->name('learn');
-    Route::get('/learn/daily', [LearnController::class, 'daily'])->name('learn.daily');
-    Route::get('/learn/category/{category:slug}', [LearnController::class, 'show'])->name('learn.category');
-
     Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');
+
+    //Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
+    Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
+
+    Route::post('/user/timezone', [ProfileController::class, 'userTz'])->name('user.timezone');
 
     Route::get('/shop', function () {
         return view('shop');
@@ -37,20 +41,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('notifications');
 
-    //Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
-    Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
-
-    Route::get('/verbs', [VerbController::class, 'getList'])->name('verbslist');
-    Route::get('/verbs/{verb:slug}', [VerbController::class, 'getVerb'])->name('verb');
-    Route::get('/export', [VerbController::class, 'exportPdf'])->name('verbs.export');
-
     Route::get('/search', function () {
         return view('search');
     })->name('search');
 
-    Route::get('/favorites', [VerbController::class, 'listFavs'])->name('favorites');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 
-    Route::post('/user/timezone', [ProfileController::class, 'userTz'])->name('user.timezone');
+    Route::prefix('learn')->name('learn.')->group(function () {
+        Route::get('/', [LearnController::class, 'index'])->name('index');
+        Route::get('/daily', [LearnController::class, 'daily'])->name('daily');
+        Route::get('/category/{category:slug}', [LearnController::class, 'show'])->name('category');
+    });
+
+    Route::prefix('verbs')->name('verbs.')->group(function () {
+        Route::get('/', [VerbController::class, 'getList'])->name('index');
+        Route::get('/describe/{verb:slug}', [VerbController::class, 'getVerb'])->name('show');
+        Route::get('/export', [VerbController::class, 'exportPdf'])->name('export');
+        Route::get('/favorites', [VerbController::class, 'listFavs'])->name('favorites');
+    });
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -68,10 +80,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::view('/reports', 'admin.reports.index')->name('reports.index');
 });
 
-// Public pages: privacy and terms
-Route::view('/privacy', 'privacy')->name('privacy');
-Route::view('/terms', 'terms')->name('terms');
-Route::view('/about', 'about')->name('about');
-Route::view('/contact', 'contact')->name('contact');
 
 require __DIR__ . '/auth.php';

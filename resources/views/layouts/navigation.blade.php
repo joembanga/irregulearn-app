@@ -24,7 +24,7 @@
                         {{ __('Classement') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('verbslist')" :active="request()->routeIs('verbslist')">
+                    <x-nav-link :href="route('verbs.index')" :active="request()->routeIs('verbs.index')">
                         {{ __('Liste de verbes') }}
                     </x-nav-link>
                 </div>
@@ -71,7 +71,7 @@
                                 class="inline-flex items-center gap-3 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-body bg-app hover:text-body hover:bg-app/95 focus:outline-none focus:bg-app transition ease-in-out duration-150">
                                 <div
                                     class="h-8 w-8 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
-                                    {{ substr(Auth::user()->username,0,1) }}
+                                    {{ substr(Auth::user()->username, 0, 1) }}
                                 </div>
                                 <div class="hidden sm:block text-body">{{ Auth::user()->username }}</div>
 
@@ -111,10 +111,10 @@
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:text-gray-700 dark:focus:text-gray-200 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" stroke="currentColor" fill="none"
                         viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -123,12 +123,12 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-surface">
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden bg-surface">
         <!-- Mobile header: avatar, name, notifications -->
         <div class="px-4 pt-4 pb-3 border-b border-muted flex items-center gap-3">
             <div
                 class="h-10 w-10 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
-                {{ substr(Auth::user()->username,0,1) }}
+                {{ substr(Auth::user()->username, 0, 1) }}
             </div>
             <div>
                 <div class="font-medium text-base text-body">{{ Auth::user()->username }}</div>
@@ -175,7 +175,7 @@
                 {{ __('Classement') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('verbslist')" :active="request()->routeIs('verbslist')">
+            <x-responsive-nav-link :href="route('verbs.index')" :active="request()->routeIs('verbs.index')">
                 {{ __('Liste de verbes') }}
             </x-responsive-nav-link>
         </div>
