@@ -1,6 +1,6 @@
 <div class="space-y-6">
     <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl text-center border border-muted">
-        <p class="text-xl font-medium leading-relaxed font-serif text-body text-pretty">
+        <p class="text-xl font-medium leading-relaxed text-body text-pretty">
             "{!! nl2br(e($currentSentence)) !!}"
         </p>
     </div>

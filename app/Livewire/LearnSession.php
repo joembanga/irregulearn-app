@@ -4,11 +4,12 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Verb;
+use App\Models\VerbSentence;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class CategoryLearn extends Component
+class LearnSession extends Component
 {
     public $questionsNumber = 15;
     public ?Category $category = null;
@@ -146,12 +147,20 @@ class CategoryLearn extends Component
     {
         $this->mode = $mode;
 
-        if ($this->mode === 'daily') {
-            // Load daily verbs
-            $this->verbs = Auth::user()->dailyVerbs()->get();
+        if (in_array($this->mode, ['daily', 'favorites'])) {
+            // Load verbs
+            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() : $this->verbs = Auth::user()->favorites()->get();
             if ($this->verbs->isEmpty()) {
                 // If no daily verbs (should not happen if logic is correct, but safe fallback)
                 return redirect()->route('dashboard');
+            }
+            while (true) {
+                foreach ($this->verbs as $verb) {
+                    $this->verbs->add($verb);
+                    if ($this->verbs->count() === $this->questionsNumber) {
+                        break(2);
+                    }
+                }
             }
         } else {
             // Category mode
@@ -169,9 +178,8 @@ class CategoryLearn extends Component
     {
         $this->currentVerb = $this->verbs[$this->currentIndex];
 
-        // 1. Choix aléatoire du type d'exercice
         // Check if verb has sentences available
-        $hasSentences = \App\Models\VerbSentence::where('verb_id', $this->currentVerb->id)->exists();
+        $hasSentences = VerbSentence::where('verb_id', $this->currentVerb->id)->exists();
 
         $types = ['input', 'jumble', 'quiz', 'odd_one_out', 'complete'];
         if ($hasSentences) {
@@ -303,7 +311,7 @@ class CategoryLearn extends Component
 
     public function prepareSentence()
     {
-        $sentence = \App\Models\VerbSentence::where('verb_id', $this->currentVerb->id)->inRandomOrder()->first();
+        $sentence = VerbSentence::where('verb_id', $this->currentVerb->id)->inRandomOrder()->first();
 
         if (!$sentence) {
             // Fallback if something went wrong (should be handled by loadQuestion check, but safety first)
@@ -398,7 +406,6 @@ class CategoryLearn extends Component
         Auth::user()->increment('xp_total', 10);
         Auth::user()->increment('xp_weekly', 10);
 
-        // Marquer comme maîtrisé
         Auth::user()->verb()->syncWithoutDetaching([
             $this->currentVerb->id => ['mastered' => true]
         ]);
@@ -422,6 +429,6 @@ class CategoryLearn extends Component
 
     public function render()
     {
-        return view('livewire.category-learn');
+        return view('livewire.learn-session');
     }
 }

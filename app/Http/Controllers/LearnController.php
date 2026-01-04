@@ -39,11 +39,16 @@ class LearnController extends Controller
 
     public function show($slug)
     {
-        return view('category-learn', ['slug' => $slug, 'mode' => 'category']);
+        return view('learn-session', ['slug' => $slug, 'mode' => 'category']);
     }
 
     public function daily()
     {
-        return view('category-learn', ['slug' => null, 'mode' => 'daily']);
+        return view('learn-session', ['slug' => null, 'mode' => 'daily']);
+    }
+
+    public function favorites()
+    {
+        return view('learn-session', ['slug' => null, 'mode' => 'favorites']);
     }
 }

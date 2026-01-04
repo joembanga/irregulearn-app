@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('learn')->name('learn.')->group(function () {
         Route::get('/', [LearnController::class, 'index'])->name('index');
         Route::get('/daily', [LearnController::class, 'daily'])->name('daily');
+        Route::get('/favorites', [LearnController::class, 'favorites'])->name('favorites');
         Route::get('/category/{category:slug}', [LearnController::class, 'show'])->name('category');
     });
 

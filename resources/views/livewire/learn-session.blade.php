@@ -7,7 +7,9 @@
             </div>
 
             <div class="flex justify-between items-center mb-8">
-                <span class="text-xs font-bold tracking-widest text-primary uppercase">{{ $category->name }}</span>
+                <span class="text-xs font-bold tracking-widest text-primary uppercase">
+                    {{ $mode === 'category' ? $category->name : ($mode === 'daily' ? 'daily verbs' : 'traning mode') }}
+                </span>
                 <span class="text-xs font-bold text-muted">QUESTION <span class="text-muted">{{ $currentIndex + 1 }}/{{ count($verbs) }}</span></span>
             </div>
 
@@ -15,6 +17,16 @@
                 @include('livewire.exercises.odd_one_out')
             @elseif($currentType === 'complete')
                 @include('livewire.exercises.complete')
+            @elseif($currentType === 'sentence')
+                <div class="text-center mb-6 md:mb-10">
+                    <p class="text-xs md:text-sm text-muted mb-2 uppercase">
+                        Complete par la bonne forme
+                    </p>
+                    <h2 class="text-4xl md:text-5xl font-black text-body mb-2 tracking-tight flex items-center justify-center gap-4">
+                        {{ $currentVerb->infinitive }}
+                    </h2>
+                </div>
+                @include('livewire.exercises.sentence')
             @else
                 <div class="text-center mb-6 md:mb-10">
                     <p class="text-xs md:text-sm text-muted mb-2 uppercase">
@@ -43,9 +55,6 @@
                         {{-- TYPE 3 : JUMBLE (Méli-mélo) --}}
                     @elseif($currentType === 'jumble')
                         @include('livewire.exercises.jumble')
-                        {{-- TYPE 4 : SENTENCE (Phrase à trous) --}}
-                    @elseif($currentType === 'sentence')
-                        @include('livewire.exercises.sentence')
                     @endif
                 </div>
             @endif
@@ -89,7 +98,7 @@
             <p class="text-muted mb-8 text-lg">
                 Tu as gagné <span class="text-primary font-bold">{{ $finished_reward }} XP</span> bonus.
             </p>
-            <a href="{{ route('learn') }}"
+            <a href="{{ route('learn.index') }}"
                 class="inline-flex items-center px-8 py-4 bg-primary text-surface rounded-2xl font-bold shadow-lg hover:opacity-95 transition">
                 Retour au parcours
             </a>
