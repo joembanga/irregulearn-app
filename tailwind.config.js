@@ -13,7 +13,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Inter", "Figtree", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 primary: ({ opacityVariable, opacityValue }) => {
@@ -55,6 +55,14 @@ export default {
                 bg: "var(--color-bg)",
                 muted: "var(--color-muted)",
             },
+            boxShadow: {
+                'soft': '0 2px 10px rgba(0, 0, 0, 0.03)',
+                'soft-lg': '0 10px 25px rgba(0, 0, 0, 0.04)',
+            },
+            borderRadius: {
+                'xl': '1rem',
+                '2xl': '1.5rem',
+            }
         },
     },
 
