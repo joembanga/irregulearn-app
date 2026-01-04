@@ -10,7 +10,7 @@
 
         body {
             font-family: 'Helvetica', sans-serif;
-            color: #1F2937;
+            color: var(--color-text, #1F2937);
         }
 
         /* Header */
@@ -18,7 +18,7 @@
             display: flex;
             justify-content: space-between;
             align-content: center;
-            border-bottom: 2px solid #7C3AED;
+            border-bottom: 2px solid var(--color-primary, #7C3AED);
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
@@ -26,7 +26,7 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #7C3AED;
+            color: var(--color-primary, #7C3AED);
             text-transform: uppercase;
         }
 
@@ -41,7 +41,7 @@
 
         /* Stats */
         .stats-bar {
-            background: #F3F4F6;
+            background: var(--color-bg, #F3F4F6);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -49,7 +49,7 @@
 
         .stats-bar span {
             font-weight: bold;
-            color: #4F46E5;
+            color: var(--color-primary, #4F46E5);
         }
 
         /* Tableau */
@@ -61,8 +61,8 @@
         }
 
         th {
-            background-color: #7C3AED;
-            color: white;
+            background-color: var(--color-primary, #7C3AED);
+            color: var(--color-surface, white);
             padding: 12px 8px;
             text-align: left;
             font-size: 13px;
@@ -71,12 +71,12 @@
 
         td {
             padding: 10px 8px;
-            border-bottom: 1px solid #E5E7EB;
+            border-bottom: 1px solid var(--color-muted, #E5E7EB);
             font-size: 12px;
         }
 
         tr:nth-child(even) {
-            background-color: #F9FAFB;
+            background-color: var(--color-bg, #F9FAFB);
         }
 
         thead {
@@ -84,7 +84,7 @@
         }
 
         .col-index {
-            color: #9CA3AF;
+            color: var(--color-muted, #9CA3AF);
             font-size: 10px;
             text-align: center;
             font-weight: normal;
@@ -97,7 +97,7 @@
             width: 100%;
             text-align: center;
             font-size: 10px;
-            color: #9CA3AF;
+            color: var(--color-muted, #9CA3AF);
         }
     </style>
 </head>

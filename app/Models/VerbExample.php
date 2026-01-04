@@ -17,4 +17,9 @@ class VerbExample extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function verb()
+    {
+        return $this->belongsTo(Verb::class);
+    }
 }

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class LeaderboardController extends Controller
 {
-    public function load (Request $request) {
+    public function load(Request $request)
+    {
         $user = Auth::user();
         $filter = $request->input('filter', 'global');
         $period = $request->input('period', 'weekly');
@@ -19,17 +20,11 @@ class LeaderboardController extends Controller
         $query = User::orderBy($sortColumn, 'desc');
 
         if ($filter === 'friends') {
-            $friendships = \App\Models\Friendship::where('status', 'accepted')
-                ->where(function ($q) use ($user) {
-                    $q->where('sender_id', $user->id)->orWhere('recipient_id', $user->id);
-                })->get();
+            // Get friend IDs using the User model relationship
+            $friendIds = $user->friends()->pluck('id');
 
-            $friendIds = $friendships->map(function ($row) use ($user) {
-                return $row->sender_id === $user->id ? $row->recipient_id : $row->sender_id;
-            })->unique()->toArray();
-
-            // Add current user
-            $friendIds[] = $user->id;
+            // Add current user to the list
+            $friendIds->push($user->id);
 
             $query->whereIn('id', $friendIds);
         }

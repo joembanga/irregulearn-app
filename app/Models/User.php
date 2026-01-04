@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,7 +28,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'avatar',
-        'daily_target'
+        'daily_target',
+        'timezone'
     ];
 
     /**
@@ -55,9 +57,12 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // Get user's friends
+    /**
+     * Get the friends of the user where the friendship status is accepted.
+     */
     public function friends()
     {
-        // Retourne une collection d'utilisateurs amis (status = accepted) quel que soit le sens
+        // Returns a collection of friend users (status = accepted) regardless of direction
         $friendships = \App\Models\Friendship::where('status', 'accepted')
             ->where(function ($q) {
                 $q->where('sender_id', $this->id)->orWhere('recipient_id', $this->id);
@@ -84,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Badge::class);
     }
-    
+
     public function favorites()
     {
         return $this->belongsToMany(Verb::class, 'stared_verbs')->withTimestamps();
@@ -121,12 +126,14 @@ class User extends Authenticatable implements MustVerifyEmail
             ->wherePivot('day', now()->toDateString());
     }
 
+    /**
+     * Generate daily verbs for the user if not already present.
+     */
     public function generateDailyVerbs()
     {
         // If user hasn't already dailyverbs
         if ($this->dailyVerbs()->count() === 0) {
 
-            
             $verbs = Verb::inRandomOrder()->take($this->daily_target)->get();
 
             foreach ($verbs as $verb) {
@@ -138,44 +145,58 @@ class User extends Authenticatable implements MustVerifyEmail
     public function masteredVerbs()
     {
         return $this->verb()
-        ->wherePivot('mastered', true);
+            ->wherePivot('mastered', true);
     }
 
-    // app/Models/User.php
-
+    /**
+     * Update the user's login streak based on local timezone.
+     */
     public function updateStreak()
     {
-        $now = now()->startOfDay();
-        $lastPractice = $this->last_activity_date ? $this->last_activity_date->startOfDay() : null;
+        // 1. Get "Now" in the user's timezone
+        $timezone = $this->timezone ?? 'UTC';
+        $localNow = Carbon::now()->setTimezone($timezone);
+        $localToday = $localNow->toDateTimeString();
 
-        if (!$lastPractice) {
-            // Première fois
-            $this->current_streak = 1;
-        } elseif ($lastPractice->equalTo($now)) {
-            // Déjà pratiqué aujourd'hui, on ne fait rien
+        // 2. If streak is already validated for today, do nothing
+        if ($this->last_activity_local_date === $localToday) {
             return;
-        } elseif ($lastPractice->equalTo($now->copy()->subDay())) {
-            // Pratiqué hier, la série continue !
-            $this->current_streak++;
+        }
+
+        // 3. Calculate yesterday's date (local)
+        $localYesterday = $localNow->copy()->subDay()->toDateString();
+
+        // 4. Comparison logic
+        if ($this->last_activity_local_date === $localYesterday) {
+            // It was yesterday, continue the streak!
+            $this->increment('current_streak');
         } else {
-            // Plus d'un jour d'écart, on repart à 1
+            // It was before yesterday or never -> Reset :(
+            // (Except if it's the very first time, set to 1)
             $this->current_streak = 1;
         }
 
-        $this->last_activity_date = now();
+        // 5. Save today's date
+        $this->last_activity_local_date = $localToday;
         $this->save();
     }
 
+    /**
+     * Check if the user can access a specific category.
+     *
+     * @param Category $category
+     * @return bool
+     */
     public function canAccessCategory(Category $category): bool
     {
-        // The first category is always unlocekd
+        // The first category is always unlocked
         if ($category->order === 0) return true;
 
         $userUnclockedCategories = $this->category()
             ->wherePivot('user_id', $this->id)
             ->withPivotValue('category_id', $category->id)
             ->get()->toArray();
-        
+
         // If user had paid this category
         if (count($userUnclockedCategories) > 0) {
             foreach ($userUnclockedCategories as $userUnclockedCategory) {

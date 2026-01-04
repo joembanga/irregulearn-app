@@ -28,9 +28,10 @@ return new class extends Migration
             $table->date('streak_freezed_at')->nullable();
             $table->tinyInteger('streak_freezes')->default(0)->unsigned();
             $table->longText('search_history')->nullable();
-            
+
             // A user keep his streak when he learn day's verbs or do at least one exercise
-            $table->date('last_activity_date')->nullable();
+            $table->string('timezone')->default('UTC'); // Ex: "Europe/Paris"
+            $table->datetime('last_activity_local_date')->nullable();
             $table->tinyInteger('daily_target')->default(5)->max(10);
 
             // --- PROFILE & ROLE ---

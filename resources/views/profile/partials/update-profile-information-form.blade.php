@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white">
+        <h2 class="text-lg font-medium text-body">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-700">
+        <p class="mt-1 text-sm text-muted">
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>
@@ -13,10 +13,10 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6 transition">
         @csrf
         @method('patch')
-        <div class="grid grid-cols-1 gap-8">
+        <div class="grid grid-cols-2 gap-8 items-center transition">
             <div>
                 <div>
                     <x-input-label for="firstname" :value="__('Firstname')" />
@@ -40,17 +40,17 @@
 
                     @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                     <div>
-                        <p class="text-sm mt-2 text-gray-800">
+                        <p class="text-sm mt-2 text-body">
                             {{ __('Your email address is unverified.') }}
 
                             <button form="send-verification"
-                                class="underline text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                class="underline text-sm text-muted hover:text-body rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                 {{ __('Click here to re-send the verification email.') }}
                             </button>
                         </p>
 
                         @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
+                        <p class="mt-2 font-medium text-sm text-success">
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                         @endif
@@ -59,18 +59,17 @@
                 </div>
             </div>
             <div>
-                <div
-                    class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-2xl border border-gray-100 dark:border-gray-700">
+                <div class="p-4 sm:p-8 bg-surface shadow sm:rounded-2xl border border-muted">
                     <div class="max-w-xl">
                         <section>
                             <header>
-                                <h2 class="text-lg font-medium text-gray-900 dark:text-white">Objectif Quotidien</h2>
-                                <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">Combien de nouveaux verbes
+                                <h2 class="text-lg font-medium text-body">Objectif Quotidien</h2>
+                                <p class="mt-1 text-sm text-muted">Combien de nouveaux verbes
                                     veux-tu apprendre chaque jour ?</p>
                             </header>
                             <div>
                                 <select name="daily_target"
-                                    class="border-gray-300 focus:border-primary focus:ring-primary rounded-xl shadow-sm w-full">
+                                    class="border-muted focus:border-primary focus:ring-primary rounded-xl shadow-sm w-full dark:bg-gray-900/50 dark:text-white">
                                     <option value="3" {{ auth()->user()->daily_target === 3 ? 'selected' : '' }}>3
                                         verbes
                                     </option>

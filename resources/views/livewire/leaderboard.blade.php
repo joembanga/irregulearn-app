@@ -1,10 +1,10 @@
-<div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden">
+<div class="card-surface rounded-3xl shadow-xl overflow-hidden">
     <table class="w-full text-left">
-        <thead class="bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
+        <thead class="bg-surface border-b border-muted">
             <tr>
-                <th class="px-6 py-4 font-bold text-gray-900 dark:text-white">Rang</th>
-                <th class="px-6 py-4 font-bold text-gray-900 dark:text-white">Utilisateur</th>
-                <th class="px-6 py-4 font-bold text-gray-900 dark:text-white text-right">XP Total</th>
+                <th class="px-6 py-4 font-bold text-body">Rang</th>
+                <th class="px-6 py-4 font-bold text-body">Utilisateur</th>
+                <th class="px-6 py-4 font-bold text-body text-right">XP Total</th>
             </tr>
         </thead>
         <tbody class="divide-y dark:divide-gray-700">
@@ -25,7 +25,7 @@
             @endforeach
         </tbody>
     </table>
-    <div class="p-6 border-t">
+    <div class="p-6 border-t border-muted">
         {{ $users->links() }}
     </div>
 </div>

@@ -13,11 +13,10 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Nombre total de verbes dans la base
+        // Total number of verbs in the database
         $totalVerbs = Verb::count();
 
-        // Nombre de verbes que l'utilisateur a réussi au moins une fois (is_learned = true)
-        // On compte les entrées uniques dans la table daily_verbs pour cet utilisateur
+        // Number of verbs mastered by the user (mastered = true)
         $learnedVerbsCount = $user->verb()
             ->wherePivot('mastered', true)->count();
 
