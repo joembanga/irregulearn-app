@@ -329,73 +329,20 @@ class LearnSession extends Component
 
     public function checkAnswer($submittedAnswer = null)
     {
-        if ($this->currentType === 'sentence') {
-            $attempt = trim(Str::lower($this->userInput));
-            $correct = trim(Str::lower($this->answer));
+        $attempt = match ($this->currentType) {
+            'quiz', 'odd_one_out' => $submittedAnswer,
+            'jumble' => implode('', $this->selectedLetters),
+            default => $this->userInput,
+        };
 
-            if ($attempt === $correct) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-            return;
-        }
+        $attempt = trim(Str::lower($attempt));
+        $possibleAnswers = explode('/', Str::lower($this->answer));
 
-        if ($this->currentType === 'odd_one_out') {
-            if (trim(Str::lower($submittedAnswer)) === $this->answer) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-            return;
-        }
-
-        if ($this->currentType === 'complete') {
-            $attempt = trim(Str::lower($this->userInput));
-            $possibleAnswers = explode('/', Str::lower($this->answer));
-
-            if (in_array($attempt, $possibleAnswers)) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-            return;
-        }
-
-        if ($this->currentType === 'quiz') {
-            if (trim(Str::lower($submittedAnswer)) === Str::lower($this->answer)) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-        }
-
-        if ($this->currentType === 'jumble') {
-            $attempt = implode('', $this->selectedLetters);
-            if (trim(Str::lower($attempt)) === Str::lower($this->answer)) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-            return;
-        }
-
-        if ($this->currentType === 'input') {
-            $attempt = trim(Str::lower($this->userInput));
-            $possibleAnswers = explode('/', Str::lower($this->answer));
-
-            if (in_array($attempt, $possibleAnswers)) {
-                $this->handleSuccess();
-            } else {
-                $this->isCorrect = false;
-                $this->mistakes++;
-            }
-            return;
+        if (in_array($attempt, $possibleAnswers)) {
+            $this->handleSuccess();
+        } else {
+            $this->isCorrect = false;
+            $this->mistakes++;
         }
     }
 
