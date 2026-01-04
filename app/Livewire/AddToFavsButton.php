@@ -19,10 +19,8 @@ class AddToFavsButton extends Component
     {
         $user = Auth::user();
 
-        // toggle() va ajouter si ça n'existe pas, et supprimer si ça existe déjà
         $user->favorites()->toggle($verbId);
 
-        // Optionnel : envoyer un message flash ou un événement
         $this->dispatch('verbToggled');
     }
 

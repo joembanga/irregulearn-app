@@ -2,16 +2,17 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class AvatarEditor extends Component
 {
     public $settings = [];
-    
+
     // Ton JSON complet converti en Array PHP
     public $options = [
-        'avatarStyle' => ['Circle', 'Transparent'],
+        'avatarStyle' => ['Circle'],
         'topType' => ['NoHair', 'Eyepatch', 'Hat', 'Hijab', 'Turban', 'WinterHat1', 'WinterHat2', 'WinterHat3', 'WinterHat4', 'LongHairBigHair', 'LongHairBob', 'LongHairBun', 'LongHairCurly', 'LongHairCurvy', 'LongHairDreads', 'LongHairFrida', 'LongHairFro', 'LongHairFroBand', 'LongHairNotTooLong', 'LongHairShavedSides', 'LongHairMiaWallace', 'LongHairStraight', 'LongHairStraight2', 'LongHairStraightStrand', 'ShortHairDreads01', 'ShortHairDreads02', 'ShortHairFrizzle', 'ShortHairShaggyMullet', 'ShortHairShortCurly', 'ShortHairShortFlat', 'ShortHairShortRound', 'ShortHairShortWaved', 'ShortHairSides', 'ShortHairTheCaesar', 'ShortHairTheCaesarSidePart'],
         'accessoriesType' => ['Blank', 'Kurt', 'Prescription01', 'Prescription02', 'Round', 'Sunglasses', 'Wayfarers'],
         'hairColor' => ['Auburn', 'Black', 'Blonde', 'BlondeGolden', 'Brown', 'BrownDark', 'PastelPink', 'Blue', 'Platinum', 'Red', 'SilverGray'],
@@ -40,6 +41,7 @@ class AvatarEditor extends Component
             parse_str(Auth::user()->avatar_code, $this->settings);
         } else {
             $this->generateRandom();
+            $this->save();
         }
     }
 
@@ -47,12 +49,11 @@ class AvatarEditor extends Component
     {
         if (isset($this->premiumOptions[$property]) && in_array($value, $this->premiumOptions[$property])) {
             if (Auth::user()->xp_balance < 500) {
-                $this->dispatch('notify', message: '🔒 500 XP requis !', type: 'error');
+                session()->flash('message', '🔒 500 XP requis !');
                 return;
             }
         }
         $this->settings[$property] = $value;
-        dd($this->settings);
     }
 
     public function generateRandom()
@@ -64,10 +65,13 @@ class AvatarEditor extends Component
 
     public function save()
     {
+        // dd($this->settings);
         $queryString = http_build_query($this->settings);
-        Auth::user()->update(['avatar_code' => $queryString]);
-        $this->dispatch('notify', message: 'Apparence sauvegardée ! ⚡');
-        $this->dispatch('avatarUpdated');
+        /** @var User $user */
+        $user = Auth::user();
+        $user->avatar_code = $queryString;
+        $user->save();
+        session()->flash('message', 'Apparence sauvegardée ! ⚡');
     }
 
     public function render()
@@ -76,3 +80,5 @@ class AvatarEditor extends Component
         return view('livewire.avatar-editor', ['currentUrl' => $currentUrl]);
     }
 }
+
+//  #AWSdeJoe2025!

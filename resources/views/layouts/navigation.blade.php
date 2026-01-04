@@ -1,5 +1,4 @@
-<nav x-data="{ open: false }"
-    class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 transition-colors duration-300">
+<nav x-data="{ open: false }" class="bg-app border-b border-muted transition-colors duration-300">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -7,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-body" />
                     </a>
                 </div>
 
@@ -37,23 +36,23 @@
                     <div class="hidden md:block mr-4">
                         <a href="{{ route('search') }}" class="group relative flex items-center">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-600 group-hover:text-primary transition dark:text-gray-300"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="h-5 w-5 text-muted group-hover:text-primary transition" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                             <div
-                                class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 sm:text-sm rounded-full pl-10 pr-4 py-2 w-64 cursor-pointer hover:bg-white dark:hover:bg-gray-600 hover:ring-2 ring-primary transition border border-transparent">
+                                class="bg-surface dark:bg-gray-700 text-muted sm:text-sm rounded-full pl-10 pr-4 py-2 w-64 cursor-pointer hover:bg-surface dark:hover:bg-gray-600 hover:ring-2 ring-primary transition border border-transparent">
                                 Rechercher (Ctrl+K)...
                             </div>
                         </a>
                     </div>
 
-                    <a href="{{ route('search') }}"
-                        class="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200">
+                    <a href="{{ route('search') }}" class="md:hidden p-2 text-muted hover:text-body">
                         <span class="sr-only">Rechercher</span>
-                        <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -69,14 +68,15 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center gap-3 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 transition ease-in-out duration-150">
+                                class="inline-flex items-center gap-3 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-body bg-app hover:text-body hover:bg-app/95 focus:outline-none focus:bg-app transition ease-in-out duration-150">
                                 <div
                                     class="h-8 w-8 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
-                                    {{ substr(Auth::user()->username,0,1) }}</div>
-                                <div class="hidden sm:block text-gray-700 dark:text-gray-200">{{ Auth::user()->username }}</div>
+                                    {{ substr(Auth::user()->username,0,1) }}
+                                </div>
+                                <div class="hidden sm:block text-body">{{ Auth::user()->username }}</div>
 
                                 <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4 text-gray-500 dark:text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="fill-current h-4 w-4 text-muted" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -109,7 +109,8 @@
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:text-gray-700 dark:focus:text-gray-200 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <svg class="h-6 w-6 text-gray-600 dark:text-gray-300" stroke="currentColor" fill="none"
+                        viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
@@ -122,15 +123,16 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white dark:bg-gray-800">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-surface">
         <!-- Mobile header: avatar, name, notifications -->
-        <div class="px-4 pt-4 pb-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
-            <div class="h-10 w-10 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
+        <div class="px-4 pt-4 pb-3 border-b border-muted flex items-center gap-3">
+            <div
+                class="h-10 w-10 rounded-full bg-primary/20 dark:bg-primary/20 flex items-center justify-center text-primary font-bold">
                 {{ substr(Auth::user()->username,0,1) }}
             </div>
             <div>
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->username }}</div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-body">{{ Auth::user()->username }}</div>
+                <div class="text-sm text-muted">{{ Auth::user()->email }}</div>
             </div>
             <div class="ml-auto">
                 <livewire:notification-icon />
@@ -142,14 +144,15 @@
             <form action="{{ route('search') }}" method="GET" class="flex items-center gap-2">
                 <div class="relative flex-1">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-5 w-5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input name="q" type="search" placeholder="Rechercher..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                    <input name="q" type="search" placeholder="Rechercher..."
+                        class="w-full bg-surface text-muted rounded-full pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
-                <button type="submit" class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white">
+                <button type="submit" class="p-2 text-muted hover:text-body">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

@@ -1,14 +1,14 @@
 <x-app-layout>
-    <div class="py-12 bg-gray-50 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
+    <div class="py-12 bg-app text-body transition-colors duration-300">
         <div class="max-w-5xl mx-auto px-6">
 
             <div class="flex flex-row items-center justify-between gap-4 mb-8">
-                <div class="flex gap-2 bg-gray-200 dark:bg-gray-800 p-1 rounded-2xl">
+                <div class="flex gap-2 bg-surface p-1 rounded-2xl">
                     <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'global' ? 'bg-white dark:bg-primary/10 text-primary dark:text-primary/80 shadow-sm' : 'text-gray-700 dark:text-gray-300' }}">🌎
+                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'global' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">🌎
                         Global</a>
                     <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'friends' ? 'bg-white dark:bg-primary/10 text-primary dark:text-primary/80 shadow-sm' : 'text-gray-700 dark:text-gray-300' }}">👥
+                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'friends' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">👥
                         Amis</a>
                 </div>
 
@@ -23,7 +23,7 @@
             </div>
 
             <div
-                class="card-surface shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+                class="card-surface shadow-xl rounded-2xl overflow-hidden border border-muted transition-colors duration-300">
                 <table class="w-full text-left">
                     <thead class="bg-primary text-white">
                         <tr>
@@ -32,11 +32,10 @@
                             <th scope="col" class="px-6 py-4 text-xs uppercase text-right">Total XP</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    <tbody class="divide-y divide-muted">
                         @foreach($users as $index => $u)
-                        <tr
-                            class="{{ $u->id == auth()->id() ? 'bg-primary/10 dark:bg-primary/20' : '' }} hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td class="px-6 py-5 font-black text-gray-700 dark:text-gray-300">
+                        <tr class="{{ $u->id == auth()->id() ? 'bg-primary/10' : '' }} hover:bg-surface">
+                            <td class="px-6 py-5 font-black text-muted">
                                 #{{ $users->firstItem() + $index }}
                             </td>
                             <td class="px-6 py-5">
@@ -46,8 +45,7 @@
                                         class="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold border-2 border-transparent group-hover:border-primary transition shadow-sm">
                                         {{ substr(\Illuminate\Support\Str::upper($u->username), 0, 1) }}
                                     </div>
-                                    <span
-                                        class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition">
+                                    <span class="font-bold text-body group-hover:text-primary transition">
                                         {{ $u->username }}
                                     </span>
                                 </a>

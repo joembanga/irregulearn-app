@@ -69,8 +69,13 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function listFavs($username)
+    public function userTz(Request $request): void
     {
-        //$vebs = Verb::
+        $validated = $request->validate([
+            'timezone' => 'required|string|max:255',
+        ]);
+        $request->user()->update([
+            'timezone' => $validated['timezone']
+        ]);
     }
 }

@@ -15,10 +15,12 @@ class TransferPoints extends Component
     public function transfer()
     {
         $sender = Auth::user();
-        $this->amount = (int)$this->amount;
+        $this->amount = +$this->amount;
 
-        // He can't send points if he haven't more than 50 points
-        if ($this->amount <= 50) return;
+        if ($this->amount <= 50) {
+            session()->flash('error', "Tu n'as pas assez de points pour faire un transfert");
+            return;
+        }
 
         if ($sender->xp_balance < $this->amount) {
             session()->flash('error', 'Solde XP insuffisant !');
