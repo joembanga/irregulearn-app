@@ -22,7 +22,7 @@
 
     @if($isCorrect === null)
     <button wire:click="checkAnswer"
-        class="w-full py-4 bg-primary text-surface rounded-2xl font-bold text-lg shadow-lg transition transform active:scale-95">
+        class="w-full py-4 bg-primary text-surface rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95">
         Valider
     </button>
     @endif

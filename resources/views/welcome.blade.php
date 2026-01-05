@@ -55,7 +55,7 @@
             </p>
             <div class="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
                 <a href="{{ route('register') }}"
-                    class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-surface shadow-xl hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition transform hover:-translate-y-1">
+                    class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-surface shadow-xl hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1">
                     Commencer l'entraînement
                 </a>
                 <a href="#features" class="text-sm font-semibold leading-6 text-body flex items-center gap-1">
@@ -106,7 +106,7 @@
                 </div>
                 <div class="mt-6 pt-4 border-t border-muted">
                     <button
-                        class="w-full bg-primary text-surface py-3 rounded-lg font-bold text-sm hover:opacity-95">J'ai
+                        class="w-full bg-primary text-surface py-3 rounded-lg font-bold text-sm hover:opacity-95 transition-transform active:scale-95">J'ai
                         compris ! (+10 XP)</button>
                 </div>
             </div>
@@ -171,17 +171,17 @@
                 <p class="mt-2 text-3xl font-bold tracking-tight text-body sm:text-4xl">Témoignages</p>
             </div>
             <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted">
+                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted hover:shadow-md transition-shadow duration-300">
                     <p class="text-muted">"Grâce à IrreguLearn j'ai enfin compris les verbes irréguliers. 10 minutes par
                         jour et c'est réglé."</p>
                     <div class="mt-4 font-bold">— Amina, Étudiante</div>
                 </div>
-                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted">
+                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted hover:shadow-md transition-shadow duration-300">
                     <p class="text-muted">"Le système d'XP m'a motivé à m'entraîner tous les jours. Mon niveau s'est
                         clairement amélioré."</p>
                     <div class="mt-4 font-bold">— Jean, Professeur</div>
                 </div>
-                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted">
+                <div class="card-surface p-6 rounded-2xl shadow-sm border border-muted hover:shadow-md transition-shadow duration-300">
                     <p class="text-muted">"Les sessions courtes et ciblées sont parfaites avant un examen."</p>
                     <div class="mt-4 font-bold">— Fatou, Étudiante</div>
                 </div>

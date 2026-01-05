@@ -5,13 +5,13 @@
             <div class="flex flex-row items-center justify-between gap-4 mb-8">
                 <div class="flex gap-2 bg-surface p-1 rounded-3xl">
                     <a href="{{ route('verbs.index', ['level' => 'beginner']) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'beginner' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Beginner</a>
+                        class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 hover:text-primary {{ $filter === 'beginner' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Beginner</a>
                     <a href="{{ route('verbs.index', ['level' => 'intermediate']) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'intermediate' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Intermediate</a>
+                        class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 hover:text-primary {{ $filter === 'intermediate' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Intermediate</a>
                     <a href="{{ route('verbs.index', ['level' => 'expert']) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'expert' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Expert</a>
+                        class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 hover:text-primary {{ $filter === 'expert' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">Expert</a>
                     <a href="{{ route('verbs.index', ['level' => 'all']) }}"
-                        class="px-4 py-2 rounded-xl text-sm font-bold {{ $filter === 'all' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">All</a>
+                        class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 hover:text-primary {{ $filter === 'all' ? 'bg-surface text-primary shadow-sm' : 'text-muted' }}">All</a>
                 </div>
             </div>
 
@@ -51,7 +51,7 @@
                 <div class="sm:hidden p-4">
                     <div class="space-y-3">
                         @foreach ($verbs as $index => $verb)
-                            <a href="{{ route('verbs.show', $verb->slug) }}" class="block p-3 rounded-xl bg-surface border border-muted">
+                            <a href="{{ route('verbs.show', $verb->slug) }}" class="block p-3 rounded-xl bg-surface border border-muted transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-primary/20 active:scale-[0.98]">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <div class="font-bold text-body">{{ $verb->infinitive }}</div>
@@ -72,7 +72,7 @@
             </div>
             <div class="flex flex-row-reverse justify-between items-center mt-8 mb-6">
                 <a href="{{ route('verbs.export') }}"
-                    class="flex items-center gap-2 bg-primary hover:opacity-95 text-surface px-6 py-4 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 transition transform active:scale-95">
+                    class="flex items-center gap-2 bg-primary text-surface px-6 py-4 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">

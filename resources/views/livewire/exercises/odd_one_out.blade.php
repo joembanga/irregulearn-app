@@ -6,7 +6,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         @foreach($choices as $choice)
         <button wire:key="odd-{{ $currentVerb->id }}-{{ $currentIndex }}" wire:click="checkAnswer('{{ $choice }}')"
-            class="p-6 rounded-2xl font-bold text-lg transition-all border-2 bg-surface hover:border-primary">
+            class="p-6 rounded-2xl font-bold text-lg transition-all duration-300 border-2 bg-surface hover:border-primary hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md">
             {{ \Illuminate\Support\Str::title($choice) }}
         </button>
         @endforeach

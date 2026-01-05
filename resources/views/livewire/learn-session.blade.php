@@ -35,7 +35,7 @@
                     <h2 class="text-4xl md:text-5xl font-black text-body mb-2 tracking-tight flex items-center justify-center gap-4">
                         {{ $currentVerb->infinitive }}
                         <button onclick="let u = new SpeechSynthesisUtterance('{{ $currentVerb->infinitive }}'); u.lang='en-GB'; speechSynthesis.speak(u);"
-                            class="p-2 rounded-full bg-surface hover:bg-primary-10 text-muted hover:text-primary transition shadow-sm shrink-0"
+                            class="p-2 rounded-full bg-surface hover:bg-primary-10 text-muted hover:text-primary transition-all duration-300 hover:scale-110 active:scale-90 shadow-sm shrink-0"
                             title="Écouter la prononciation">
                             <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
@@ -84,7 +84,7 @@
                         </div>
                     @endif
 
-                    <button wire:click="nextVerb" class="w-full py-4 btn-invert rounded-2xl font-bold text-lg hover:opacity-90 transition shadow-lg">
+                    <button wire:click="nextVerb" class="w-full py-4 btn-invert rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg hover:shadow-xl">
                         Question Suivante →
                     </button>
                 </div>
@@ -99,7 +99,7 @@
                 Tu as gagné <span class="text-primary font-bold">{{ $finished_reward }} XP</span> bonus.
             </p>
             <a href="{{ route('learn.index') }}"
-                class="inline-flex items-center px-8 py-4 bg-primary text-surface rounded-2xl font-bold shadow-lg hover:opacity-95 transition">
+                class="inline-flex items-center px-8 py-4 bg-primary text-surface rounded-2xl font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl">
                 Retour au parcours
             </a>
         </div>
