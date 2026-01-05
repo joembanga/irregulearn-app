@@ -4,7 +4,7 @@
             $stats = $verb->getPopularityStats();
         @endphp
         <div
-            class="group relative card-surface rounded-3xl p-6 shadow-sm border border-muted hover:border-primary hover:shadow-xl transition-all duration-300">
+            class="group relative card-surface rounded-3xl p-6 shadow-sm border border-muted transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]">
 
             <div class="absolute top-4 right-4">
                 <span
@@ -46,12 +46,12 @@
 
             <div wire:key="verb-{{ $verb->id }}" class="flex gap-2 mt-6">
                 <a href="{{ route('verbs.show', $verb->slug) }}"
-                    class="flex-1 py-2 bg-primary text-white text-center text-sm font-bold rounded-xl">
+                    class="flex-1 py-2 bg-primary text-white text-center text-sm font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md">
                     Réviser
                 </a>
 
                 <button wire:click="removeFavorite({{ $verb->id }})"
-                    class="px-3 py-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-colors shadow-sm"
+                    class="px-3 py-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all duration-300 shadow-sm active:scale-95"
                     title="Retirer des favoris">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd"
@@ -67,7 +67,7 @@
             <h3 class="text-xl font-bold text-body">Ta liste est vide</h3>
             <p class="text-muted mb-8 max-w-xs mx-auto">Enregistre les verbes qui te posent problème pour les
                 retrouver ici facilement.</p>
-            <a href="{{ route('verbs.index') }}" class="px-8 py-3 bg-primary text-white font-bold rounded-2xl">
+            <a href="{{ route('verbs.index') }}" class="px-8 py-3 bg-primary text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg">
                 Parcourir les verbes
             </a>
         </div>

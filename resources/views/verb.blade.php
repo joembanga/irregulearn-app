@@ -70,7 +70,7 @@
 
         @if ($previous)
             <a href="{{ route('verbs.show', $previous->slug) }}"
-                class="pointer-events-auto p-3 rounded-full glass border border-muted text-body hover:scale-110 transition-all shadow-xl group"
+                class="pointer-events-auto p-3 rounded-full glass border border-muted text-body transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl group"
                 title="Précédent : {{ $previous->infinitive }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -82,7 +82,7 @@
 
         @if ($next)
             <a href="{{ route('verbs.show', $next->slug) }}"
-                class="pointer-events-auto p-3 rounded-full glass border border-muted text-body hover:scale-110 transition-all shadow-xl group"
+                class="pointer-events-auto p-3 rounded-full glass border border-muted text-body transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl group"
                 title="Suivant : {{ $next->infinitive }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
