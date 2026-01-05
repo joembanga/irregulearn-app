@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Category;
 use App\Models\Verb;
 use App\Models\VerbSentence;
+use App\Services\BadgeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -356,6 +357,9 @@ class LearnSession extends Component
         Auth::user()->verb()->syncWithoutDetaching([
             $this->currentVerb->id => ['mastered' => true]
         ]);
+
+        // Badge system hook
+        app(BadgeService::class)->checkAndAwardBadges(Auth::user());
     }
 
     public function nextVerb()

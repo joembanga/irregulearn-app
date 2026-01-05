@@ -87,7 +87,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function badges()
     {
-        return $this->belongsToMany(Badge::class);
+        return $this->belongsToMany(Badge::class)->withTimestamps();
+    }
+
+    /**
+     * Check if user has a specific badge.
+     */
+    public function hasBadge(Badge $badge): bool
+    {
+        return $this->badges()->where('badges.id', $badge->id)->exists();
     }
 
     public function favorites()
