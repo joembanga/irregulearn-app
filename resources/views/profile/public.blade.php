@@ -46,14 +46,17 @@
             <div class="mt-8 bg-surface p-8 rounded-3xl shadow-sm border border-muted">
                 <h3 class="font-bold text-body mb-6">Badges débloqués</h3>
                 <div class="flex flex-wrap gap-4">
+                    @forelse($user->badges as $badge)
                     <div class="group relative">
                         <div
-                            class="w-16 h-16 bg-surface rounded-2xl flex items-center justify-center text-2xl filter grayscale opacity-50">
-                            🐣</div>
+                            class="w-16 h-16 bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-2xl flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition-transform">
+                            {{ $badge->icon }}</div>
                         <span
-                            class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Premier
-                            pas</span>
+                            class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition whitespace-nowrap">{{ $badge->name }}</span>
                     </div>
+                    @empty
+                    <p class="text-muted text-sm">Aucun badge débloqué pour le moment.</p>
+                    @endforelse
                 </div>
             </div>
 
