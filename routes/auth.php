@@ -33,6 +33,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // Google OAuth routes
+    Route::get('auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirect'])
+        ->name('auth.google');
+    Route::get('auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'callback'])
+        ->name('auth.google.callback');
 });
 
 Route::middleware('auth')->group(function () {
