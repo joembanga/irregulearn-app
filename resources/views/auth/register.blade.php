@@ -1,3 +1,4 @@
+<x-guest-layout>
     @if (session('error'))
     <div class="mb-6 p-4 bg-danger-10 border-l-4 border-danger text-danger rounded-r-2xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
         <div class="flex items-center gap-3">
