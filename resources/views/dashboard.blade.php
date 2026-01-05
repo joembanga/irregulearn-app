@@ -74,7 +74,9 @@
                     @php
                         $timezone = auth()->user()->timezone ?? 'UTC';
                         $localToday = now()->setTimezone($timezone)->toDateString();
-                        $isDoneToday = auth()->user()->last_activity_local_date === $localToday;
+                        $lastActivity = auth()->user()->last_activity_local_date;
+                        $lastActivityDate = $lastActivity ? \Carbon\Carbon::parse($lastActivity)->toDateString() : null;
+                        $isDoneToday = $lastActivityDate === $localToday;
                     @endphp
                     <div class="card-surface p-6 rounded-3xl border border-muted flex items-center justify-between relative overflow-hidden group">
                         @if ($isDoneToday)

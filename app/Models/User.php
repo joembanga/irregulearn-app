@@ -164,18 +164,23 @@ class User extends Authenticatable implements MustVerifyEmail
         // 1. Get "Now" in the user's timezone
         $timezone = $this->timezone ?? 'UTC';
         $localNow = Carbon::now()->setTimezone($timezone);
-        $localToday = $localNow->toDateTimeString();
+        $localToday = $localNow->toDateString(); // Use date only (YYYY-MM-DD)
 
-        // 2. If streak is already validated for today, do nothing
-        if ($this->last_activity_local_date === $localToday) {
+        // 2. Get stored last activity date (extract date part if stored as datetime)
+        $lastActivityDate = $this->last_activity_local_date
+            ? Carbon::parse($this->last_activity_local_date)->toDateString()
+            : null;
+
+        // 3. If streak is already validated for today, do nothing
+        if ($lastActivityDate === $localToday) {
             return;
         }
 
-        // 3. Calculate yesterday's date (local)
+        // 4. Calculate yesterday's date (local)
         $localYesterday = $localNow->copy()->subDay()->toDateString();
 
-        // 4. Comparison logic
-        if ($this->last_activity_local_date === $localYesterday) {
+        // 5. Comparison logic
+        if ($lastActivityDate === $localYesterday) {
             // It was yesterday, continue the streak!
             $this->increment('current_streak');
         } else {
@@ -184,7 +189,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->current_streak = 1;
         }
 
-        // 5. Save today's date
+        // 6. Save today's date (store as date only for consistency)
         $this->last_activity_local_date = $localToday;
         $this->save();
     }
