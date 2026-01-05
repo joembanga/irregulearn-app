@@ -1,87 +1,85 @@
-<x-guest-layout>
-    <div class="w-auto grid grid-cols-1 gap-8 items-center">
-        <div class="px-6 text-center lg:text-left">
-            <div
-                class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                🎓 Commence maintenant</div>
-            <h2 class="text-3xl font-extrabold text-body mb-2">Créer un compte</h2>
-            <p class="text-muted">Rejoins la communauté, débloque des catégories et améliore ta grammaire anglaise
-                anglais jour après jour.</p>
+    @if (session('error'))
+    <div class="mb-6 p-4 bg-danger-10 border-l-4 border-danger text-danger rounded-r-2xl text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
+        <div class="flex items-center gap-3">
+            <span class="text-lg">⚠️</span>
+            <p>{{ session('error') }}</p>
+        </div>
+    </div>
+    @endif
+
+    <div class="space-y-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-black text-body tracking-tight">Créer un compte</h2>
+            <p class="mt-2 text-muted font-medium">Rejoins IrreguLearn et commence à maîtriser les verbes.</p>
         </div>
 
-        <form method="POST" action="{{ route('register') }}"
-            class="p-6 bg-surface rounded-2xl shadow-sm border border-muted">
+        <form method="POST" action="{{ route('register') }}" class="space-y-5">
             @csrf
 
-            <div class="mb-6 text-center">
-                <h3 class="text-lg font-semibold text-body">Inscription rapide</h3>
-                <p class="mt-1 text-sm text-muted">Quelques informations pour personnaliser ton
-                    expérience.</p>
+            <!-- Username (Livewire) -->
+            <div class="space-y-2">
+                <x-input-label for="username" :value="__('Nom d\'utilisateur')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                <livewire:register-username-input />
             </div>
 
-            <!-- Username -->
-            <livewire:register-username-input />
-
-            <div class="grid grid-cols-1 gap-4">
-                <div>
-                    <x-input-label for="firstname" :value="__('Firstname')" />
-                    <x-text-input id="firstname" class="block mt-1 w-full" type="text" name="firstname"
-                        :value="old('firstname')" required autofocus autocomplete="firstname" />
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Firstname -->
+                <div class="space-y-2">
+                    <x-input-label for="firstname" :value="__('Prénom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                    <x-text-input id="firstname" class="block w-full" type="text" name="firstname"
+                        :value="old('firstname')" required autocomplete="firstname" placeholder="Jean" />
                     <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
                 </div>
 
-                <div>
-                    <x-input-label for="lastname" :value="__('Lastname')" />
-                    <x-text-input id="lastname" class="block mt-1 w-full" type="text" name="lastname"
-                        :value="old('lastname')" required autocomplete="lastname" />
+                <!-- Lastname -->
+                <div class="space-y-2">
+                    <x-input-label for="lastname" :value="__('Nom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                    <x-text-input id="lastname" class="block w-full" type="text" name="lastname"
+                        :value="old('lastname')" required autocomplete="lastname" placeholder="Dupont" />
                     <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
                 </div>
-
-                <div>
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                        required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="password" :value="__('Password')" />
-                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                        autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
-                        name="password_confirmation" required autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                </div>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-muted hover:text-body rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                    href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-primary-button class="ml-4">
-                    {{ __('Créer mon compte') }}
-                </x-primary-button>
+            <!-- Email Address -->
+            <div class="space-y-2">
+                <x-input-label for="email" :value="__('Email')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')"
+                    required autocomplete="username" placeholder="ton@email.com" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
+
+            <!-- Password -->
+            <div class="space-y-2">
+                <x-input-label for="password" :value="__('Mot de passe')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                <x-text-input id="password" class="block w-full" type="password" name="password" required
+                    autocomplete="new-password" placeholder="••••••••" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="space-y-2">
+                <x-input-label for="password_confirmation" :value="__('Confirmer le mot de passe')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
+                <x-text-input id="password_confirmation" class="block w-full" type="password"
+                    name="password_confirmation" required autocomplete="new-password" placeholder="••••••••" />
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            </div>
+
+            <x-primary-button class="w-full py-4 mt-4">
+                {{ __('Créer mon compte') }}
+            </x-primary-button>
         </form>
 
-        <div class="relative py-4">
+        <div class="relative">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-muted"></div>
+                <div class="w-full border-t border-muted/50"></div>
             </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-background text-muted italic">ou</span>
+            <div class="relative flex justify-center text-xs">
+                <span class="px-4 bg-surface text-muted font-bold uppercase tracking-widest">ou</span>
             </div>
         </div>
 
         <a href="{{ route('auth.google') }}"
-            class="flex items-center justify-center gap-3 w-full px-6 py-4 bg-surface rounded-2xl border border-muted font-bold text-body hover:bg-muted/10 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-sm">
+            class="flex items-center justify-center gap-3 w-full px-6 py-4 bg-surface border border-muted rounded-2xl font-bold text-body hover:bg-muted/5 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] shadow-sm">
             <svg class="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -94,5 +92,12 @@
             </svg>
             <span>S'inscrire avec Google</span>
         </a>
+
+        <p class="text-center text-sm text-muted">
+            Déjà inscrit ? 
+            <a href="{{ route('login') }}" class="font-bold text-primary hover:text-primary/80 transition-colors">
+                Connecte-toi
+            </a>
+        </p>
     </div>
 </x-guest-layout>
