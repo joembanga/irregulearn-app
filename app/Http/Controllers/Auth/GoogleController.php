@@ -16,6 +16,9 @@ class GoogleController extends Controller
      */
     public function redirect(): RedirectResponse
     {
+        // Store the referrer to redirect back in case of error
+        session(['google_auth_origin' => url()->previous()]);
+
         return Socialite::driver('google')->redirect();
     }
 
@@ -27,7 +30,8 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Erreur de connexion avec Google. Veuillez réessayer.');
+            $origin = session('google_auth_origin', route('login'));
+            return redirect($origin)->with('error', 'Erreur de connexion avec Google. Veuillez réessayer.');
         }
 
         // Find existing user by google_id or email
@@ -74,6 +78,6 @@ class GoogleController extends Controller
 
         Auth::login($user, true);
 
-        return redirect()->intended('/dashboard');
+        return redirect(route('dashboard', absolute: false));
     }
 }
