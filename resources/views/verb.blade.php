@@ -41,7 +41,7 @@
 
                     <div class="w-auto flex flex-row md:flex-col gap-3">
                         <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('verbs.show', $verb->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                            class="inline-flex flex-row justify-center font-bold items-center gap-2 px-6 py-3 rounded-lg py-2 bg-surface border border-muted text-body text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
+                            class="inline-flex flex-row justify-center font-bold items-center gap-2 px-6 py-3 rounded-lg bg-surface border border-muted text-body text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
                             <span x-show="!copied">🔗 Partager</span>
                             <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
                         </button>
@@ -96,13 +96,21 @@
                         "{{ $verb->description ?? 'Pas de description disponible pour le moment.' }}"
                     </p>
                 </div>
-                <!-- Translation box -->
-                <div class="mt-8 pt-8 border-t border-muted/50 flex flex-wrap gap-4 items-center">
-                    <span class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">Traduction FR:</span>
-                    <span class="px-4 py-2 bg-body text-surface rounded-xl font-black text-sm uppercase">
-                        {{ $verb->translation }}
-                    </span>
-                </div>
+
+                @if (app()->getLocale() !== "en")
+                    <!-- Translation box -->
+                    @php
+                        $verbTranslation = $verb->translations()->where('lang', app()->getLocale())->first();
+                    @endphp
+                    <div class="mt-4 pt-4 border-t border-muted/50 flex flex-wrap gap-2 items-center">
+                        <span class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">
+                            Traduction:
+                        </span>
+                        <span class="text-body rounded-xl font-black text-sm uppercase">
+                            {{ $verbTranslation->translation }}
+                        </span>
+                    </div>
+                @endif
             </div>
 
             <!-- Usage Examples -->

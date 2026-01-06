@@ -4,7 +4,8 @@
 
 <ul>
     @foreach($verbs as $verb)
-    <li><strong>{{ $verb->infinitive }}</strong> ({{ $verb->translation }}) : {{ $verb->past_simple }},
+    @php $verbTranslation = $verb->translations()->where('lang', app()->getLocale())->first(); @endphp
+    <li><strong>{{ $verb->infinitive }}</strong> ({{ app()->getLocale() !== "en" ? $verbTranslation->translation : '' }}) : {{ $verb->past_simple }},
         {{ $verb->past_participle }}
     </li>
     @endforeach
