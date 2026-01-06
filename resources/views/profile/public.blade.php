@@ -8,23 +8,17 @@
     ->exists();
     @endphp
 
-    @if($isFriend)
-    <livewire:transfer-points :receiver="$user" />
-    @endif
-
     <div class="py-12 bg-app min-h-screen">
         <div class="max-w-5xl mx-auto px-6 space-y-8">
 
             <!-- Hero Profile Section -->
             <div class="card-surface rounded-[2.5rem] p-8 md:p-12 shadow-xl border border-muted relative overflow-hidden group">
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl rounded-full -mr-20 -mt-20 group-hover:bg-primary/10 transition-colors duration-700">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl rounded-full -mr-20 -mt-20 group-hover:bg-primary/10 transition-colors duration-700">
                 </div>
 
                 <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
                     <div class="relative">
-                        <div
-                            class="absolute -inset-1 bg-gradient-to-tr from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute -inset-1 bg-gradient-to-tr from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-700">
                         </div>
                         <div
                             class="relative w-32 h-32 md:w-40 md:h-40 bg-surface rounded-full flex items-center justify-center text-5xl md:text-6xl text-primary font-black shadow-2xl border-4 border-surface overflow-hidden">
@@ -43,11 +37,10 @@
 
                     <div class="flex-1 text-center md:text-left space-y-4">
                         <div>
-                            <div
-                                class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-2">
+                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-2">
                                 {{ $user->level_name }}
                             </div>
-                            <h1 class="text-4xl md:text-5xl font-black text-body tracking-tight uppercase">
+                            <h1 class="text-4xl md:text-5xl font-black text-body tracking-tight">
                                 {{ $user->username }}</h1>
                             <p class="text-muted font-medium mt-1">Maîtrise les verbes depuis
                                 {{ $user->created_at->format('M Y') }}</p>
@@ -59,7 +52,7 @@
                             @endif
                             <button x-data="{ copied: false }"
                                 @click="navigator.clipboard.writeText(window.location.href); copied = true; setTimeout(() => copied = false, 2000)"
-                                class="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-muted text-body rounded-2xl font-bold text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
+                                class="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-surface border border-muted text-body rounded-2xl font-bold text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
                                 <span x-show="!copied">🔗 Partager le profil</span>
                                 <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
                             </button>
@@ -67,6 +60,10 @@
                     </div>
                 </div>
             </div>
+
+            @if($isFriend)
+            <livewire:transfer-points :receiver="$user" />
+            @endif
 
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -90,8 +87,9 @@
                 <div
                     class="card-surface p-8 rounded-3xl border border-muted flex flex-col items-center justify-center text-center group hover:border-purple-500 transition-colors">
                     <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📖</div>
-                    <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-1">Maîtrisés</p>
-                    <p class="text-3xl font-black text-body">{{ $user->verb()->wherePivot('mastered', true)->count() }}
+                    <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-1">verbes appris</p>
+                    <p class="text-3xl font-black text-body">
+                        {{ $user->learnedVerbs()->count() }}
                     </p>
                 </div>
             </div>
