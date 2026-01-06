@@ -27,9 +27,9 @@ class Verb extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function isMasteredBy($user)
+    public function isLearnedBy(User $user)
     {
-        return $this->users->contains($user->id) && $this->users->find($user->id)->pivot->mastered;
+        return !$user->learnedVerbs()->wherePivot('verb_id', $this->id)->get()->isEmpty();
     }
 
     public function favoritedByUsers()

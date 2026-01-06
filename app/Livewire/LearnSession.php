@@ -14,7 +14,7 @@ class LearnSession extends Component
 {
     public $questionsNumber = 15;
     public ?Category $category = null;
-    public $mode = 'category'; // 'category' or 'daily'
+    public $mode = 'category';
     public $verbs = [];
     public $currentVerb;
     public $currentVerbForms = [];
@@ -148,11 +148,15 @@ class LearnSession extends Component
     {
         $this->mode = $mode;
 
-        if (in_array($this->mode, ['daily', 'favorites'])) {
+        if (in_array($this->mode, ['daily', 'favorites', 'knowVerbs'])) {
             // Load verbs
-            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() : $this->verbs = Auth::user()->favorites()->get();
+            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() : 
+                (
+                    $this->mode === 'favorites' ? $this->verbs = Auth::user()->favorites()->get() :
+                    $this->verbs = Auth::user()->learnedVerbs()->inRandomOrder()->get()
+                );
             if ($this->verbs->isEmpty()) {
-                // If no daily verbs (should not happen if logic is correct, but safe fallback)
+                // If no verbs (should not happen if logic is correct, but safe fallback)
                 return redirect()->route('dashboard');
             }
             while (true) {
@@ -350,6 +354,13 @@ class LearnSession extends Component
     public function handleSuccess()
     {
         $this->isCorrect = true;
+        if ($this->mode === 'daily') {
+            $verb = Auth::user()->learnedVerbs(false)->wherePivot('verb_id', $this->currentVerb->id)->withPivot('is_learned')->first();
+            if ($verb) {
+                $verb->pivot->is_learned = true;
+                $verb->pivot->save();
+            }
+        }
         Auth::user()->increment('xp_balance', 10);
         Auth::user()->increment('xp_total', 10);
         Auth::user()->increment('xp_weekly', 10);

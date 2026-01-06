@@ -51,4 +51,9 @@ class LearnController extends Controller
     {
         return view('learn-session', ['slug' => null, 'mode' => 'favorites']);
     }
+
+    public function knowVerbs()
+    {
+        return view('learn-session', ['slug' => null, 'mode' => 'knowVerbs']);
+    }
 }

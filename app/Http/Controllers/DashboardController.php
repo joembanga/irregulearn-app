@@ -17,8 +17,7 @@ class DashboardController extends Controller
         $totalVerbs = Verb::count();
 
         // Number of verbs mastered by the user (mastered = true)
-        $learnedVerbsCount = $user->verb()
-            ->wherePivot('mastered', true)->count();
+        $learnedVerbsCount = $user->learnedVerbs()->count();
 
         $progressPercent = $totalVerbs > 0 ? ($learnedVerbsCount / $totalVerbs) * 100 : 0;
 
