@@ -7,7 +7,7 @@
             </svg>
         </div>
         <input wire:model.live.debounce.300ms="query" type="text"
-            class="block w-full pl-16 pr-6 py-6 bg-surface border-4 border-muted/30 rounded-[2rem] text-xl font-black placeholder:text-muted/40 text-body focus:outline-none focus:border-primary focus:ring-8 focus:ring-primary/5 transition-all duration-300 shadow-xl shadow-muted/5 group-hover:border-muted/50 transition-colors"
+            class="block w-full pl-16 pr-6 py-6 bg-surface border-4 border-muted/30 rounded-[2rem] text-xl font-black placeholder:text-muted/40 text-body focus:outline-none focus:border-primary focus:ring-8 focus:ring-primary/5 transition-all duration-300 shadow-xl shadow-muted/5 group-hover:border-muted/50"
             placeholder="Rechercher un verbe, un utilisateur..." autofocus>
         
         <div wire:loading wire:target="query" class="absolute inset-y-0 right-6 flex items-center">
