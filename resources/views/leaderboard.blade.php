@@ -4,7 +4,7 @@
 
             <!-- Podium for Top 3 (Desktop) -->
             <div class="hidden md:flex items-end justify-center gap-4 pt-10 pb-4">
-                
+
                 @if($top3->count() >= 2)
                 <!-- 2nd Place -->
                 <div class="flex flex-col items-center gap-4 group">
@@ -19,11 +19,13 @@
                     </div>
                     <div class="text-center">
                         <p class="font-black text-body">{{ $top3[1]->username }}</p>
-                        <p class="text-xs font-bold text-primary">{{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }} XP</p>
+                        <p class="text-xs font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }}
+                            XP</p>
                     </div>
                 </div>
                 @endif
-            
+
                 @if($top3->count() >= 1)
                 <!-- 1st Place -->
                 <div class="flex flex-col items-center gap-4 group -mt-10">
@@ -39,11 +41,13 @@
                     </div>
                     <div class="text-center">
                         <p class="text-xl font-black text-body">{{ $top3[0]->username }}</p>
-                        <p class="text-sm font-bold text-primary">{{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }} XP</p>
+                        <p class="text-sm font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }}
+                            XP</p>
                     </div>
                 </div>
                 @endif
-            
+
                 @if($top3->count() >= 3)
                 <!-- 3rd Place -->
                 <div class="flex flex-col items-center gap-4 group">
@@ -58,7 +62,9 @@
                     </div>
                     <div class="text-center">
                         <p class="font-black text-body">{{ $top3[2]->username }}</p>
-                        <p class="text-xs font-bold text-primary">{{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }} XP</p>
+                        <p class="text-xs font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }}
+                            XP</p>
                     </div>
                 </div>
                 @endif
@@ -95,14 +101,45 @@
             </div>
             <!-- Table/Card List -->
             <div class="card-surface rounded-[2.5rem] shadow-2xl border border-muted overflow-hidden">
-                <div class="overflow-x-auto">
+                <!-- Mobile: card list to avoid overflow -->
+                <div class="md:hidden p-4 space-y-3">
+                    @foreach($users as $index => $user)
+                    @php $rank = $users->firstItem() + $index; @endphp
+                    <a href="{{ route('profile.public', $user->username) }}"
+                        class="block p-4 rounded-xl bg-surface/40 hover:bg-surface/60 transition">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                                    {{ substr($user->username,0,1) }}</div>
+                                <div class="min-w-0">
+                                    <div class="font-black text-body truncate">{{ $user->username }}</div>
+                                    <div class="text-[11px] text-muted truncate">{{ $user->current_streak }} jours de
+                                        série •
+                                        {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }}
+                                        XP</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-extrabold text-primary">@if($rank==1) 🥇 @elseif($rank==2) 🥈
+                                    @elseif($rank==3) 🥉 @else #{{ $rank }} @endif</div>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left">
                         <thead class="bg-primary/5 border-b border-muted">
                             <tr>
-                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">Rang</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">Utilisateur
+                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">Rang
                                 </th>
-                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em] text-right">
+                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">
+                                    Utilisateur
+                                </th>
+                                <th
+                                    class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em] text-right">
                                     {{ $period === 'weekly' || $period === null ? 'XP GAGNE' : 'XP TOTAL' }}
                                 </th>
                             </tr>
@@ -120,14 +157,16 @@
                                     @endif
                                 </td>
                                 <td class="px-8 py-6">
-                                    <a href="{{ route('profile.public', $user->username) }}" class="flex items-center gap-4">
+                                    <a href="{{ route('profile.public', $user->username) }}"
+                                        class="flex items-center gap-4">
                                         <div
                                             class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner group-hover:scale-110 transition-transform">
                                             {{ substr($user->username, 0, 1) }}
                                         </div>
                                         <div>
                                             <p class="font-black text-body group-hover:text-primary transition-colors">
-                                                {{ $user->username }}</p>
+                                                {{ $user->username }}
+                                            </p>
                                             <p class="text-[10px] font-bold text-muted uppercase tracking-widest">
                                                 {{ $user->current_streak }} jours de série 🔥
                                             </p>
