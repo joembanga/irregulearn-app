@@ -233,4 +233,35 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $masteryRate >= 70;
     }
+
+    /**
+     * Get a human friendly level name based on numeric level.
+     * Usage: $user->level_name
+     */
+    public function getLevelNameAttribute(): string
+    {
+        $level = $this->attributes['level'] ?? null;
+
+        if ($level === null) {
+            // Fallback: if xp_total exists, derive a rough level (safe fallback)
+            if (isset($this->attributes['xp_total'])) {
+                // simple heuristic: 1000 XP per level (only for fallback display)
+                $level = (int) floor($this->attributes['xp_total'] / 1000) + 1;
+            } else {
+                $level = 1;
+            }
+        }
+
+        $level = (int) $level;
+
+        return match (true) {
+            $level >= 91 => 'God',
+            $level >= 76 => 'Legend',
+            $level >= 51 => 'Expert',
+            $level >= 31 => 'Advanced',
+            $level >= 16 => 'Intermediate',
+            $level >= 6 => 'Beginner',
+            default => 'Starter',
+        };
+    }
 }

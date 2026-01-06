@@ -111,7 +111,7 @@
                     <div class="card-surface p-6 rounded-3xl border border-muted flex items-center justify-between">
                         <div>
                             <p class="text-xs font-bold text-muted uppercase tracking-widest mb-1">Niveau</p>
-                            <p class="text-3xl font-black text-primary">{{ $userLevel }}</p>
+                            <p class="text-3xl font-black text-primary">{{ auth()->user()->level_name }}</p>
                         </div>
                         <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-2xl">
                             🎓
