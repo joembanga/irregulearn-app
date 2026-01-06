@@ -8,16 +8,17 @@
         ->take(5)
         ->get();
 @endphp
-<x-app-layout>
-    <div class="max-w-7xl mx-auto sm:px-8 lg:px-8">
-        <div class="py-6">
-            <h2 class="font-semibold text-xl text-body leading-tight">
-                {{ __('Heureux de te revoir') }} {{ $user->firstname }}
-            </h2>
-        </div>
-    </div>
+<x-app-layout> 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-10">
+                <h2 class="text-3xl md:text-5xl font-black text-body tracking-tighter">
+                    {{ __('Heureux de te revoir,') }} <span class="text-primary">{{ $user->firstname }}</span> 👋
+                </h2>
+                <p class="text-muted font-medium mt-2 text-lg">Prêt à conquérir de nouveaux verbes aujourd'hui ?</p>
+            </div>
+
+            <div class="space-y-12">
             <!-- Daily Challenge & Stats Section -->
             @include('partials.dashboard.daily-challenge-and-stats-section')
 
