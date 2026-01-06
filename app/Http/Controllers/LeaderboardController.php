@@ -29,8 +29,10 @@ class LeaderboardController extends Controller
             $query->whereIn('id', $friendIds);
         }
 
+        $top3 = $query->limit(3)->get();
+
         $users = $query->paginate(20)->withQueryString();
 
-        return view('leaderboard', compact('users', 'filter', 'period'));
+        return view('leaderboard', compact('users', 'filter', 'period', 'top3'));
     }
 }

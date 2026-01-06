@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 bg-gray-50 dark:bg-gray-950 min-h-screen">
+    <div class="py-12 bg-app min-h-screen">
         <div class="max-w-5xl mx-auto px-6">
 
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">

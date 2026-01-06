@@ -1,18 +1,24 @@
-<div class="space-y-6">
-    <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl text-center border border-muted">
-        <p class="text-xl font-medium leading-relaxed text-body text-pretty">
+<div class="space-y-8">
+    <div class="bg-primary/5 p-8 md:p-12 rounded-[2.5rem] text-center border-2 border-primary/10 shadow-inner relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-4 opacity-10">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M14,17H17L19,13V7H13V13H16L14,17M6,17H9L11,13V7H5V13H8L6,17Z"/></svg>
+        </div>
+        <p class="text-xl md:text-2xl font-medium leading-relaxed text-body italic relative z-10">
             "{!! nl2br(e($currentSentence)) !!}"
         </p>
     </div>
 
-    <div class="space-y-4">
+    <div class="space-y-6">
         <input wire:model.defer="userInput" wire:keydown.enter="checkAnswer" type="text"
-            class="w-full text-center p-4 border-2 rounded-2xl text-2xl font-bold bg-surface focus:outline-none focus:ring-0 transition-colors {{ $isCorrect === true ? 'border-success bg-success-10 text-success' : ($isCorrect === false ? 'border-danger bg-danger-10 text-danger' : 'border-muted') }}" placeholder="Mot manquant..." {{ $isCorrect !== null ? 'disabled' : '' }} autofocus>
+            class="w-full text-center py-8 px-6 bg-app border-4 rounded-[2rem] text-3xl font-black uppercase tracking-widest focus:outline-none focus:ring-0 transition-all duration-500 {{ $isCorrect === true ? 'border-success text-success shadow-xl shadow-success/10' : ($isCorrect === false ? 'border-danger text-danger shadow-xl shadow-danger/10' : 'border-muted focus:border-primary') }}" 
+            placeholder="Le mot manquant..." 
+            {{ $isCorrect !== null ? 'disabled' : '' }} 
+            autofocus>
 
         @if($isCorrect === null)
         <button wire:click="checkAnswer"
-            class="w-full py-4 bg-primary text-surface rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95">
-            Valider
+            class="w-full py-6 bg-primary text-surface rounded-[2rem] font-black text-lg uppercase tracking-[0.2em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95">
+            Confirmer ma réponse
         </button>
         @endif
     </div>

@@ -16,24 +16,23 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6 transition">
         @csrf
         @method('patch')
-        <div class="grid grid-cols-2 gap-8 items-center transition">
-            <div>
-                <div>
-                    <x-input-label for="firstname" :value="__('Firstname')" />
+                <div class="space-y-4">
+                    <div>
+                        <x-input-label for="firstname" :value="__('Prénom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
                     <x-text-input id="firstname" name="firstname" type="text" class="mt-1 block w-full"
                         :value="old('firstname', $user->firstname)" required autocomplete="firstname" />
                     <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
                 </div>
 
-                <div>
-                    <x-input-label for="lastname" :value="__('Lastname')" />
+                    <div class="mt-4">
+                        <x-input-label for="lastname" :value="__('Nom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
                     <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full"
                         :value="old('lastname', $user->lastname)" required autocomplete="lastname" />
                     <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
                 </div>
 
-                <div>
-                    <x-input-label for="email" :value="__('Email')" />
+                    <div class="mt-4">
+                        <x-input-label for="email" :value="__('Email')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
                     <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
                         :value="old('email', $user->email)" required autocomplete="username" />
                     <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -62,8 +61,8 @@
                 <div class="p-4 sm:p-8 bg-surface shadow sm:rounded-2xl border border-muted">
                     <div class="max-w-xl">
                         <section>
-                            <header>
-                                <h2 class="text-lg font-medium text-body">Objectif Quotidien</h2>
+                            <header class="mb-4">
+                                <h3 class="text-sm font-black text-body uppercase tracking-widest">Objectif Quotidien</h3>
                                 <p class="mt-1 text-sm text-muted">Combien de nouveaux verbes
                                     veux-tu apprendre chaque jour ?</p>
                             </header>

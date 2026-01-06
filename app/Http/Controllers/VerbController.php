@@ -42,7 +42,7 @@ class VerbController extends Controller
         // but simple pagination is usually fine.
         $verbs = $query->paginate(20)->withQueryString();
 
-        return view('verbslist ', compact('verbs', 'filter'));
+        return view('verbslist', compact('verbs', 'filter'));
     }
 
     /**

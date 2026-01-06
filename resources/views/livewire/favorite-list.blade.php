@@ -18,8 +18,11 @@
                     {{ $verb->infinitive }}
                 </h3>
                 <div class="flex gap-2 mt-1">
-                    <span class="text-xs font-mono text-muted bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded">
+                    <span class="bg-primary-10 text-primary text-xs font-mono px-2 py-0.5 rounded">
                         {{ Str::limit($verb->past_simple, 12) }}
+                    </span>
+                    <span class="bg-success-10 text-success text-xs font-mono px-2 py-0.5 rounded">
+                        {{ Str::limit($verb->past_participle, 12) }}
                     </span>
                 </div>
             </div>
@@ -30,7 +33,7 @@
                         <div class="flex -space-x-2">
                             @foreach ($stats['friends'] as $friend)
                                 <div
-                                    class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-900 bg-primary-10 flex items-center justify-center text-[10px] font-bold text-primary">
+                                    class="w-7 h-7 rounded-full border-2 border-transparent group-hover:border-primary bg-primary-10 flex items-center justify-center text-[10px] font-bold text-primary">
                                     {{ substr($friend->username, 0, 1) }}
                                 </div>
                             @endforeach
@@ -40,7 +43,14 @@
                         </span>
                     </div>
                 @else
-                    <span class="text-xs text-muted italic">Partage ce verbe avec tes amis !</span>
+                <div class="flex flex-row justify-between items-center">
+                    <span class="text-xs text-muted italic">Partage avec des amis !</span>
+                    <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('verbs.show', $verb->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                            class="inline-flex items-center gap-2 px-2 py-2 bg-surface border border-muted text-body rounded-2xl text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
+                        <span x-show="!copied">🔗 Copier</span>
+                        <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
+                    </button>
+                </div>
                 @endif
             </div>
 
