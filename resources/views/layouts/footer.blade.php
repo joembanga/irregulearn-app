@@ -1,49 +1,44 @@
-<footer class="bg-surface border-t border-muted transition-colors duration-300">
-    <div class="mx-auto max-w-7xl px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-
-        <div class="flex flex-col gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-primary text-surface p-2 rounded-md font-bold text-lg">IL</div>
-                <div>
-                    <div class="font-bold text-lg text-body">IrreguLearn</div>
-                    <div class="text-sm text-muted">Maîtrise les verbes irréguliers, pas à pas.
-                    </div>
-                </div>
+<footer class="bg-surface border-t border-muted py-12 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 mb-6">
+                    <div class="bg-primary text-surface p-2 rounded-xl font-bold shadow-sm">IL</div>
+                    <span class="font-black text-xl text-body tracking-tight">Irregu<span class="text-primary">Learn</span></span>
+                </a>
+                <p class="text-muted text-sm max-w-sm leading-relaxed">
+                    Maîtrisez les verbes irréguliers anglais avec une approche moderne et récompensée. Déjà des milliers d'élèves progressent chaque jour.
+                </p>
             </div>
-            <p class="text-xs leading-5 text-muted">&copy; {{ date('Y') }} IrreguLearn — Tous
-                droits réservés.</p>
-            <div class="flex items-center gap-3 mt-3">
-                <a href="#" class="text-muted hover:text-primary">Twitter</a>
-                <a href="#" class="text-muted hover:text-primary">Instagram</a>
-                <a href="#" class="text-muted hover:text-primary">Discord</a>
+            
+            <div>
+                <h4 class="font-bold text-body mb-6 uppercase text-[10px] tracking-[0.2em]">Application</h4>
+                <nav class="flex flex-col gap-3 text-sm">
+                    <a href="{{ route('learn.index') }}" class="text-muted hover:text-primary transition-colors font-medium">Apprendre</a>
+                    <a href="{{ route('leaderboard') }}" class="text-muted hover:text-primary transition-colors font-medium">Classement</a>
+                    <a href="{{ route('shop') }}" class="text-muted hover:text-primary transition-colors font-medium">Boutique</a>
+                    <a href="{{ route('search') }}" class="text-muted hover:text-primary transition-colors font-medium">Recherche</a>
+                </nav>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-body mb-6 uppercase text-[10px] tracking-[0.2em]">Légal</h4>
+                <nav class="flex flex-col gap-3 text-sm">
+                    <a href="{{ route('about') }}" class="text-muted hover:text-primary transition-colors font-medium">À propos</a>
+                    <a href="{{ route('privacy') }}" class="text-muted hover:text-primary transition-colors font-medium">Confidentialité</a>
+                    <li><a href="{{ route('contact') }}" class="text-muted hover:text-primary transition-colors font-medium">Contact</a></li>
+                </nav>
             </div>
         </div>
 
-        <div class="flex flex-col">
-            <h4 class="text-sm font-semibold text-body mb-3">Ressources</h4>
-            <nav class="flex flex-col gap-2 text-sm">
-                <a href="/about" class="text-muted hover:text-primary">À propos</a>
-                <a href="/privacy" class="text-muted hover:text-primary">Politique de confidentialité</a>
-                <a href="/terms" class="text-muted hover:text-primary">Conditions d'utilisation</a>
-                <a href="/contact" class="text-muted hover:text-primary">Contact</a>
-            </nav>
-        </div>
-
-        <div class="flex flex-col items-start md:items-end">
-            {{-- <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Thème</h4>
-            <div class="flex items-center gap-3">
-                <button id="theme-toggle" type="button" aria-label="Changer le thème"
-                    class="inline-flex h-9 w-16 items-center rounded-full bg-gray-200 dark:bg-gray-700 p-1">
-                    <span id="theme-toggle-circle"
-                        class="inline-block h-7 w-7 rounded-full bg-white dark:bg-gray-800 shadow transform transition-transform"></span>
-                </button>
+        <div class="mt-16 pt-8 border-t border-muted/50 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs text-muted font-medium">
+                &copy; {{ date('Y') }} IrreguLearn. Fait avec passion pour l'éducation.
+            </p>
+            <div class="text-[10px] text-muted uppercase tracking-widest font-bold">
+                Kinshasa • Paris • Londres
             </div>
-            <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">Mode clair/sombre — ton choix est sauvegardé.</p> --}}
-            <h4 class="text-sm font-semibold text-body mb-3">Contact</h4>
-            <div class="text-sm text-muted">hello@irregulearn.example</div>
-            <p class="mt-4 text-xs text-muted">Support disponible en semaine • Kinshasa</p>
         </div>
-
     </div>
 </footer>
 

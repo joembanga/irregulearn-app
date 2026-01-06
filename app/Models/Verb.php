@@ -42,7 +42,7 @@ class Verb extends Model
     /**
      * Get popularity stats for the verb.
      */
-    public function getPopularityStats()
+    public function getPopularityStats(): array
     {
         $user = Auth::user();
         $totalUsers = User::count();
@@ -67,5 +67,10 @@ class Verb extends Model
     public function communityExamples()
     {
         return $this->hasMany(VerbExample::class)->orderBy('likes_count', 'desc');
+    }
+
+    public function sentences()
+    {
+        return $this->hasMany(VerbSentence::class);
     }
 }

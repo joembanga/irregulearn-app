@@ -1,8 +1,17 @@
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     @foreach($choices as $choice)
     <button
-        wire:key="quiz-{{ $currentVerb->id }}-{{ $currentIndex }}" wire:click="checkAnswer('{{ $choice }}')" class="p-6 rounded-2xl font-bold text-lg border-2 transition-all duration-300 hover:scale-105 active:scale-95 {{ $isCorrect === true && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-success border-success text-surface' : ($isCorrect === false && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-success border-success text-surface' : ($isCorrect === false ? 'bg-danger-10 border-danger text-danger opacity-50' : 'bg-surface border-muted text-muted hover:border-primary hover:text-primary')) }}">
-        {{ $choice }}
+        wire:key="quiz-{{ $currentVerb->id }}-{{ $currentIndex }}-{{ $loop->index }}" 
+        wire:click="checkAnswer('{{ $choice }}')" 
+        class="group p-8 rounded-[2rem] font-black text-xl border-4 transition-all duration-500 hover:scale-105 active:scale-95 flex flex-col items-center justify-center gap-2
+        {{ $isCorrect === true && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-success border-success text-surface shadow-xl shadow-success/20' : 
+           ($isCorrect === false && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}) ? 'bg-success border-success text-surface' : 
+           ($isCorrect === false && strtolower($choice) === strtolower($userInput) ? 'bg-danger border-danger text-surface shadow-xl shadow-danger/20' : 
+           ($isCorrect !== null ? 'bg-surface border-muted text-muted opacity-50 cursor-not-allowed' : 'bg-surface border-muted text-body hover:border-primary hover:text-primary hover:shadow-xl hover:shadow-primary/5'))) }}">
+        <span class="uppercase tracking-tighter">{{ $choice }}</span>
+        @if($isCorrect !== null && strtolower($choice) === strtolower($currentVerb->{$currentTargetForm}))
+            <span class="text-[10px] uppercase tracking-widest font-bold opacity-80">Correct</span>
+        @endif
     </button>
     @endforeach
 </div>
