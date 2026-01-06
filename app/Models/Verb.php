@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class Verb extends Model
 {
+    public $translation = '';
     protected $fillable = [
         'infinitive',
         'past_simple',
         'past_participle',
-        'translation',
         'level',
         'category',
         'description'
@@ -83,5 +83,10 @@ class Verb extends Model
     public function sentences()
     {
         return $this->hasMany(VerbSentence::class);
+    }
+
+    public function translations()
+    {
+        return $this->hasMany(VerbTranslations::class);
     }
 }

@@ -22,7 +22,7 @@ class VerbForm extends Component
         'selectedCategories' => 'array'
     ];
 
-    public function mount(Verb $verb = null)
+    public function mount(Verb|null $verb = null)
     {
         $this->verb = $verb ?? new Verb(['level' => 'beginner']);
         $this->categories = Category::orderBy('order')->get();
