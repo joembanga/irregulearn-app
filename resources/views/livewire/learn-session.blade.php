@@ -99,7 +99,7 @@
                             </div>
                         @endif
 
-                        <button wire:click="nextVerb" class="w-full py-6 bg-primary text-surface rounded-[2rem] font-black text-lg uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-2xl hover:bg-primary transition-colors">
+                        <button wire:click="nextVerb" class="w-full py-6 bg-primary text-surface rounded-[2rem] font-black text-lg uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-2xl hover:bg-primary">
                             Continuer →
                         </button>
                     </div>
