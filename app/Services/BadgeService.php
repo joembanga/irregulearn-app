@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Badge;
+use App\Models\Category;
 use App\Models\User;
 use App\Notifications\BadgeEarnedNotification;
 
@@ -55,7 +56,7 @@ class BadgeService
         // Count categories where user has mastered >= 70% of verbs
         $completedCategories = 0;
 
-        $categories = \App\Models\Category::all();
+        $categories = Category::all();
         foreach ($categories as $category) {
             $totalVerbs = $category->verbs()->count();
             if ($totalVerbs === 0) continue;
