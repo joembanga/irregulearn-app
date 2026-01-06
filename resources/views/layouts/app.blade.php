@@ -7,16 +7,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Irregulearn') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        @livewireStyles
 
         <!-- Scripts -->
-        <script src="{{ url('js/navbar.js') }}"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @livewireStyles
     </head>
     <body class="font-sans antialiased">
         <div x-data 
@@ -32,8 +31,7 @@
             body: JSON.stringify({ timezone: tz })
         }).catch(error => console.error('Erreur:', error));
      " class="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
-            {{-- @include('layouts.navigation') --}}
-            <x-navbar />
+            @include('layouts.navigation')
 
             <!-- Page Content -->
             <main class="pt-20">
@@ -41,14 +39,7 @@
             </main>
         </div>
         @include('layouts.footer')
-        {{-- <script>
-            window.addEventListener('notify', event => {
-                // Tu peux utiliser une bibliothèque comme SweetAlert2 ou juste un toast custom
-                alert(event.detail.message); 
-                // Ou un toast plus élégant :
-                // toastr[event.detail.type](event.detail.message);
-            });
-        </script> --}}
+        <script src="{{ url('js/navbar.js') }}"></script>
         @livewireScripts
     </body>
 </html>

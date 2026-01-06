@@ -41,36 +41,3 @@
         </div>
     </div>
 </footer>
-
-{{-- <script>
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeToggleCircle = document.getElementById('theme-toggle-circle');
-
-    function setThemeVisual(isDark) {
-        if (isDark) {
-            themeToggleCircle.style.transform = 'translateX(32px)';
-        } else {
-            themeToggleCircle.style.transform = 'translateX(0)';
-        }
-    }
-
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-        setThemeVisual(true);
-    } else {
-        document.documentElement.classList.remove('dark');
-        setThemeVisual(false);
-    }
-
-    themeToggleBtn.addEventListener('click', function() {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('color-theme', 'light');
-            setThemeVisual(false);
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('color-theme', 'dark');
-            setThemeVisual(true);
-        }
-    });
-</script> --}}

@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class TransferPoints extends Component
 {
     public User $receiver;
-    public $amount = 100; // Montant par défaut
+    public int|null $userInput = null;
+    public $amount = 100;
 
     public function transfer()
     {
         $sender = Auth::user();
-        $this->amount = +$this->amount;
+        $this->amount = +$this->userInput;
 
         if ($this->amount <= 50) {
             session()->flash('error', "Tu n'as pas assez de points pour faire un transfert");
@@ -33,7 +34,8 @@ class TransferPoints extends Component
 
         $this->receiver->notify(new XpReceivedNotification($sender, $this->receiver, $this->amount));
 
-        session()->flash('success', "Tu as envoyé {$this->amount} XP à {$this->receiver->username} ! 🎁");
+        session()->flash('success', "Tu as envoyé {$this->amount} XP à {$this->receiver->username} !");
+        $this->userInput = null ;
     }
 
     public function render()
