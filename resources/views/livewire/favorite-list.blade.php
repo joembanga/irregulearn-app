@@ -3,84 +3,97 @@
         @php
             $stats = $verb->getPopularityStats();
         @endphp
-        <div
-            class="group relative card-surface rounded-3xl p-6 shadow-sm border border-muted transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]">
-
-            <div class="absolute top-4 right-4">
-                <span
-                    class="text-[10px] font-black uppercase tracking-widest bg-primary-10 text-primary px-2 py-1 rounded-lg">
-                    {{ $stats['percentage'] }}% Popularité
-                </span>
-            </div>
-
-            <div class="mb-4">
-                <h3 class="text-2xl font-bold text-body group-hover:text-primary transition-colors">
-                    {{ $verb->infinitive }}
-                </h3>
-                <div class="flex gap-2 mt-1">
-                    <span class="bg-primary-10 text-primary text-xs font-mono px-2 py-0.5 rounded">
-                        {{ Str::limit($verb->past_simple, 12) }}
-                    </span>
-                    <span class="bg-success-10 text-success text-xs font-mono px-2 py-0.5 rounded">
-                        {{ Str::limit($verb->past_participle, 12) }}
-                    </span>
+        <div wire:key="fav-verb-{{ $verb->id }}"
+            class="group relative card-surface rounded-[2.5rem] border-2 border-muted transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 overflow-hidden">
+            
+            <!-- Popularity Badge -->
+            <div class="absolute top-6 right-6 z-10">
+                <div class="px-4 py-2 bg-primary/10 backdrop-blur-md rounded-2xl border border-primary/20 shadow-sm flex items-center gap-2">
+                    <span class="text-[10px] font-black text-primary uppercase tracking-widest">{{ $stats['percentage'] }}% Popularité</span>
                 </div>
             </div>
 
-            <div class="pt-4 border-t border-muted/50">
-                @if ($stats['friends_count'] > 0)
-                    <div class="flex items-center gap-3">
-                        <div class="flex -space-x-2">
-                            @foreach ($stats['friends'] as $friend)
-                                <div
-                                    class="w-7 h-7 rounded-full border-2 border-transparent group-hover:border-primary bg-primary-10 flex items-center justify-center text-[10px] font-bold text-primary">
-                                    {{ substr($friend->username, 0, 1) }}
-                                </div>
-                            @endforeach
-                        </div>
-                        <span class="text-xs text-muted font-medium">
-                            {{ $stats['friends_count'] }} ami(s) l'apprennent
+            <div class="p-8">
+                <!-- Title & Forms -->
+                <div class="mb-8 pt-4">
+                    <h3 class="text-3xl font-black text-body tracking-tighter uppercase mb-4 transition-colors group-hover:text-primary">
+                        {{ $verb->infinitive }}
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 bg-primary/5 border border-primary/10 text-primary font-black text-[10px] uppercase tracking-wider rounded-xl">
+                            {{ $verb->past_simple }}
+                        </span>
+                        <span class="px-3 py-1.5 bg-success/5 border border-success/10 text-success font-black text-[10px] uppercase tracking-wider rounded-xl">
+                            {{ $verb->past_participle }}
                         </span>
                     </div>
-                @else
-                <div class="flex flex-row justify-between items-center">
-                    <span class="text-xs text-muted italic">Partage avec des amis !</span>
-                    <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('verbs.show', $verb->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                            class="inline-flex items-center gap-2 px-2 py-2 bg-surface border border-muted text-body rounded-2xl text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
-                        <span x-show="!copied">🔗 Copier</span>
-                        <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
+                </div>
+
+                <!-- Social Stats -->
+                <div class="py-6 border-t border-muted/50">
+                    @if ($stats['friends_count'] > 0)
+                        <div class="flex items-center gap-4">
+                            <div class="flex -space-x-3">
+                                @foreach ($stats['friends'] as $friend)
+                                    <div class="w-10 h-10 rounded-2xl border-4 border-surface bg-indigo-500 flex items-center justify-center text-xs font-black text-white shadow-xl ring-2 ring-indigo-500/10">
+                                        {{ substr($friend->username, 0, 1) }}
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div>
+                                <div class="text-[10px] font-black text-body uppercase tracking-widest">{{ $stats['friends_count'] }} Amis</div>
+                                <div class="text-[9px] font-bold text-muted uppercase">L'apprennent aussi</div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="flex items-center justify-between gap-4">
+                            <span class="text-[10px] font-bold text-muted uppercase tracking-widest italic">Partage avec des amis</span>
+                            <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('verbs.show', $verb->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-muted/5 border-2 border-transparent hover:border-primary/20 text-body rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 group/btn">
+                                <span x-show="!copied" class="flex items-center gap-2">
+                                    <svg class="h-4 w-4 text-muted group-hover/btn:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                    </svg>
+                                    Partager
+                                </span>
+                                <span x-show="copied" x-cloak class="text-success">Copié !</span>
+                            </button>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3 mt-4">
+                    <a href="{{ route('verbs.show', $verb->slug) }}"
+                        class="flex-1 py-5 bg-body text-surface text-center font-black text-[10px] uppercase tracking-[0.2em] rounded-[1.5rem] shadow-xl shadow-body/10 transition-all hover:bg-primary hover:shadow-primary/20 active:scale-95 flex items-center justify-center gap-2">
+                        Réviser
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+
+                    <button wire:click="removeFavorite({{ $verb->id }})"
+                        class="w-14 items-center justify-center bg-danger/5 text-danger border-2 border-danger/10 hover:bg-danger hover:text-surface hover:border-danger rounded-[1.5rem] transition-all flex active:scale-90"
+                        title="Retirer des favoris">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
                     </button>
                 </div>
-                @endif
-            </div>
-
-            <div wire:key="verb-{{ $verb->id }}" class="flex gap-2 mt-6">
-                <a href="{{ route('verbs.show', $verb->slug) }}"
-                    class="flex-1 py-2 bg-primary text-white text-center text-sm font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-sm hover:shadow-md">
-                    Réviser
-                </a>
-
-                <button wire:click="removeFavorite({{ $verb->id }})"
-                    class="px-3 py-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all duration-300 shadow-sm active:scale-95"
-                    title="Retirer des favoris">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
             </div>
         </div>
     @empty
-        <div class="col-span-full py-20 text-center card-surface rounded-3xl border-2 border-dashed border-muted">
-            <div class="text-6xl mb-4">⭐</div>
-            <h3 class="text-xl font-bold text-body">Ta liste est vide</h3>
-            <p class="text-muted mb-8 max-w-xs mx-auto">Enregistre les verbes qui te posent problème pour les
-                retrouver ici facilement.</p>
-            <a href="{{ route('verbs.index') }}" class="px-8 py-3 bg-primary text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg">
-                Parcourir les verbes
-            </a>
+        <div class="col-span-full py-24 text-center bg-surface rounded-[4rem] border-4 border-dashed border-muted/30 relative overflow-hidden group">
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="text-[8rem] mb-8 transition-transform duration-500 group-hover:scale-110">⭐</div>
+                <h3 class="text-3xl font-black text-body tracking-tight uppercase mb-4">Ta liste est vide</h3>
+                <p class="text-muted mb-12 max-w-xs mx-auto font-medium leading-relaxed">
+                    Identifie les verbes qui te donnent du fil à retordre pour les réviser ici plus tard.
+                </p>
+                <a href="{{ route('verbs.index') }}" class="px-12 py-5 bg-body text-surface font-black text-sm uppercase tracking-[0.2em] rounded-[2rem] shadow-2xl transition-all hover:bg-primary active:scale-95">
+                    Chercher des verbes
+                </a>
+            </div>
         </div>
-
     @endforelse
 </div>

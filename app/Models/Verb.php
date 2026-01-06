@@ -44,23 +44,34 @@ class Verb extends Model
      */
     public function getPopularityStats(): array
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::user();
         $totalUsers = User::count();
-        $favoritedByCount = $this->favoritedByUsers()->count(); // Ensure inverse relationship exists in Verb
+        $favoritedByCount = $this->favoritedByUsers()->count();
 
         $percentage = ($totalUsers > 0) ? ($favoritedByCount / $totalUsers) * 100 : 0;
 
-        // Get friends of the connected user who like this verb
-        $friendIds = $user->friends()->pluck('id');
-        $friendsWhoFavorited = $this->favoritedByUsers()
-            ->whereIn('user_id', $friendIds)
-            ->take(3)
-            ->get();
+        $friendsWhoFavorited = collect();
+        $friendsCount = 0;
+
+        if ($user && method_exists($user, 'friends')) {
+            $friends = $user->friends();
+            $friendIds = $friends->pluck('id');
+            
+            $friendsWhoFavorited = $this->favoritedByUsers()
+                ->whereIn('users.id', $friendIds)
+                ->take(3)
+                ->get();
+                
+            $friendsCount = $this->favoritedByUsers()
+                ->whereIn('users.id', $friendIds)
+                ->count();
+        }
 
         return [
             'percentage' => round($percentage),
             'friends' => $friendsWhoFavorited,
-            'friends_count' => $this->favoritedByUsers()->whereIn('user_id', $friendIds)->count()
+            'friends_count' => $friendsCount
         ];
     }
 
