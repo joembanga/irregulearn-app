@@ -3,8 +3,7 @@
         @php
             $stats = $verb->getPopularityStats();
         @endphp
-        <div wire:key="fav-verb-{{ $verb->id }}"
-            class="group relative card-surface rounded-[2.5rem] border-2 border-muted transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 overflow-hidden">
+        <div wire:key="fav-verb-{{ $verb->id }}" class="group relative card-surface rounded-[2.5rem] border-2 border-muted transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 overflow-hidden">
             
             <!-- Popularity Badge -->
             <div class="absolute top-6 right-6 z-10">

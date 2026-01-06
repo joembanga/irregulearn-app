@@ -113,11 +113,11 @@
 
     <div class="stats-bar">
         @php
-        $masteredCount = $user->masteredVerbs()?->count();
+        $masteredCount = $user->learnedVerbs()->count();
         $total = $verbs->count();
         $percent = ($total > 0) ? round(($masteredCount / $total) * 100) : 0;
         @endphp
-        Progression globale : <span>{{ $masteredCount }} / {{ $total }} verbes maîtrisés ({{ $percent }}%)</span>
+        Progression globale : <span>{{ $masteredCount }} / {{ $total }} verbes appris ({{ $percent }}%)</span>
     </div>
 
     <table>
@@ -132,11 +132,11 @@
         </thead>
         <tbody>
             @foreach($verbs as $verb)
-            @php $isMastered = $verb->isMasteredBy($user); @endphp
+            @php $isLearned = $verb->isLearnedBy($user); @endphp
             <tr>
                 <td class="col-index">{{ $loop->iteration }}</td>
                 <td style="display: flex; justify-content: center; text-align: center;">
-                    @if ($isMastered)
+                    @if ($isLearned)
                         <img src="{{ public_path('images/check_circle_24dp_00BD84_FILL0_wght400_GRAD0_opsz24.png') }}" alt="checked icon" style="width: 16px;">
                     @else
                     -
