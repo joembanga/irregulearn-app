@@ -57,14 +57,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // Get user's friends
     /**
      * Get the friends of the user where the friendship status is accepted.
      */
-    public function friends()
+    public function friends(int|null $limit = null)
     {
         // Returns a collection of friend users (status = accepted) regardless of direction
-        $friendships = \App\Models\Friendship::where('status', 'accepted')
+        $friendships = Friendship::where('status', 'accepted')
             ->where(function ($q) {
                 $q->where('sender_id', $this->id)->orWhere('recipient_id', $this->id);
             })->get();
@@ -73,6 +72,9 @@ class User extends Authenticatable implements MustVerifyEmail
             return $f->sender_id === $this->id ? $f->recipient_id : $f->sender_id;
         })->unique()->toArray();
 
+        if ($limit) {
+            return User::whereIn('id', $friendIds)->limit($limit)->get();
+        }
         return User::whereIn('id', $friendIds)->get();
     }
 
@@ -133,6 +135,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Verb::class, 'daily_verbs')
             ->withPivot('is_learned', 'day')
             ->wherePivot('day', now()->toDateString());
+    }
+
+    public function learnedVerbs(bool $haveLearned = true)
+    {
+        return $this->belongsToMany(Verb::class, 'daily_verbs')
+            ->withPivot('is_learned', 'day')
+            ->wherePivot('is_learned', $haveLearned);
     }
 
     /**
