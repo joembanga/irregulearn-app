@@ -157,7 +157,7 @@ class LearnSession extends Component
                 );
             if ($this->verbs->isEmpty()) {
                 // If no verbs (should not happen if logic is correct, but safe fallback)
-                return redirect()->route('dashboard');
+                return redirect()->route('learn.daily');
             }
             while (true) {
                 foreach ($this->verbs as $verb) {

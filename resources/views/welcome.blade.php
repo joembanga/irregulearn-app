@@ -15,11 +15,9 @@
 <body class="antialiased font-sans text-body app-bg">
 
     <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <div class="flex items-center gap-2">
-            <div class="bg-primary text-surface p-2 rounded-lg font-bold text-xl">IL</div>
-            <span class="font-bold text-xl tracking-tight text-body">Irregu<span
-                    class="text-primary">Learn</span></span>
-        </div>
+        <a href="/" class="flex items-center gap-2">
+            <x-application-logo />
+        </a>
 
         <div class="flex items-center gap-4">
             @if (Route::has('login'))

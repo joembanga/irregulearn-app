@@ -19,16 +19,11 @@
 <body class="font-sans text-body antialiased app-bg">
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="relative max-w-4xl w-full">
-            <!-- Clean background without distracting gradients -->
             <div class="mx-auto w-full sm:max-w-md rounded-2xl shadow-2xl card-surface glass overflow-hidden border border-muted/50">
                 <div class="px-6 py-8">
                     <div class="flex items-center justify-center mb-6">
-                        <a href="/" class="flex items-center gap-3">
-                            <x-application-logo class="h-10 w-10" />
-                            <div>
-                                <div class="text-lg font-black text-body">IrreguLearn</div>
-                                <div class="text-xs text-muted">Maîtrise les verbes irréguliers</div>
-                            </div>
+                        <a href="/" class="flex items-center gap-2">
+                            <x-application-logo />
                         </a>
                     </div>
 

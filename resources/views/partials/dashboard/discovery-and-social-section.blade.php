@@ -2,7 +2,7 @@
     <!-- Discovery Card -->
     <div class="card-surface p-8 rounded-[2.5rem] border border-muted relative overflow-hidden flex flex-col justify-between min-h-[280px] group">
         <div class="relative z-10">
-            <div class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-500 text-[10px] font-bold uppercase tracking-wider mb-4">
+            <div class="inline-flex items-center px-3 py-1 rounded-full bg-orange-200/30 text-primary text-[10px] font-bold uppercase tracking-wider mb-4">
                 Nouveautés
             </div>
             <h3 class="text-2xl font-black text-body mb-3 tracking-tight">Explore l'écosystème</h3>
@@ -12,7 +12,7 @@
             </p>
 
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('shop') }}" class="flex items-center gap-2 px-5 py-3 bg-indigo-600 text-surface rounded-xl font-bold text-sm hover:scale-105 transition shadow-sm active:scale-95 group-hover:shadow-indigo-500/20">
+                <a href="{{ route('shop') }}" class="flex items-center gap-2 px-5 py-3 bg-primary text-surface rounded-xl font-bold text-sm hover:scale-105 transition shadow-sm active:scale-95 group-hover:shadow-indigo-500/20">
                     🛒 La Boutique
                 </a>
                 <a href="{{ route('search') }}" class="flex items-center gap-2 px-5 py-3 bg-surface border border-muted text-body rounded-xl font-bold text-sm hover:bg-muted/10 transition active:scale-95">
