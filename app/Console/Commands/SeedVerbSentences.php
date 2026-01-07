@@ -113,7 +113,9 @@ class SeedVerbSentences extends Command
                         foreach ($meaning['definitions'] as $def) {
                             // This API typically provides a single string in 'example'
                             if (isset($def['example']) && !empty($def['example'])) {
-                                $example = $def['example'];
+                                if (str_contains(strtolower($def['example']), strtolower($entry['word']))) {
+                                    $example = $def['example'];
+                                }
                             }
                         }
                     }
@@ -138,8 +140,12 @@ class SeedVerbSentences extends Command
                         foreach ($entry['senses'] as $sense) {
                             // This API provides an array of strings in 'examples'
                             if (isset($sense['examples']) && is_array($sense['examples'])) {
-                                $example = $sense['examples']['0'];
-                                break;
+                                foreach ($sense['examples'] as $examples) {
+                                    if (str_contains(strtolower($examples), strtolower($data['word']))) {
+                                        $example = $examples;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }

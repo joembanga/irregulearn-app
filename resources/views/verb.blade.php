@@ -101,25 +101,27 @@
                     </p>
                 </div>
 
-                @if (app()->getLocale() !== "en")
-                    <!-- Translation box -->
-                    @php
-                        $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first();
-                    @endphp
-                    <div class="mt-4 pt-4 border-t border-muted/50 flex flex-wrap gap-2 items-center">
+                <div class="flex flex-row gap-2 items-center justify-between mt-4 pt-4 border-t border-muted/50">
+                    <div class="flex flex-wrap gap-2 items-center">
                         <span class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">
                             Traduction:
                         </span>
+                        @if (app()->getLocale() !== "en")
+                        <!-- Translation box -->
+                        @php
+                        $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first();
+                        @endphp
                         <span class="text-body rounded-xl font-black text-sm uppercase">
                             {{ $verbTranslation->translation }}
                         </span>
+                        @endif
                     </div>
-                @endif
+                <a href="{{ $verb->source_url . '#English' }}" target="_blank"
+                    class="px-6 py-3 bg-surface border-2 border-primary/20 text-primary rounded-2xl font-black text-[10px] hover:bg-primary hover:text-surface transition-all uppercase tracking-[0.2em] shadow-lg shadow-primary/5 active:scale-95">
+                    En savoir plus
+                </a>
+                </div>
             </div>
-            <a href="{{ $verb->source_url }}"
-                class="shrink-0 px-10 py-5 bg-white text-primary rounded-[2rem] font-black text-base hover:scale-105 transition shadow-2xl active:scale-95">
-                En savoir plus
-            </a>
 
             <!-- Usage Examples -->
             @php $sentences = $verb->sentences()->take(3)->get(); @endphp
