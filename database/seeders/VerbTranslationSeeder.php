@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Verb;
 use App\Models\VerbTranslation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class VerbTranslationSeeder extends Seeder
 {
@@ -19,12 +19,12 @@ class VerbTranslationSeeder extends Seeder
 
         while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
 
-            $verb = DB::table('verbs')->where('infinitive', '=', $data[0])->value('id');
+            $verb = Verb::where('infinitive', '=', $data[0])->pluck('id')->first();
             $translatedForm = $data[3];
 
             VerbTranslation::create([
                 'verb_id' => $verb,
-                'lang' => 'fr',
+                'lang_code' => 'fr',
                 'translation' => $translatedForm,
             ]);
         }

@@ -33,41 +33,9 @@ class VerbSeeder extends Seeder
                 'past_participle' => $pastParticiple,
                 'level' => $level,
             ]);
-
-            // --- GÉNÉRATION AUTOMATIQUE DES EXERCICES ---
-
-            // Exercice 1 : Trouver le Past Simple (Saisie clavier)
-            $ex1 = Exercise::create([
-                'type' => 'input',
-                'question' => "What is the Past Simple of : $infinitive ?",
-                'correct_answer' => $pastSimple,
-                'points' => 10,
-            ]);
-            // On lie l'exercice au verbe
-            $verb->exercises()->attach($ex1->id);
-
-            // Exercice 2 : Trouver le Participe Passé (Saisie clavier)
-            $ex2 = Exercise::create([
-                'type' => 'input',
-                'question' => "What is the Past Participle of : $infinitive ?",
-                'correct_answer' => $pastParticiple,
-                'points' => 15, // Un peu plus dur
-            ]);
-            $verb->exercises()->attach($ex2->id);
-
-            // // Exercice 3 : Traduction Inverse (QCM - Simplifié pour le seed)
-            // // Note: Pour un vrai QCM, il faudrait générer des fausses réponses aléatoires.
-            // // Pour l'instant, on fait un input simple pour la traduction.
-            // $ex3 = Exercise::create([
-            //     'type' => 'input',
-            //     'question' => "What is the English translation of '$translation' (Infinitive) ?",
-            //     'correct_answer' => $infinitive,
-            //     'points' => 5,
-            // ]);
-            // $verb->exercises()->attach($ex3->id);
         }
 
         fclose($csvFile);
-        $this->command->info('Verbes et Exercices importés avec succès !');
+        $this->command->info('Verbes importés avec succès !');
     }
 }

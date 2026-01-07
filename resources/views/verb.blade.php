@@ -35,7 +35,7 @@
                             <button @click="speak('{{ $verb->infinitive }}')" class="p-3 rounded-full bg-white shadow-xl hover:scale-110 active:scale-95 transition text-primary">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18.01,19.86 21,16.28 21,12C21,7.72 18.01,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z"/></svg>
                             </button>
-                            <span class="text-xl font-bold text-muted italic">/{{ $verb->phonetic ?? '...' }}/</span>
+                            <span class="text-xl font-bold text-muted italic">{{ $verb->phonetic ?? '...' }}</span>
                         </div>
                     </div>
 
@@ -93,14 +93,18 @@
                 </h3>
                 <div class="prose prose-indigo max-w-none">
                     <p class="text-lg md:text-xl text-body/90 font-medium leading-relaxed italic">
-                        "{{ $verb->description ?? 'Pas de description disponible pour le moment.' }}"
+                        @forelse ($verb->description as $desc)
+                            <p>{{ $desc }}</p>
+                        @empty
+                            Pas de description disponible pour le moment.
+                        @endforelse
                     </p>
                 </div>
 
                 @if (app()->getLocale() !== "en")
                     <!-- Translation box -->
                     @php
-                        $verbTranslation = $verb->translations()->where('lang', app()->getLocale())->first();
+                        $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first();
                     @endphp
                     <div class="mt-4 pt-4 border-t border-muted/50 flex flex-wrap gap-2 items-center">
                         <span class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">
@@ -112,6 +116,10 @@
                     </div>
                 @endif
             </div>
+            <a href="{{ $verb->source_url }}"
+                class="shrink-0 px-10 py-5 bg-white text-primary rounded-[2rem] font-black text-base hover:scale-105 transition shadow-2xl active:scale-95">
+                En savoir plus
+            </a>
 
             <!-- Usage Examples -->
             @php $sentences = $verb->sentences()->take(3)->get(); @endphp
