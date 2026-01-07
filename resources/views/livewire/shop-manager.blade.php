@@ -10,8 +10,7 @@
     </div>
     @endif
 
-    <div class="rounded-3xl p-6 mb-8 text-surface relative overflow-hidden"
-        style="background: linear-gradient(90deg,var(--color-primary), #a78bfa)">
+    <div class="rounded-3xl p-6 mb-8 text-body relative overflow-hidden bg-gradient-to-b from-primary to-orange-300">
         <div class="relative z-10">
             <h3 class="text-lg opacity-90 font-medium">Ton solde actuel</h3>
             <p class="text-5xl font-black">{{ number_format(auth()->user()->xp_balance) }} <span

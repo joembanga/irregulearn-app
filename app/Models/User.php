@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 use function Illuminate\Support\now;
 
@@ -132,9 +133,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function dailyVerbs()
     {
+        $timezone = $this->timezone ?? 'UTC';
         return $this->belongsToMany(Verb::class, 'daily_verbs')
             ->withPivot('is_learned', 'day')
-            ->wherePivot('day', now()->toDateString());
+            ->wherePivot('day', now($timezone)->toDateString());
     }
 
     public function learnedVerbs(bool $haveLearned = true)
@@ -151,11 +153,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // If user hasn't already dailyverbs
         if ($this->dailyVerbs()->count() === 0) {
-
-            $verbs = Verb::inRandomOrder()->take($this->daily_target)->get();
-
+            $learnedVerbsId = $this->learnedVerbs(true)->pluck('verb_id')->toArray();
+            $query = Verb::whereNotIn('id', $learnedVerbsId)->inRandomOrder();
+            if ($this->daily_target) {
+                $verbs = $query->limit($this->daily_target)->get();
+            } else {
+                $verbs = $query->limit(5)->get();
+            }
+            if ($verbs->isEmpty()) {
+                return;
+            }
             foreach ($verbs as $verb) {
-                $this->dailyVerbs()->attach($verb->id, ['day' => now()->toDateString()]);
+                $timezone = $this->timezone ?? 'UTC';
+                $this->dailyVerbs()->attach($verb->id, ['day' => now($timezone)->toDateString()]);
             }
         }
     }
@@ -232,7 +242,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $previousCategory = Category::where('order', $category->order - 1)->first();
         if (!$previousCategory) return true;
 
-        // If he have done 70% of one category
+        // If he have done 80% of one category
         $totalVerbs = $previousCategory->verbs()->count();
         $masteredVerbs = $this->masteredVerbs()
             ->whereHas('categories', function ($q) use ($previousCategory) {
@@ -240,7 +250,7 @@ class User extends Authenticatable implements MustVerifyEmail
             })->count();
         $masteryRate = ($totalVerbs > 0) ? ($masteredVerbs / $totalVerbs) * 100 : 0;
 
-        return $masteryRate >= 70;
+        return $masteryRate >= 80;
     }
 
     /**

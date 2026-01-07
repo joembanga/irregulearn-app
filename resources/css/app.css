@@ -4,7 +4,13 @@
 
 :root {
     /* Primary (Purple - kept as requested but flattened) */
-    --color-primary: #7c3aed; 
+    /* --color-primary: rgb(223, 213, 69);
+    --color-primary-rgb: 223, 213, 69; */
+    /* --color-primary: #45df85;
+    --color-primary-rgb: 69, 223, 133; */
+    /* --color-primary: #edae3a;
+    --color-primary-rgb: 237, 174, 58; */
+    --color-primary: #7c3aed;
     --color-primary-rgb: 124 58 237;
     
     /* Accent (Teal/Blue - softer) */
@@ -34,7 +40,13 @@
 
 .dark {
     /* Primary Dark */
-    --color-primary: #8b5cf6; 
+    /* --color-primary: rgb(223, 213, 69);
+    --color-primary-rgb: 223, 213, 69; */
+    /* --color-primary: #45df85;
+    --color-primary-rgb: 69, 223, 133; */
+    /* --color-primary: #dfa945;
+    --color-primary-rgb: 237, 174, 58; */
+    --color-primary: #8b5cf6;
     --color-primary-rgb: 139 92 246;
     
     /* Accent Dark */

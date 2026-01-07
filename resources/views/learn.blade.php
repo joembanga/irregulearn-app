@@ -9,8 +9,9 @@
                         <p class="text-sm text-muted">{{ $category->description }}</p>
                     </div>
                     <div class="hidden sm:flex items-center gap-3">
-                        <a href="{{ route('verbs.index') }}" class="text-sm text-muted hover:text-accent">Voir la liste
-                            des verbes</a>
+                        <a href="{{ route('verbs.index') }}" class="text-sm text-muted hover:text-primary hover:underline">
+                            Voir la liste des verbes
+                        </a>
                     </div>
                 </div>
             </section>
@@ -72,7 +73,7 @@
 
                                     @if (!$category->is_locked)
                                     <div class="w-full bg-app rounded-full h-2.5 mb-4 overflow-hidden">
-                                        <div class="bg-gradient-to-r {{ $category->progress == 100 ? 'from-success to-green-300' : 'from-primary to-purple-500' }} h-2.5 rounded-full transition-all duration-700"
+                                        <div class="bg-gradient-to-r {{ $category->progress == 100 ? 'from-success to-green-300' : 'from-purple-500 to-primary' }} h-2.5 rounded-full transition-all duration-700"
                                             style="width: {{ $category->progress }}%"></div>
                                     </div>
 

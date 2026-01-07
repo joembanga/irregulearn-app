@@ -2,9 +2,8 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 mb-6">
-                    <div class="bg-primary text-surface p-2 rounded-xl font-bold shadow-sm">IL</div>
-                    <span class="font-black text-xl text-body tracking-tight">Irregu<span class="text-primary">Learn</span></span>
+                <a href="/" class="flex items-center gap-2 mb-6">
+                    <x-application-logo />
                 </a>
                 <p class="text-muted text-sm max-w-sm leading-relaxed">
                     Maîtrisez les verbes irréguliers anglais avec une approche moderne et récompensée. Déjà des milliers d'élèves progressent chaque jour.

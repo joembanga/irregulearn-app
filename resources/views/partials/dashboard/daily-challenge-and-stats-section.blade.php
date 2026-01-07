@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
     <!-- Daily Challenge Card (Prominent) -->
-    <div class="lg:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-600 p-6 md:p-8 text-white shadow-xl">
+    <div class="lg:col-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-violet-600 p-6 md:p-8 text-white shadow-xl">
         <div class="relative z-10">
             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div>
@@ -15,7 +15,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center mt-4">
-                <a href="{{ route('learn.daily') }}" class="w-full sm:w-auto justify-center group flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 rounded-2xl font-black text-lg transition hover:scale-105 active:scale-95 shadow-lg shadow-indigo-900/20">
+                <a href="{{ route('learn.daily') }}" class="w-full sm:w-auto justify-center group flex items-center gap-3 px-8 py-4 bg-white text-primary rounded-2xl font-black text-lg transition hover:scale-105 active:scale-95 shadow-lg shadow-indigo-900/20">
                     <span>C'est parti !</span>
                     <svg xmlns="http://www.w3.org/2000/svg"
                         class="h-6 w-6 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24"
@@ -29,13 +29,13 @@
                 <div class="flex ml-0 sm:ml-4 -space-x-3 mt-2 sm:mt-0">
                     @foreach ($dailyVerbs as $dv)
                     @php $dvTranslation = $dv->translations()->where('lang', app()->getLocale())->first(); @endphp
-                    <div class="h-10 px-4 bg-indigo-500/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-xs font-bold shadow-sm"
+                    <div class="h-10 px-4 bg-primary/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-xs font-bold shadow-sm"
                         title="{{ app()->getLocale() !== "en" ? $dvTranslation->translation : '' }}">
                         {{ $dv->infinitive }}
                     </div>
                     @endforeach
                     @if (auth()->user()->dailyVerbs()->count() > 3)
-                    <div class="h-10 w-10 bg-indigo-500/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-xs font-bold shadow-sm">
+                    <div class="h-10 w-10 bg-primary/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-xs font-bold shadow-sm">
                         +{{ auth()->user()->dailyVerbs()->count() - 3 }}
                     </div>
                     @endif
@@ -99,7 +99,7 @@
             <div class="relative z-10 flex items-center justify-between">
                 <div>
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">Rang actuel</p>
-                    <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400 capitalize tracking-tight">
+                    <p class="text-2xl font-black text-primary capitalize tracking-tight">
                         {{ auth()->user()->level_name }}
                     </p>
                 </div>

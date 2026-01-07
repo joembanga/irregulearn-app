@@ -52,7 +52,7 @@
                                 </div>
 
                                 <a href="{{ url($notification->data['url'] ?? '/dashboard') }}"
-                                    class="inline-flex items-center gap-2 px-6 py-3 bg-body text-surface rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-body/10 hover:bg-primary">
+                                    class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-surface rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-body/10 hover:bg-primary">
                                     Voir les détails
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -66,11 +66,11 @@
                 <div wire:click="selectResult('{{ $user->username }}', '{{ route('profile.public', $user->username) }}')"
                     class="group cursor-pointer p-6 bg-surface rounded-[2rem] border-2 border-muted/50 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 active:scale-95 flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 font-black text-lg shadow-inner group-hover:scale-110 transition-transform">
+                        <div class="h-12 w-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-primary font-black text-lg shadow-inner group-hover:scale-110 transition-transform">
                             {{ substr($user->username, 0, 1) }}
                         </div>
                         <div>
-                            <div class="text-lg font-black text-body group-hover:text-indigo-600 transition-colors tracking-tight">
+                            <div class="text-lg font-black text-body group-hover:text-primary transition-colors tracking-tight">
                                 {{ $user->username }}
                             </div>
                             <div class="text-[10px] font-bold text-muted uppercase tracking-widest mt-0.5">
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <svg class="w-5 h-5 text-muted group-hover:text-indigo-600 transition-all duration-300 transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-muted group-hover:text-primary transition-all duration-300 transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </div>

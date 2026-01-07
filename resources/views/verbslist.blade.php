@@ -73,13 +73,13 @@
             </div>
 
             <!-- Export Section -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-12 px-8 bg-indigo-600 rounded-[3rem] shadow-2xl relative overflow-hidden group">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-12 px-8 bg-primary rounded-[3rem] shadow-2xl relative overflow-hidden group">
                 <div class="relative z-10 text-center md:text-left">
-                    <h4 class="text-2xl font-black text-surface uppercase tracking-tight mb-2">Révision hors-ligne ?</h4>
+                    <h4 class="text-2xl font-black text-body uppercase tracking-tight mb-2">Révision hors-ligne ?</h4>
                     <p class="text-indigo-100 font-medium">Téléchargez la liste complète au format PDF pour l'emporter partout.</p>
                 </div>
                 <a href="{{ route('verbs.export') }}"
-                    class="relative z-10 flex items-center gap-3 bg-white text-indigo-600 px-10 py-5 rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] shadow-xl transition-all hover:scale-110 active:scale-95">
+                    class="relative z-10 flex items-center gap-3 bg-white text-primary px-10 py-5 rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] shadow-xl transition-all hover:scale-110 active:scale-95">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>

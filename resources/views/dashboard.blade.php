@@ -33,7 +33,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
                 <!-- Promo Flash Test -->
-                <div class="lg:col-span-2 bg-indigo-600 p-8 md:p-12 rounded-[2.5rem] shadow-xl text-surface relative overflow-hidden group">
+                <div class="lg:col-span-2 bg-primary p-8 md:p-12 rounded-[2.5rem] shadow-xl text-surface relative overflow-hidden group">
                     <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                         <div class="text-center md:text-left">
                             <h4 class="text-white text-3xl font-black mb-4 tracking-tight uppercase">Prêt pour un test éclair ?</h4>
@@ -41,7 +41,7 @@
                                 Entraîne-toi sur tous les verbes que tu as déjà vus pour bétonner tes connaissances. Une session de 5 minutes suffit pour tout changer.
                             </p>
                         </div>
-                        <a href="{{ route('learn.know-verbs') }}" class="shrink-0 px-10 py-5 bg-white text-indigo-600 rounded-[2rem] font-black text-base hover:scale-105 transition shadow-2xl active:scale-95">
+                        <a href="{{ route('learn.know-verbs') }}" class="shrink-0 px-10 py-5 bg-white text-primary rounded-[2rem] font-black text-base hover:scale-105 transition shadow-2xl active:scale-95">
                             LANCER UN QUIZ ⚡
                         </a>
                     </div>
