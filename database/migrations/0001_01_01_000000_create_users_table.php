@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('firstname', 255);
             $table->string('lastname', 255);
             $table->string('email', 255)->unique();
+            $table->string('google_id')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 

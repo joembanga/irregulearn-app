@@ -28,7 +28,7 @@
                 @php $dailyVerbs = auth()->user()->dailyVerbs()->take(3)->get(); @endphp
                 <div class="flex ml-0 sm:ml-4 -space-x-3 mt-2 sm:mt-0">
                     @foreach ($dailyVerbs as $dv)
-                    @php $dvTranslation = $dv->translations()->where('lang', app()->getLocale())->first(); @endphp
+                    @php $dvTranslation = $dv->translations()->where('lang_code', app()->getLocale())->first(); @endphp
                     <div class="h-10 px-4 bg-primary/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-xs font-bold shadow-sm"
                         title="{{ app()->getLocale() !== "en" ? $dvTranslation->translation : '' }}">
                         {{ $dv->infinitive }}

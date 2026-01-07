@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('past_simple');
             $table->string('past_participle');
             $table->enum('level', ['beginner', 'intermediate', 'expert'])->default('beginner');
+            $table->text('description')->nullable();
+            $table->string('phonetic')->nullable();
+            $table->string('source_url')->nullable();
+            $table->string('details_origin')->nullable();
             $table->timestamps();
         });
     }

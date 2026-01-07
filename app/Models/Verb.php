@@ -14,8 +14,12 @@ class Verb extends Model
         'past_participle',
         'level',
         'category',
-        'description'
+        'description',
+        'source_url',
+        'phonetic',
+        'details_origin'
     ];
+    protected $casts = ['description' => 'array'];
 
     public function users()
     {

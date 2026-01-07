@@ -26,7 +26,7 @@ class LearnController extends Controller
 
                 $totalVerbs = $category->verbs_count;
                 $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-                $category->is_locked = !$user->canAccessCategory($category);
+                $category->is_locked = false;
 
                 return $category;
             });
