@@ -80,5 +80,3 @@ class AvatarEditor extends Component
         return view('livewire.avatar-editor', ['currentUrl' => $currentUrl]);
     }
 }
-
-//  #AWSdeJoe2025!
