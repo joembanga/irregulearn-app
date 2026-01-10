@@ -17,7 +17,7 @@ class RegisterForm extends Component
     #[Validate('required|string|max:255')]
     public $lastname = '';
 
-    #[Validate('required|string|max:255|min:3|lowercase|unique:users,username')]
+    #[Validate('required|string|max:255|min:3|lowercase|regex:/^[a-zA-Z0-9_-]+$/|unique:users,username')]
     public $username = '';
 
     #[Validate('required|string|lowercase|email|max:255|unique:users,email')]

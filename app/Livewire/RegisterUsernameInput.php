@@ -29,6 +29,9 @@ class RegisterUsernameInput extends Component
         } elseif (strlen($this->username) < 3) {
             $this->status = 'invalid';
             $this->message = '⚠️ Trop court (min 3 lettres)';
+        } elseif (!preg_match('/^[a-zA-Z0-9_-]+$/', $this->username)) {
+            $this->status = 'invalid';
+            $this->message = '⚠️ Ni espace ni caractères spéciaux (sauf _ et -)';
         } else {
             $this->status = 'valid';
             $this->message = '✅ Pseudo disponible !';
