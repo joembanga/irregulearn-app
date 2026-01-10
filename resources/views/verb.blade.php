@@ -1,3 +1,6 @@
+@section('og_title', "Verbe : " . ucfirst($verb->infinitive))
+@section('og_description', "Apprends le verbe '" . $verb->infinitive . "' sur IrreguLearn. Formes : " . $verb->past_simple . ", " . $verb->past_participle)
+@section('og_image', route('share.image', ['type' => 'verb', 'identifier' => $verb->slug]))
 <x-app-layout>
     <div x-data="{
         touchstartX: 0,

@@ -254,6 +254,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the full URL for the user's avatar.
+     */
+    public function getAvatarUrl(): string
+    {
+        if (empty($this->avatar_code)) {
+            return '';
+        }
+        return "https://avataaars.io/?" . $this->avatar_code;
+    }
+
+    /**
      * Get a human friendly level name based on numeric level.
      * Usage: $user->level_name
      */

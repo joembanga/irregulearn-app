@@ -1,3 +1,6 @@
+@section('og_title', "Mes verbes du jour")
+@section('og_description', "Ma sélection de verbes irréguliers pour aujourd'hui sur IrreguLearn !")
+@section('og_image', route('share.image', ['type' => 'daily', 'identifier' => 'today']))
 <x-app-layout>
     <div class="py-12 bg-app min-h-screen">
         <div class="max-w-6xl mx-auto px-6 space-y-12">

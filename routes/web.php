@@ -8,6 +8,10 @@ use App\Http\Controllers\VerbController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LearnController;
+use App\Http\Controllers\ShareController;
+
+// Share image generation (public)
+Route::get('/share/image/{type}/{identifier}', [ShareController::class, 'generate'])->name('share.image');
 
 // Public pages: privacy and terms
 Route::view('/privacy', 'privacy')->name('privacy');

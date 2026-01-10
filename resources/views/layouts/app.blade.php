@@ -9,6 +9,17 @@
 
         <title>{{ config('app.name', 'Irregulearn') }}</title>
 
+        <!-- Dynamic Meta Tags (Open Graph / SEO) -->
+        <meta property="og:title" content="@yield('og_title', config('app.name'))">
+        <meta property="og:description" content="@yield('og_description', 'Maîtrise les verbes irréguliers anglais avec IrreguLearn !')">
+        <meta property="og:image" content="@yield('og_image', asset('images/og-default.png'))">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="@yield('og_title', config('app.name'))">
+        <meta name="twitter:description" content="@yield('og_description', 'Maîtrise les verbes irréguliers anglais avec IrreguLearn !')">
+        <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.png'))">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
