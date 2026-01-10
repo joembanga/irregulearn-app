@@ -65,7 +65,7 @@ class AvatarEditor extends Component
 
     public function save()
     {
-        // dd($this->settings);
+        //dd($this->settings);
         $queryString = http_build_query($this->settings);
         /** @var User $user */
         $user = Auth::user();

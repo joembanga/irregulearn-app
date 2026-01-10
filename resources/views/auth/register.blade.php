@@ -14,61 +14,8 @@
             <p class="mt-2 text-muted font-medium">Rejoins IrreguLearn et commence à maîtriser les verbes.</p>
         </div>
 
-        <form method="POST" action="{{ route('register') }}" class="space-y-5">
-            @csrf
+        <livewire:auth.register-form />
 
-            <!-- Username (Livewire) -->
-            <div class="space-y-2">
-                <x-input-label for="username" :value="__('Nom d\'utilisateur')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                <livewire:register-username-input />
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <!-- Firstname -->
-                <div class="space-y-2">
-                    <x-input-label for="firstname" :value="__('Prénom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="firstname" class="block w-full" type="text" name="firstname"
-                        :value="old('firstname')" required autocomplete="firstname" placeholder="Jean" />
-                    <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
-                </div>
-
-                <!-- Lastname -->
-                <div class="space-y-2">
-                    <x-input-label for="lastname" :value="__('Nom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="lastname" class="block w-full" type="text" name="lastname"
-                        :value="old('lastname')" required autocomplete="lastname" placeholder="Dupont" />
-                    <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
-                </div>
-            </div>
-
-            <!-- Email Address -->
-            <div class="space-y-2">
-                <x-input-label for="email" :value="__('Email')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')"
-                    required autocomplete="username" placeholder="ton@email.com" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            </div>
-
-            <!-- Password -->
-            <div class="space-y-2">
-                <x-input-label for="password" :value="__('Mot de passe')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                <x-text-input id="password" class="block w-full" type="password" name="password" required
-                    autocomplete="new-password" placeholder="••••••••" />
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="space-y-2">
-                <x-input-label for="password_confirmation" :value="__('Confirmer le mot de passe')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                <x-text-input id="password_confirmation" class="block w-full" type="password"
-                    name="password_confirmation" required autocomplete="new-password" placeholder="••••••••" />
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-            </div>
-
-            <x-primary-button class="w-full py-4 mt-4">
-                {{ __('Créer mon compte') }}
-            </x-primary-button>
-        </form>
 
         <div class="relative">
             <div class="absolute inset-0 flex items-center">
