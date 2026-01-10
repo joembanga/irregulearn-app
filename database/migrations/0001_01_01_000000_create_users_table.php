@@ -36,7 +36,7 @@ return new class extends Migration
             $table->tinyInteger('daily_target')->default(5)->max(10);
 
             // --- PROFILE & ROLE ---
-            $table->string('avatar_code')->nullable();
+            $table->text('avatar_code')->nullable();
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->boolean('is_premium')->default(false);
 
