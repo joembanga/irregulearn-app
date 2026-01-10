@@ -11,9 +11,14 @@
                         Mission du Jour
                     </div>
                     <h2 class="text-4xl md:text-5xl font-black text-body tracking-tight uppercase mb-4">Tes verbes du jour</h2>
-                    <p class="mt-2 text-muted max-w-xl mx-auto font-medium leading-relaxed">
+                    <p class="mt-2 text-muted max-w-xl mx-auto font-medium leading-relaxed mb-6">
                         Voici la sélection personnalisée pour aujourd'hui. <br class="hidden sm:block"> Prends quelques minutes pour les mémoriser avant de passer au test.
                     </p>
+                    <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'daily', 'identifier' => 'today']) }}'); copied = true; setTimeout(() => copied = false, 2000)"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-surface border border-muted text-body rounded-2xl font-bold text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
+                        <span x-show="!copied">🖼️ Partager l'image du jour</span>
+                        <span x-show="copied" x-cloak class="text-success">✅ Lien image copié !</span>
+                    </button>
                 </div>
                 <!-- Decorative background text -->
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02] select-none">
