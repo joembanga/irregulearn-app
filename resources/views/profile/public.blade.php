@@ -53,12 +53,12 @@
                             @if(auth()->id() !== $user->id)
                             <livewire:follow-button :user="$user" />
                             @endif
-                            <button x-data="{ copied: false }"
-                                @click="navigator.clipboard.writeText(window.location.href); copied = true; setTimeout(() => copied = false, 2000)"
-                                class="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-surface border border-muted text-body rounded-2xl font-bold text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
-                                <span x-show="!copied">🔗 Partager le profil</span>
-                                <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
-                            </button>
+                             <x-share-button 
+                                :title="$user->username . ' sur IrreguLearn'" 
+                                :text="'Viens voir mon profil sur IrreguLearn et apprends les verbes irréguliers avec moi !'" 
+                                :url="route('profile.public', $user->username)"
+                                class="mt-6"
+                            />
                             <button x-data="{ copied: false }"
                                 @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'stats', 'identifier' => $user->username]) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                                 class="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-primary/10 border border-primary/20 text-primary rounded-2xl font-bold text-sm hover:bg-primary/20 transition active:scale-95 shadow-sm">

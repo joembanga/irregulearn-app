@@ -43,11 +43,11 @@
                     </div>
 
                     <div class="w-auto flex flex-row md:flex-col gap-3">
-                        <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('verbs.show', $verb->slug) }}'); copied = true; setTimeout(() => copied = false, 2000)"
-                            class="inline-flex flex-row justify-center font-bold items-center gap-2 px-6 py-3 rounded-lg bg-surface border border-muted text-body text-sm hover:bg-muted/5 transition active:scale-95 shadow-sm">
-                            <span x-show="!copied">🔗 Partager</span>
-                            <span x-show="copied" x-cloak class="text-success">✅ Lien copié !</span>
-                        </button>
+                        <x-share-button 
+                            :title="'Verbe : ' . ucfirst($verb->infinitive)" 
+                            :text="'Apprends le verbe irrégulier \'' . $verb->infinitive . '\' sur IrreguLearn !'" 
+                            :url="route('verbs.show', $verb->slug)"
+                        />
                         <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'verb', 'identifier' => $verb->slug]) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                             class="inline-flex flex-row justify-center font-bold items-center gap-2 px-6 py-3 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm hover:bg-primary/20 transition active:scale-95 shadow-sm">
                             <span x-show="!copied">🖼️ Image</span>
