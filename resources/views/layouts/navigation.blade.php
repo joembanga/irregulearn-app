@@ -48,8 +48,15 @@
                 <button @click="toggleTheme" class="p-2 rounded-md hover:bg-surface transition">
                     <svg x-cloak x-show="!isDark" class="h-6 w-6 text-warning" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 3v2.25M12 18.75V21M4.22 4.22l1.59 1.59M18.19 18.19l1.59 1.59M1 12h2.25M20.75 12H23M4.22 19.78l1.59-1.59M18.19 5.81l1.59-1.59" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20v2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93l1.41 1.41" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.66 17.66l1.41 1.41" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12h2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12h2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 19.07l1.41-1.41" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.66 6.34l1.41-1.41" />
                     </svg>
                     <svg x-cloak x-show="isDark" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -173,8 +180,20 @@
                     <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] px-4 mb-4">Préférences</p>
                     <button @click="toggleTheme" class="w-full flex items-center justify-between px-6 py-4 rounded-2xl bg-app text-body font-bold transition-transform active:scale-95">
                         <span class="flex items-center gap-3">
-                            <span x-show="!isDark">☀️</span>
-                            <span x-show="isDark">🌙</span>
+                            <svg x-cloak x-show="!isDark" class="h-5 w-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20v2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93l1.41 1.41" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.66 17.66l1.41 1.41" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 12h2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12h2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 19.07l1.41-1.41" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.66 6.34l1.41-1.41" />
+                            </svg>
+                            <svg x-cloak x-show="isDark" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                            </svg>
                             Mode <span x-text="isDark ? 'Clair' : 'Sombre'"></span>
                         </span>
                         <div class="w-10 h-6 bg-muted/20 rounded-full relative">
