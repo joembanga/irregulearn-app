@@ -161,7 +161,7 @@
     <!-- Navigation Overlay -->
     <div class="hidden md:flex fixed inset-y-0 left-0 right-0 pointer-events-none items-center justify-between px-8 z-40">
         @if ($previous)
-            <a href="{{ route('verbs.show', $previous->slug) }}"
+            <a href="{{ route('verbs.show', $previous->slug) }}" wire.navigate
                 class="pointer-events-auto p-4 rounded-3xl bg-white/50 backdrop-blur-md border border-white/20 text-body transition-all hover:scale-110 hover:bg-white active:scale-95 shadow-2xl group"
                 title="Précédent : {{ $previous->infinitive }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -173,7 +173,7 @@
         @endif
 
         @if ($next)
-            <a href="{{ route('verbs.show', $next->slug) }}"
+            <a href="{{ route('verbs.show', $next->slug) }}" wire.navigate
                 class="pointer-events-auto p-4 rounded-3xl bg-white/50 backdrop-blur-md border border-white/20 text-body transition-all hover:scale-110 hover:bg-white active:scale-95 shadow-2xl group"
                 title="Suivant : {{ $next->infinitive }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

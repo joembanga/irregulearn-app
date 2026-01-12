@@ -151,7 +151,7 @@
     </table>
 
     <div class="footer">
-        Généré par IrreguLearn — Apprenez vos verbes irréguliers sur <a href="http://www.irregulearn.com">www.irregulearn.com</a>
+        Généré par IrreguLearn — Apprenez vos verbes irréguliers sur <a href="http://www.irregulearn.infinityfree.com">www.irregulearn.infinityfree.com</a>
     </div>
 </body>
 

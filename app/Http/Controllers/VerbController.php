@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessPdfExport;
 use App\Models\Verb;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class VerbController extends Controller
 {
@@ -37,10 +39,14 @@ class VerbController extends Controller
             $query->where('level', $filter);
         }
 
-        // Optimize: verify if we need relationships, if not select specific columns
-        // avoiding `select *` if the view only shows basic info could be an optimization
-        // but simple pagination is usually fine.
-        $verbs = $query->paginate(20)->withQueryString();
+        $page = $request->input('page', 1);
+        $cacheKey = "verbs_list_{$filter}_page_{$page}";
+
+        $verbs = Cache::remember($cacheKey, now()->addHours(1), function() use ($query) {
+            return $query->paginate(20);
+        });
+
+        $verbs->withQueryString();
 
         return view('verbslist', compact('verbs', 'filter'));
     }
@@ -52,22 +58,10 @@ class VerbController extends Controller
     {
         $user = Auth::user();
 
-        // Optimized query: Eager load only the pivot data for the current user
-        $verbs = Verb::with(['users' => function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        }])->orderBy('infinitive')->get();
+        // Dispatch background job
+        ProcessPdfExport::dispatch($user);
 
-        $data = [
-            'user' => $user,
-            'verbs' => $verbs,
-            'date' => now()->format('d/m/Y'),
-            // 'logo_path' => public_path('images/logo.png'), 
-        ];
-
-        // Ensure DOMPDF is installed and aliased or use the Facade
-        $pdf = Pdf::loadView('pdf.my-verbs', $data);
-
-        return $pdf->download("IrregularVerbs_list_Irregulearn.pdf");
+        return back()->with('success', 'Génération du PDF en cours... Tu le recevras par email d\'ici quelques instants !');
     }
 
     public function listFavs()

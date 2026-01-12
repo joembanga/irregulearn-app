@@ -39,7 +39,7 @@
                             <span class="text-lg font-black text-body group-hover:text-primary transition-colors tracking-tight uppercase">
                                 {{ $verb->infinitive }}
                             </span>
-                            @php $verbTranslation = $verb->translations()->where('lang', app()->getLocale())->first(); @endphp
+                            @php $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first(); @endphp
                             <div class="text-[10px] font-bold text-muted uppercase tracking-tighter mt-1">
                                 {{ app()->getLocale() !== "en" ? Str::limit($verbTranslation->translation, 20) : '' }}
                             </div>

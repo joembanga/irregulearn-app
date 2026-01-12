@@ -21,7 +21,8 @@
                         <p class="font-black text-body">{{ $top3[1]->username }}</p>
                         <p class="text-xs font-bold text-primary">
                             {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }}
-                            XP</p>
+                            XP
+                        </p>
                     </div>
                 </div>
                 @endif
@@ -43,7 +44,8 @@
                         <p class="text-xl font-black text-body">{{ $top3[0]->username }}</p>
                         <p class="text-sm font-bold text-primary">
                             {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }}
-                            XP</p>
+                            XP
+                        </p>
                     </div>
                 </div>
                 @endif
@@ -64,7 +66,8 @@
                         <p class="font-black text-body">{{ $top3[2]->username }}</p>
                         <p class="text-xs font-bold text-primary">
                             {{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }}
-                            XP</p>
+                            XP
+                        </p>
                     </div>
                 </div>
                 @endif
@@ -78,22 +81,22 @@
 
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
                 <div class="flex gap-2 bg-surface p-1 rounded-2xl">
-                    <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}"
+                    <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}" wire:navigate
                         class="w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'global' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
                         🌎 Global
                     </a>
-                    <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}"
+                    <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}" wire:navigate
                         class="w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'friends' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
                         👥 Amis
                     </a>
                 </div>
 
                 <div class="flex gap-2 bg-primary/60 p-1 rounded-2xl">
-                    <a href="{{ route('leaderboard', ['period' => 'weekly', 'filter' => $filter]) }}"
+                    <a href="{{ route('leaderboard', ['period' => 'weekly', 'filter' => $filter]) }}" wire:navigate
                         class="w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'weekly' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
                         Cette Semaine
                     </a>
-                    <a href="{{ route('leaderboard', ['period' => 'alltime', 'filter' => $filter]) }}"
+                    <a href="{{ route('leaderboard', ['period' => 'alltime', 'filter' => $filter]) }}" wire:navigate
                         class="w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'alltime' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
                         Tout temps
                     </a>
@@ -102,26 +105,27 @@
             <!-- Table/Card List -->
             <div class="card-surface rounded-[2.5rem] shadow-2xl border border-muted overflow-hidden">
                 <!-- Mobile: card list to avoid overflow -->
-                <div class="md:hidden p-4 space-y-3">
+                <div class="md:hidden p-3 space-y-3">
                     @foreach($users as $index => $user)
                     @php $rank = $users->firstItem() + $index; @endphp
-                    <a href="{{ route('profile.public', $user->username) }}"
-                        class="block p-4 rounded-xl bg-surface/40 hover:bg-surface/60 transition">
+                    <a href="{{ route('profile.public', $user->username) }}" wire:navigate
+                        class="block p-2 rounded-xl bg-surface/40 hover:bg-surface/60 transition">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black truncate">
-                                    {{ substr($user->username,0,1) }}</div>
+                                <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                                    {{ substr($user->username,0,1) }}
+                                </div>
                                 <div class="min-w-0">
                                     <div class="font-black text-body truncate">{{ $user->username }}</div>
                                     <div class="text-[11px] text-muted truncate">{{ $user->current_streak }} jours de
                                         série •
                                         {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }}
-                                        XP</div>
+                                        XP
+                                    </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <div class="font-extrabold text-primary">@if($rank==1) 🥇 @elseif($rank==2) 🥈
+                            <div class="text-left">
+                                <div class="font-bold text-primary">@if($rank==1) 🥇 @elseif($rank==2) 🥈
                                     @elseif($rank==3) 🥉 @else #{{ $rank }} @endif</div>
                             </div>
                         </div>
@@ -157,7 +161,7 @@
                                     @endif
                                 </td>
                                 <td class="px-8 py-6">
-                                    <a href="{{ route('profile.public', $user->username) }}"
+                                    <a href="{{ route('profile.public', $user->username) }}" wire:navigate
                                         class="flex items-center gap-4">
                                         <div
                                             class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner group-hover:scale-110 transition-transform">
