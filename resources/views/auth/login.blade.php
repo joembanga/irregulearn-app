@@ -84,7 +84,7 @@
 
         <p class="text-center text-sm text-muted">
             Pas encore de compte ? 
-            <a href="{{ route('register') }}" class="font-bold text-primary hover:text-primary/80 transition-colors">
+            <a href="{{ route('register') }}" wire.navigate class="font-bold text-primary hover:text-primary/80 transition-colors">
                 Inscris-toi
             </a>
         </p>

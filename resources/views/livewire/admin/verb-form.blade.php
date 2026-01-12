@@ -3,7 +3,7 @@
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
             {{ $verb->exists ? 'Edit Verb: ' . $verb->infinitive : 'Add New Verb' }}
         </h2>
-        <a href="{{ route('admin.verbs.index') }}" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors">
+        <a href="{{ route('admin.verbs.index') }}" wire.navigate class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 transition-colors">
             Cancel
         </a>
     </div>

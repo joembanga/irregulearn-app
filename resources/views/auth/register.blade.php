@@ -43,7 +43,7 @@
 
         <p class="text-center text-sm text-muted">
             Déjà inscrit ? 
-            <a href="{{ route('login') }}" class="font-bold text-primary hover:text-primary/80 transition-colors">
+            <a href="{{ route('login') }}" wire.navigate class="font-bold text-primary hover:text-primary/80 transition-colors">
                 Connecte-toi
             </a>
         </p>

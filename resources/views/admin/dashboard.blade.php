@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <a href="{{ route('admin.verbs.index') }}" class="text-primary hover:underline">Manage verbs &rarr;</a>
+                <a href="{{ route('admin.verbs.index') }}" wire.navigate class="text-primary hover:underline">Manage verbs &rarr;</a>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
             </div>
             <div class="mt-4 flex items-center text-sm">
                 @if($stats['reports'] > 0)
-                <a href="{{ route('admin.reports.index') }}" class="text-red-500 font-semibold hover:underline">Review required &rarr;</a>
+                <a href="{{ route('admin.reports.index') }}" wire.navigate class="text-red-500 font-semibold hover:underline">Review required &rarr;</a>
                 @else
                 <span class="text-green-500">All caught up!</span>
                 @endif
