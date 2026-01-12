@@ -5,6 +5,48 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property int $id
+ * @property string $slug
+ * @property string $infinitive
+ * @property string $past_simple
+ * @property string $past_participle
+ * @property string $level
+ * @property array<array-key, mixed>|null $description
+ * @property string|null $phonetic
+ * @property string|null $source_url
+ * @property string|null $details_origin
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\VerbExample> $communityExamples
+ * @property-read int|null $community_examples_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $favoritedByUsers
+ * @property-read int|null $favorited_by_users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\VerbSentence> $sentences
+ * @property-read int|null $sentences_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\VerbTranslations> $translations
+ * @property-read int|null $translations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereDetailsOrigin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereInfinitive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb wherePastParticiple($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb wherePastSimple($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb wherePhonetic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereSourceUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Verb extends Model
 {
     public $translation = '';

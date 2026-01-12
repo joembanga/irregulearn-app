@@ -12,6 +12,90 @@ use Illuminate\Support\Facades\Auth;
 
 use function Illuminate\Support\now;
 
+/**
+ * @property int $id
+ * @property string $username
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $email
+ * @property string|null $google_id
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property int $xp_weekly
+ * @property int $xp_total
+ * @property int $xp_balance
+ * @property int $current_streak
+ * @property int $streak_is_freezed
+ * @property string|null $streak_freezed_at
+ * @property int $streak_freezes
+ * @property int $best_streak
+ * @property array<array-key, mixed>|null $search_history
+ * @property string $timezone
+ * @property string|null $last_activity_local_date
+ * @property int $daily_target
+ * @property string|null $avatar_code
+ * @property string|null $avatar_url
+ * @property array<array-key, mixed>|null $unlocked_items
+ * @property string $role
+ * @property int $is_premium
+ * @property int|null $referred_by
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Badge> $badges
+ * @property-read int|null $badges_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $category
+ * @property-read int|null $category_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Verb> $dailyVerbs
+ * @property-read int|null $daily_verbs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Verb> $favorites
+ * @property-read int|null $favorites_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Friendship> $friendRequests
+ * @property-read int|null $friend_requests_count
+ * @property-read string $level_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\VerbExample> $likedExamples
+ * @property-read int|null $liked_examples_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PointTransfer> $receivedTransfers
+ * @property-read int|null $received_transfers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Verb> $verb
+ * @property-read int|null $verb_count
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatarCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatarUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBestStreak($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCurrentStreak($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereDailyTarget($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGoogleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsPremium($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastActivityLocalDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereReferredBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSearchHistory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStreakFreezedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStreakFreezes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStreakIsFreezed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUnlockedItems($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpWeekly($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -215,13 +299,41 @@ class User extends Authenticatable implements MustVerifyEmail
             // It was before yesterday or never -> Reset :(
             // Check for STREAK FREEZE
             if ($this->streak_freezes > 0) {
+                 // Consumer a freeze
+                 $this->decrement('streak_freezes');
+                 // Do NOT reset streak, keep it as is
+                 // BUT we must verify if he missed more than 1 day?
+                 // The logic "It was before yesterday" implies he missed strictly > 1 day.
+                 // If he has a freeze, we save the streak for the *missed* day.
+                 // To make it simple: if he has a freeze, we consider the streak "frozen"
+                 // so we don't reset it to 1, but we don't increment it either for the missing days.
+                 
+                 // However, usually a freeze saves you from reset ONCE.
+                 // So we use 1 freeze. And we keep the current_streak value.
+                 
+                 // If he comes back after 10 days, 1 freeze shouldn't save him.
+                 // Simplified logic: If the gap is exactly 2 days (missed 1 day), use freeze.
+                 // If gap > 2 days (missed > 1 day), we need > 1 freeze?
+                 // Let's stick to: He missed yesterday. 
+                 
                  $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
+                 // if last activity = 2023-01-01. Today = 2023-01-03. Diff = 2. Missed 1 day (02).
+                 // if last activity = 2023-01-01. Today = 2023-01-04. Diff = 3. Missed 2 days (02, 03).
+                 
+                 // We can consume 1 freeze per missed day?
+                 // Let's implement: If he has enough freezes to cover the gap, use them.
+                 // gap - 1 = number of missed days.
+                 
                  $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
                  
                  if ($missedDays <= $this->streak_freezes) {
                      // Saved!
                      $this->decrement('streak_freezes', $missedDays);
-                     $currentStreak++;
+                     // Streak continues (we don't increment because he didn't play yesterday, or maybe we do? 
+                     // Usually freezes just prevent reset. The streak count stays same.)
+                     // But since he played TODAY, we should increment or just keep?
+                     // Duolingo logic: Freeze used = streak maintained. 
+                     // And doing a lesson today = streak + 1.
                      $this->increment('current_streak');
                  } else {
                     // Not enough freezes
