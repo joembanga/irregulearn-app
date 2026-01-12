@@ -28,6 +28,7 @@ class BadgeService
         $badges = Badge::where('requirement_type', 'xp')
             ->where('requirement_value', '<=', $user->xp_total)
             ->get();
+        dd($badges);
 
         foreach ($badges as $badge) {
             $this->awardBadgeIfNotEarned($user, $badge);

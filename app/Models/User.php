@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\StreakUpdated;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -212,6 +213,9 @@ class User extends Authenticatable implements MustVerifyEmail
         // 6. Save today's date (store as date only for consistency)
         $this->last_activity_local_date = $localToday;
         $this->save();
+
+        // 7. Dispatch event for background logic (milestones, badges)
+        StreakUpdated::dispatch($this, $this->current_streak);
     }
 
     /**

@@ -21,18 +21,7 @@ class DashboardController extends Controller
 
         $progressPercent = $totalVerbs > 0 ? ($learnedVerbsCount / $totalVerbs) * 100 : 0;
 
-        $userLevel = null;
-        if ($user->xp_total >= 0 && $user->xp_total < 5000) {
-            $userLevel = "Apprenti";
-        } elseif ($user->xp_total >= 5000 && $user->xp_total < 10000) {
-            $userLevel = "Niveau 2";
-        } elseif ($user->xp_total >= 10000 && $user->xp_total < 30000) {
-            $userLevel = "Niveau 3";
-        } elseif ($user->xp_total >= 30000 && $user->xp_total < 50000) {
-            $userLevel = "Niveau 4";
-        } elseif ($user->xp_total >= 50000) {
-            $userLevel = "God";
-        }
+        $userLevel = $user->level_name;
 
         return view('dashboard', compact('user', 'learnedVerbsCount', 'totalVerbs', 'progressPercent', 'userLevel'));
     }
