@@ -15,22 +15,22 @@
 <body class="antialiased font-sans text-body app-bg">
 
     <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-        <a href="/" class="flex items-center gap-2">
+        <a href="/" wire.navigate class="flex items-center gap-2">
             <x-application-logo />
         </a>
 
         <div class="flex items-center gap-4">
             @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}"
-                        class="font-semibold text-muted hover:text-primary transition">Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}" class="font-medium text-muted hover:text-body">Connexion</a>
-                    <a href="{{ route('register') }}"
-                        class="bg-primary hover:bg-primary/90 text-surface px-5 py-2 rounded-full font-bold transition shadow-lg">
-                        S'inscrire
-                    </a>
-                @endauth
+            @auth
+            <a href="{{ url('/dashboard') }}" wire.navigate
+                class="font-semibold text-muted hover:text-primary transition">Dashboard</a>
+            @else
+            <a href="{{ route('login') }}" wire.navigate class="font-medium text-muted hover:text-body">Connexion</a>
+            <a href="{{ route('register') }}" wire.navigate
+                class="bg-primary hover:bg-primary/90 text-surface px-5 py-2 rounded-full font-bold transition shadow-lg">
+                S'inscrire
+            </a>
+            @endauth
             @endif
         </div>
     </nav>
@@ -52,7 +52,7 @@
                 bilingue sans t'en rendre compte.
             </p>
             <div class="mt-10 flex items-center justify-center lg:justify-start gap-x-6">
-                <a href="{{ route('register') }}"
+                <a href="{{ route('register') }}" wire.navigate
                     class="rounded-xl bg-primary px-8 py-4 text-lg font-bold text-surface shadow-xl hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-all duration-300 hover:scale-105 active:scale-95 hover:-translate-y-1">
                     Commencer l'entraînement
                 </a>

@@ -21,6 +21,7 @@
     --color-bg: #f8fafc; /* slate-50 */
     --color-surface: #ffffff;
     --color-muted: #e2e8f0; /* slate-200 */
+    --color-accent-muted: #f1f5f9;
     
     /* Text */
     --color-text: #0f172a; /* slate-900 */

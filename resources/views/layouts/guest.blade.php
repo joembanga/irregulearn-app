@@ -17,9 +17,10 @@
 </head>
 
 <body class="font-sans text-body antialiased app-bg">
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen flex items-center justify-center py-6 lg:py-12 px-4 sm:px-6 lg:px-8">
         <div class="relative max-w-4xl w-full">
-            <div class="mx-auto w-full sm:max-w-md rounded-2xl shadow-2xl card-surface glass overflow-hidden border border-muted/50">
+            <div
+                class="mx-auto w-full sm:max-w-md rounded-2xl shadow-2xl card-surface glass overflow-hidden border border-muted/50">
                 <div class="px-6 py-8">
                     <div class="flex items-center justify-center mb-6">
                         <a href="/" class="flex items-center gap-2">

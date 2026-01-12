@@ -28,20 +28,20 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased no-transitions">
         <div x-data 
      x-init="
         let tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        fetch('/user/timezone', { // J'ai retiré /api pour coller à la route web.php
+        fetch('/user/timezone', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'Accept': 'application/json', // Important pour dire à Laravel qu'on veut du JSON en cas d'erreur
+                'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
             },
             body: JSON.stringify({ timezone: tz })
         }).catch(error => console.error('Erreur:', error));
-     " class="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
+     " class="min-h-screen bg-app text-body transition-colors duration-300">
             @include('layouts.navigation')
 
             <!-- Page Content -->
@@ -50,7 +50,40 @@
             </main>
         </div>
         @include('layouts.footer')
-        <script src="{{ url('js/navbar.js') }}"></script>
+        <script>
+            window.addEventListener('load', () => {
+                document.body.classList.remove('no-transitions');
+            });
+            document.addEventListener('livewire:navigated', () => {
+                document.body.classList.remove('no-transitions');
+            });
+            if (localStorage.getItem("color-theme") === "dark" || 
+                (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+                ) {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+                function nav() {
+                    return {
+                        open: false,
+                        isDark: document.documentElement.classList.contains("dark"),
+                        init() {
+                            this.isDark = document.documentElement.classList.contains("dark");
+                        },
+                        toggleTheme() {
+                            this.isDark = !this.isDark;
+                            if (this.isDark) {
+                                document.documentElement.classList.add("dark");
+                                localStorage.setItem("color-theme", "dark");
+                            } else {
+                                document.documentElement.classList.remove("dark");
+                                localStorage.setItem("color-theme", "light");
+                            }
+                        },
+                    };
+                }
+        </script>
         @livewireScripts
     </body>
 </html>

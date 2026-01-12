@@ -1,31 +1,39 @@
-<footer class="bg-surface border-t border-muted py-12 transition-all duration-300">
+<footer class="bg-surface border-t border-muted py-6 lg:py-12 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="col-span-1 md:col-span-2">
-                <a href="/" class="flex items-center gap-2 mb-6">
+                <a href="/" wire.navigate class="flex items-center gap-2 mb-6">
                     <x-application-logo />
                 </a>
                 <p class="text-muted text-sm max-w-sm leading-relaxed">
-                    Maîtrisez les verbes irréguliers anglais avec une approche moderne et récompensée. Déjà des milliers d'élèves progressent chaque jour.
+                    Maîtrisez les verbes irréguliers anglais avec une approche moderne et récompensée. Déjà des milliers
+                    d'élèves progressent chaque jour.
                 </p>
             </div>
-            
+
             <div>
                 <h4 class="font-bold text-body mb-6 uppercase text-[10px] tracking-[0.2em]">Application</h4>
                 <nav class="flex flex-col gap-3 text-sm">
-                    <a href="{{ route('learn.index') }}" class="text-muted hover:text-primary transition-colors font-medium">Apprendre</a>
-                    <a href="{{ route('leaderboard') }}" class="text-muted hover:text-primary transition-colors font-medium">Classement</a>
-                    <a href="{{ route('shop') }}" class="text-muted hover:text-primary transition-colors font-medium">Boutique</a>
-                    <a href="{{ route('search') }}" class="text-muted hover:text-primary transition-colors font-medium">Recherche</a>
+                    <a href="{{ route('learn.index') }}" wire:navigate
+                        class="text-muted hover:text-primary transition-colors font-medium">Apprendre</a>
+                    <a href="{{ route('leaderboard') }}" wire:navigate
+                        class="text-muted hover:text-primary transition-colors font-medium">Classement</a>
+                    <a href="{{ route('shop') }}" wire:navigate
+                        class="text-muted hover:text-primary transition-colors font-medium">Boutique</a>
+                    <a href="{{ route('search') }}" wire:navigate
+                        class="text-muted hover:text-primary transition-colors font-medium">Recherche</a>
                 </nav>
             </div>
 
             <div>
                 <h4 class="font-bold text-body mb-6 uppercase text-[10px] tracking-[0.2em]">Légal</h4>
                 <nav class="flex flex-col gap-3 text-sm">
-                    <a href="{{ route('about') }}" class="text-muted hover:text-primary transition-colors font-medium">À propos</a>
-                    <a href="{{ route('privacy') }}" class="text-muted hover:text-primary transition-colors font-medium">Confidentialité</a>
-                    <li><a href="{{ route('contact') }}" class="text-muted hover:text-primary transition-colors font-medium">Contact</a></li>
+                    <a href="{{ route('about') }}" wire:navigate class="text-muted hover:text-primary transition-colors font-medium">À
+                        propos</a>
+                    <a href="{{ route('privacy') }}" wire:navigate
+                        class="text-muted hover:text-primary transition-colors font-medium">Confidentialité</a>
+                    <li><a href="{{ route('contact') }}" wire:navigate
+                            class="text-muted hover:text-primary transition-colors font-medium">Contact</a></li>
                 </nav>
             </div>
         </div>
