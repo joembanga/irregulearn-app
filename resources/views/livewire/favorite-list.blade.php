@@ -63,7 +63,7 @@
 
                 <!-- Actions -->
                 <div class="flex gap-3 mt-4">
-                    <a href="{{ route('verbs.show', $verb->slug) }}"
+                    <a href="{{ route('verbs.show', $verb->slug) }}" wire.navigate
                         class="flex-1 py-5 bg-body text-surface text-center font-black text-[10px] uppercase tracking-[0.2em] rounded-[1.5rem] shadow-xl shadow-body/10 transition-all hover:bg-primary hover:shadow-primary/20 active:scale-95 flex items-center justify-center gap-2">
                         Réviser
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@
                 <p class="text-muted mb-12 max-w-xs mx-auto font-medium leading-relaxed">
                     Identifie les verbes qui te donnent du fil à retordre pour les réviser ici plus tard.
                 </p>
-                <a href="{{ route('verbs.index') }}" class="px-12 py-5 bg-body text-surface font-black text-sm uppercase tracking-[0.2em] rounded-[2rem] shadow-2xl transition-all hover:bg-primary active:scale-95">
+                <a href="{{ route('verbs.index') }}" class="px-12 py-5 bg-body text-surface font-black text-sm uppercase tracking-[0.2em] rounded-[2rem] shadow-2xl transition-all hover:bg-primary active:scale-95" wire.navigate>
                     Chercher des verbes
                 </a>
             </div>

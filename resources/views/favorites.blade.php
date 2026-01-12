@@ -14,7 +14,7 @@
                 </div>
 
                 @if($verbs->count() > 0)
-                <a href="{{ route('learn.favorites') }}"
+                <a href="{{ route('learn.session', ['mode' => 'favorites']) }}" wire:navigate
                     class="group flex items-center justify-center gap-4 px-10 py-5 bg-primary text-surface font-black text-sm uppercase tracking-[0.2em] rounded-[2rem] shadow-2xl shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95">
                     <span class="text-xl">🚀</span> 
                     Lancer la Révision
