@@ -14,18 +14,17 @@ class LearnController extends Controller
         $cacheKey = "user_categories_progress_{$user->id}";
         
         $categories = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(30), function() use ($user) {
-            return Category::withCount('verbs')
-                ->orderBy('order')
+            return Category::orderBy('order')
                 ->get()
                 ->map(function ($category) use ($user) {
+                    $totalVerbs = $category->verbs()->count();
                     $masteredCount = $user->masteredVerbs()
                         ->whereHas('categories', function ($q) use ($category) {
                             $q->where('categories.id', $category->id);
                         })->count();
 
-                    $totalVerbs = $category->verbs_count;
                     $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-                    $category->is_locked = false; // Add logic if needed, but keeping simple for now
+                    $category->is_locked = !$user->canAccessCategory($category);
 
                     return $category;
                 });
@@ -42,11 +41,11 @@ class LearnController extends Controller
             $mode = 'daily';
         }
         if ($mode === 'category') {
-            $availableCategories = Category::pluck('slug')->toArray();
-            if (!in_array($request->input('name'), $availableCategories)) {
+            $category = Category::where('slug', $request->input('name'))->first();
+            if (!$category || !$request->user()->canAccessCategory($category)) {
                 return redirect()->route('learn.index');
             }
-            return view('learn-session', ['slug' => $request->input('name'), 'mode' => 'category']);
+            return view('learn-session', ['slug' => $category->slug, 'mode' => 'category']);
         }
         return view('learn-session', ['slug' => null, 'mode' => $mode]);
     }

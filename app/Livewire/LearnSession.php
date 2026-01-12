@@ -174,6 +174,11 @@ class LearnSession extends Component
         } else {
             // Category mode
             $this->category = Category::where('slug', $slug)->firstOrFail();
+            
+            if (!Auth::user()->canAccessCategory($this->category)) {
+                return redirect()->route('learn.index');
+            }
+
             $this->verbs = $this->category->verbs()->inRandomOrder()->limit($this->questionsNumber)->get();
             if ($this->verbs->isEmpty()) {
                 return redirect()->route('learn');

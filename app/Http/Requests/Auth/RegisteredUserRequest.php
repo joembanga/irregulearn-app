@@ -26,7 +26,7 @@ class RegisteredUserRequest extends FormRequest
         return [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'min:3', 'lowercase', 'regex:/^[a-zA-Z0-9_-]+$/', 'unique:users,username'],
+            'username' => ['required', 'string', 'max:255', 'min:3', 'lowercase', 'regex:/^[a-z0-9_-]+$/', 'unique:users,username'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:4' /*Rules\Password::defaults()*/],
             //'avatar' => ['nullable', 'string', 'max:255'],

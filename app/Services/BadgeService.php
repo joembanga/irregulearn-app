@@ -6,6 +6,8 @@ use App\Models\Badge;
 use App\Models\Category;
 use App\Models\User;
 use App\Notifications\BadgeEarnedNotification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BadgeService
 {
@@ -28,7 +30,7 @@ class BadgeService
         $badges = Badge::where('requirement_type', 'xp')
             ->where('requirement_value', '<=', $user->xp_total)
             ->get();
-        dd($badges);
+
 
         foreach ($badges as $badge) {
             $this->awardBadgeIfNotEarned($user, $badge);
@@ -57,16 +59,27 @@ class BadgeService
         // Count categories where user has mastered >= 70% of verbs
         $completedCategories = 0;
 
-        $categories = Category::all();
-        foreach ($categories as $category) {
-            $totalVerbs = $category->verbs()->count();
+        // Efficiently count completed categories in one go
+        $categoriesData = Category::withCount('verbs')->get();
+        if ($categoriesData->isEmpty()) return;
+
+        // Efficiently get mastery counts per category for this user using a single query
+        $categoryMasteryCounts = DB::table('category_verb')
+            ->join('verb_user', 'category_verb.verb_id', '=', 'verb_user.verb_id')
+            ->where('verb_user.user_id', $user->id)
+            ->where('verb_user.mastered', true)
+            ->select('category_verb.category_id', DB::raw('count(*) as mastered_count'))
+            ->groupBy('category_verb.category_id')
+            ->get()
+            ->keyBy('category_id');
+
+        foreach ($categoriesData as $category) {
+            $totalVerbs = $category->verbs_count;
             if ($totalVerbs === 0) continue;
 
-            $masteredVerbs = $user->masteredVerbs()
-                ->whereHas('categories', fn($q) => $q->where('categories.id', $category->id))
-                ->count();
+            $masteredCount = $categoryMasteryCounts->get($category->id)->mastered_count ?? 0;
 
-            $masteryRate = ($masteredVerbs / $totalVerbs) * 100;
+            $masteryRate = ($masteredCount / $totalVerbs) * 100;
             if ($masteryRate >= 70) {
                 $completedCategories++;
             }
@@ -108,5 +121,13 @@ class BadgeService
 
         $user->badges()->attach($badge->id);
         $user->notify(new BadgeEarnedNotification($badge));
+    }
+
+    /**
+     * Handle job failure.
+     */
+    public function failed(\Throwable $exception): void
+    {
+        \Illuminate\Support\Facades\Log::error('BadgeService error: ' . $exception->getMessage());
     }
 }

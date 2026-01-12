@@ -42,6 +42,7 @@ class UpdateUserStats implements ShouldQueue
 
         // 3. Cache Clearing
         Cache::forget("user_stats_{$user->id}");
+        Cache::forget("user_categories_progress_{$user->id}");
         Cache::forget("leaderboard_weekly");
         Cache::forget("leaderboard_global");
     }

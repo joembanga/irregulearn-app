@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 class AvatarEditor extends Component
 {
     public $settings = [];
+    public $dependencies = [
+        'hatColor' => ['topType' => ['Hat', 'WinterHat1', 'WinterHat2', 'WinterHat3', 'WinterHat4', 'Hijab', 'Turban']],
+        'hairColor' => ['topType' => ['LongHairBigHair', 'LongHairBob', 'LongHairBun', 'LongHairCurly', 'LongHairCurvy', 'LongHairDreads', 'LongHairFrida', 'LongHairFro', 'LongHairFroBand', 'LongHairNotTooLong', 'LongHairShavedSides', 'LongHairMiaWallace', 'LongHairStraight', 'LongHairStraight2', 'LongHairStraightStrand', 'ShortHairDreads01', 'ShortHairDreads02', 'ShortHairFrizzle', 'ShortHairShaggyMullet', 'ShortHairShortCurly', 'ShortHairShortFlat', 'ShortHairShortRound', 'ShortHairShortWaved', 'ShortHairSides', 'ShortHairTheCaesar', 'ShortHairTheCaesarSidePart']],
+        'facialHairColor' => ['facialHairType' => ['BeardMedium', 'BeardLight', 'BeardMajestic', 'MoustacheFancy', 'MoustacheMagnum']],
+        'graphicType' => ['clotheType' => ['GraphicShirt']],
+    ];
 
     // Ton JSON complet converti en Array PHP
     public $options = [
@@ -47,13 +53,19 @@ class AvatarEditor extends Component
 
     public function updateProperty($property, $value)
     {
+        // 1. Premium Check
         if (isset($this->premiumOptions[$property]) && in_array($value, $this->premiumOptions[$property])) {
-            if (Auth::user()->xp_balance < 500) {
-                session()->flash('message', '🔒 500 XP requis !');
-                return;
-            }
+            // Check if unlocked via shop
+             $unlocked = Auth::user()->unlocked_items ?? [];
+             if (!in_array($value, $unlocked)) {
+                 session()->flash('message', "🔒 Item verrouillé ! Achète le dans la boutique.");
+                 return;
+             }
         }
         $this->settings[$property] = $value;
+        
+        // 2. Clear invalid dependent options to avoid visual glitches (optional but cleaner)
+        // If I change Hat -> NoHair, hairColor should ideally reset or be hidden.
     }
 
     public function generateRandom()
@@ -65,11 +77,13 @@ class AvatarEditor extends Component
 
     public function save()
     {
-        //dd($this->settings);
         $queryString = http_build_query($this->settings);
+        $fullUrl = "https://avataaars.io/?" . $queryString;
+        
         /** @var User $user */
         $user = Auth::user();
         $user->avatar_code = $queryString;
+        $user->avatar_url = $fullUrl;
         $user->save();
         session()->flash('message', 'Apparence sauvegardée ! ⚡');
     }

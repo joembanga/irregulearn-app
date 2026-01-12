@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_users', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->text('avatar_url')->nullable()->after('avatar_code');
+            $table->json('unlocked_items')->nullable()->after('avatar_url');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['avatar_url', 'unlocked_items']);
+        });
     }
 };

@@ -33,6 +33,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'daily_target',
         'timezone',
         'google_id',
+        'avatar_url',
+        'unlocked_items',
+        'best_streak',
     ];
 
     /**
@@ -56,6 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'search_history' => 'array',
+            'unlocked_items' => 'array',
         ];
     }
 
@@ -199,15 +203,40 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // 4. Calculate yesterday's date (local)
         $localYesterday = $localNow->copy()->subDay()->toDateString();
+        
+        $currentStreak = $this->current_streak;
 
         // 5. Comparison logic
         if ($lastActivityDate === $localYesterday) {
             // It was yesterday, continue the streak!
+            $currentStreak++;
             $this->increment('current_streak');
         } else {
             // It was before yesterday or never -> Reset :(
-            // (Except if it's the very first time, set to 1)
-            $this->current_streak = 1;
+            // Check for STREAK FREEZE
+            if ($this->streak_freezes > 0) {
+                 $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
+                 $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
+                 
+                 if ($missedDays <= $this->streak_freezes) {
+                     // Saved!
+                     $this->decrement('streak_freezes', $missedDays);
+                     $currentStreak++;
+                     $this->increment('current_streak');
+                 } else {
+                    // Not enough freezes
+                    $currentStreak = 1;
+                    $this->current_streak = 1;
+                 }
+            } else {
+                $currentStreak = 1;
+                $this->current_streak = 1;
+            }
+        }
+        
+        // Update best streak
+        if ($currentStreak > $this->best_streak) {
+            $this->best_streak = $currentStreak;
         }
 
         // 6. Save today's date (store as date only for consistency)
@@ -226,33 +255,41 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function canAccessCategory(Category $category): bool
     {
-        // The first category is always unlocked
-        if ($category->order === 0) return true;
+        // Identify the first category (minimal order)
+        $firstCategoryOrder = \App\Models\Category::min('order');
+        if ($category->order === $firstCategoryOrder) {
+            return true;
+        }
 
-        $userUnclockedCategories = $this->category()
-            ->wherePivot('user_id', $this->id)
-            ->withPivotValue('category_id', $category->id)
-            ->get()->toArray();
+        // Check if user has explicitly unlocked it (historical or purchase etc)
+        $isManuallyUnlocked = $this->category()
+            ->where('category_id', $category->id)
+            ->exists();
 
-        // If user had paid this category
-        if (count($userUnclockedCategories) > 0) {
-            foreach ($userUnclockedCategories as $userUnclockedCategory) {
-                if ($userUnclockedCategory['pivot']['category_id'] === $category->id) {
-                    return true;
-                };
-            }
-        };
+        if ($isManuallyUnlocked) {
+            return true;
+        }
 
-        $previousCategory = Category::where('order', $category->order - 1)->first();
-        if (!$previousCategory) return true;
+        // Automatic logic: Check previous category mastery
+        $previousCategory = Category::where('order', '<', $category->order)
+            ->orderBy('order', 'desc')
+            ->first();
 
-        // If he have done 80% of one category
+        if (!$previousCategory) {
+            return true;
+        }
+
         $totalVerbs = $previousCategory->verbs()->count();
+        if ($totalVerbs === 0) {
+            return true;
+        }
+
         $masteredVerbs = $this->masteredVerbs()
             ->whereHas('categories', function ($q) use ($previousCategory) {
                 $q->where('categories.id', $previousCategory->id);
             })->count();
-        $masteryRate = ($totalVerbs > 0) ? ($masteredVerbs / $totalVerbs) * 100 : 0;
+
+        $masteryRate = ($masteredVerbs / $totalVerbs) * 100;
 
         return $masteryRate >= 80;
     }
@@ -262,6 +299,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrl(): string
     {
+        if (!empty($this->avatar_url)) {
+            return $this->avatar_url;
+        }
+        
         if (empty($this->avatar_code)) {
             return '';
         }

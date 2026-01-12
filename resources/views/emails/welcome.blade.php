@@ -3,7 +3,7 @@
 
 C'est un plaisir de t'accueillir sur **IrreguLearn**. Prêt à maîtriser tous les verbes irréguliers ?
 
-<x-mail::button :url="config('app.url') . {{ route('dashboard') }}">
+<x-mail::button :url="route('dashboard')">
 Accéder à mon Dashboard
 </x-mail::button>
 
