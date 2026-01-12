@@ -36,17 +36,17 @@
             <div class="hidden md:flex items-center gap-4">
                 <!-- Streak (flamme) -->
                 <div x-data="{ showStreak: false }" class="relative z-50">
-                    <button 
-                        @mouseenter="showStreak = true" 
+                    <button
+                        @mouseenter="showStreak = true"
                         @mouseleave="showStreak = false"
                         class="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-surface transition"
                         aria-label="{{ __('Série actuelle') }}">
-                        <span class="text-xl {{ (Auth::user()->streak_freezes > 0 && Auth::user()->streak_is_freezed) ? 'text-blue-400' : 'text-orange-500' }}" role="img" aria-hidden="true">🔥</span>
+                        <span class="text-xl {{ (Auth::user()->streak_freezes > 0 && Auth::user()->streak_is_freezed) ? 'text-blue-400' : 'text-orange-500' }}" aria-hidden="true">🔥</span>
                         <span class="text-sm font-semibold text-body">{{ Auth::user()->current_streak ?? 0 }}</span>
                     </button>
 
                     <!-- Popover -->
-                    <div x-show="showStreak" 
+                    <div x-show="showStreak"
                         x-transition:enter="transition ease-out duration-200"
                         x-transition:enter-start="opacity-0 translate-y-2"
                         x-transition:enter-end="opacity-100 translate-y-0"
@@ -55,7 +55,7 @@
                         x-transition:leave-end="opacity-0 translate-y-2"
                         class="absolute top-full -right-4 mt-2 w-72 bg-surface border border-muted rounded-2xl shadow-xl p-5 z-50"
                         x-cloak
-                        @mouseenter="showStreak = true" 
+                        @mouseenter="showStreak = true"
                         @mouseleave="showStreak = false"
                     >
                         <div class="flex items-start gap-4 mb-4">
@@ -142,12 +142,12 @@
                 <livewire:notification-icon />
                 <div x-data="{ showStreakMobile: false }" class="relative" @click.away="showStreakMobile = false">
                     <button @click="showStreakMobile = !showStreakMobile" class="flex items-center gap-0 p-1 text-muted" aria-label="{{ __('Série actuelle') }}">
-                        <span class="w-6 h-6" role="img" aria-hidden="true">🔥</span>
+                        <span class="w-6 h-6" aria-hidden="true">🔥</span>
                         <span class="text-xs font-semibold">{{ Auth::user()->current_streak ?? 0 }}</span>
                     </button>
 
                     <!-- Mobile Popover -->
-                    <div x-show="showStreakMobile" 
+                    <div x-show="showStreakMobile"
                          x-transition:enter="transition ease-out duration-200"
                          x-transition:enter-start="opacity-0 translate-y-2 scale-95"
                          x-transition:enter-end="opacity-100 translate-y-0 scale-100"

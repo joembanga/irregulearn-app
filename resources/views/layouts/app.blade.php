@@ -29,12 +29,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased no-transitions">
-        <div x-data 
+        <div x-data
      x-init="
         let tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
         fetch('/user/timezone', {
             method: 'POST',
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
@@ -57,7 +57,7 @@
             document.addEventListener('livewire:navigated', () => {
                 document.body.classList.remove('no-transitions');
             });
-            if (localStorage.getItem("color-theme") === "dark" || 
+            if (localStorage.getItem("color-theme") === "dark" ||
                 (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
                 ) {
                     document.documentElement.classList.add("dark");

@@ -7,14 +7,14 @@ $layout = auth()->check() ? 'app-layout' : 'guest-layout';
         <div class="max-w-4xl mx-auto px-2 lg:px-6">
             <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">À propos d'IrreguLearn</h1>
             <p class="text-gray-700 dark:text-gray-400 mb-6">
-                IrreguLearn aide les étudiants à maîtriser les verbes irréguliers en proposant des mini-sessions 
-                quotidiennes, un système d'XP, et des challenges entre amis. Notre objectif est de rendre 
+                IrreguLearn aide les étudiants à maîtriser les verbes irréguliers en proposant des mini-sessions
+                quotidiennes, un système d'XP, et des challenges entre amis. Notre objectif est de rendre
                 l'apprentissage répétitif plus engageant et accessible.
             </p>
 
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mt-6">Notre mission</h2>
             <p class="text-gray-700 dark:text-gray-400">
-                Rendre l'anglais accessible via des micro-sessions, de la gamification et un suivi simple. 
+                Rendre l'anglais accessible via des micro-sessions, de la gamification et un suivi simple.
                 Nous construisons pour les étudiants en RDC et la francophonie.
             </p>
 

@@ -52,7 +52,7 @@
                         <div class="flex justify-center items-center gap-2 mb-4 text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 py-1.5 px-4 rounded-full">
                             En stock: {{ auth()->user()->streak_freezes }}
                         </div>
-                        <button wire:click="buyFreeze" 
+                        <button wire:click="buyFreeze"
                             class="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-black shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                             <span>2 000 XP</span>
                         </button>
@@ -79,7 +79,7 @@
                     <h4 class="text-xl font-bold text-body mb-2">Boîte Mystère</h4>
                     <p class="text-muted text-sm mb-6 leading-relaxed">Tente ta chance pour débloquer un accessoire premium aléatoire !</p>
                     
-                    <button wire:click="buyRandomItem" 
+                    <button wire:click="buyRandomItem"
                         class="mt-auto w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                         <span>800 XP</span>
                     </button>
@@ -99,7 +99,7 @@
                             ✅ Possédé
                         </button>
                     @else
-                        <button wire:click="buyItem('Sunglasses', 1500)" 
+                        <button wire:click="buyItem('Sunglasses', 1500)"
                             class="mt-auto w-full py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-black shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                             <span>1 500 XP</span>
                         </button>
@@ -120,7 +120,7 @@
                             ✅ Possédé
                         </button>
                     @else
-                        <button wire:click="buyItem('Skull', 1200)" 
+                        <button wire:click="buyItem('Skull', 1200)"
                             class="mt-auto w-full py-3.5 rounded-xl bg-gradient-to-r from-red-500 to-rose-500 text-white font-black shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                             <span>1 200 XP</span>
                         </button>
@@ -141,7 +141,7 @@
                             ✅ Possédé
                         </button>
                     @else
-                        <button wire:click="buyItem('WinterHat4', 1000)" 
+                        <button wire:click="buyItem('WinterHat4', 1000)"
                             class="mt-auto w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-black shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                             <span>1 000 XP</span>
                         </button>
@@ -162,7 +162,7 @@
                             ✅ Possédé
                         </button>
                     @else
-                        <button wire:click="buyItem('Diamond', 2500)" 
+                        <button wire:click="buyItem('Diamond', 2500)"
                             class="mt-auto w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-black shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                             <span>2 500 XP</span>
                         </button>

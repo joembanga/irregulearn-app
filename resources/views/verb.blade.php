@@ -43,9 +43,9 @@
                     </div>
 
                     <div class="w-auto flex flex-row md:flex-col gap-3">
-                        <x-share-button 
-                            :title="'Verbe : ' . ucfirst($verb->infinitive)" 
-                            :text="'Apprends le verbe irrégulier \'' . $verb->infinitive . '\' sur IrreguLearn !'" 
+                        <x-share-button
+                            :title="'Verbe : ' . ucfirst($verb->infinitive)"
+                            :text="'Apprends le verbe irrégulier \'' . $verb->infinitive . '\' sur IrreguLearn !'"
                             :url="route('verbs.show', $verb->slug)"
                         />
                         <button x-data="{ copied: false }" @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'verb', 'identifier' => $verb->slug]) }}'); copied = true; setTimeout(() => copied = false, 2000)"

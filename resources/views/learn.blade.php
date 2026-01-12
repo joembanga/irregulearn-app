@@ -42,9 +42,9 @@
                 @foreach ($categories as $index => $category)
                 @php
                     $colors = [
-                        ['from-pink-500', 'to-rose-500', 'ring-pink-200', 'bg-pink-50'], 
+                        ['from-pink-500', 'to-rose-500', 'ring-pink-200', 'bg-pink-50'],
                         ['from-purple-500', 'to-indigo-500', 'ring-purple-200', 'bg-purple-50'],
-                        ['from-cyan-400', 'to-blue-500', 'ring-cyan-200', 'bg-cyan-50'], 
+                        ['from-cyan-400', 'to-blue-500', 'ring-cyan-200', 'bg-cyan-50'],
                         ['from-amber-400', 'to-orange-500', 'ring-amber-200', 'bg-amber-50']
                     ];
                     $theme = $colors[$index % count($colors)];
