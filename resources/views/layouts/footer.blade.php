@@ -50,7 +50,7 @@
                 &copy; {{ date('Y') }} IrreguLearn. {{ __("Fait avec passion pour l'éducation.") }}
             </p>
             
-            <div class="flex items-center gap-4 bg-app/50 rounded-full px-4 py-2 border border-muted/50">
+            {{-- <div class="flex items-center gap-4 bg-app/50 rounded-full px-4 py-2 border border-muted/50">
                 <a href="{{ route(Route::currentRouteName(), array_merge(Route::current()->parameters(), ['locale' => 'fr'])) }}" wire:navigate
                    class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider {{ app()->getLocale() == 'fr' ? 'text-primary' : 'text-muted hover:text-body' }} transition-colors">
                     <span>🇫🇷</span> FR
@@ -60,7 +60,7 @@
                    class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider {{ app()->getLocale() == 'en' ? 'text-primary' : 'text-muted hover:text-body' }} transition-colors">
                     <span>🇬🇧</span> EN
                 </a>
-            </div>
+            </div> --}}
 
             <div class="text-[10px] text-muted uppercase tracking-widest font-bold">
                 Kinshasa • Paris • Londres
