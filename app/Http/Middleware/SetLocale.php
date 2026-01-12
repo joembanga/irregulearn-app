@@ -19,7 +19,7 @@ class SetLocale
         $locale = $request->segment(1);
 
         if (!in_array($locale, ['en', 'fr'])) {
-            $default = 'en';
+            $locale = 'en';
         }
 
         if (in_array($locale, ['en', 'fr'])) {
