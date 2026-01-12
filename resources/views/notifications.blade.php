@@ -28,16 +28,17 @@
                                 {{ $notification->data['icon'] ?? '📢' }}
                             </div>
 
-                            <!-- Content -->
-                            <div class="flex-1 min-w-0">
-                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                                    <h3 class="font-black text-body text-lg group-hover:text-primary transition-colors leading-tight">
-                                        {{ $notification->data['message'] }}
-                                    </h3>
-                                    <span class="text-[10px] font-black text-muted uppercase tracking-widest shrink-0">
-                                        {{ $notification->created_at->diffForHumans() }}
-                                    </span>
-                                </div>
+                        <!-- Content -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                <h3
+                                    class="font-black text-body text-lg group-hover:text-primary transition-colors leading-tight">
+                                    {{ $notification->data['message'] }}
+                                </h3>
+                                <span class="text-[10px] font-black text-muted uppercase tracking-widest shrink-0">
+                                    {{ $notification->created_at->diffForHumans() }}
+                                </span>
+                            </div>
 
                                 <div class="text-sm font-medium text-muted leading-relaxed mb-6">
                                     @if ($notification->type === 'App\Notifications\DailyVerbsNotification')
@@ -51,20 +52,20 @@
                                     @endif
                                 </div>
 
-                                <a href="{{ url($notification->data['url'] ?? '/dashboard') }}"
-                                    class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-surface rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-body/10 hover:bg-primary">
-                                    Voir les détails
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </a>
-                            </div>
+                            <a href="{{ url($notification->data['url'] ?? '/dashboard') }}" wire.navigate
+                                class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-surface rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-body/10 hover:bg-primary">
+                                Voir les détails
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </a>
                         </div>
-                        
-                        @if(!$notification->read_at)
-                            <div class="absolute top-0 right-0 w-2 h-full bg-primary animate-pulse"></div>
-                        @endif
                     </div>
+
+                    @if(!$notification->read_at)
+                    <div class="absolute top-0 right-0 w-2 h-full bg-primary animate-pulse"></div>
+                    @endif
+                </div>
                 @empty
                     <div class="text-center py-24 bg-surface rounded-[4rem] border-4 border-dashed border-muted/30 relative overflow-hidden group">
                         <div class="relative z-10 flex flex-col items-center">

@@ -11,7 +11,7 @@
     @endforeach
 </ul>
 
-<a href="{{ route('learn') }}"
+<a href="{{ route('learn') }}" wire.navigate
     style="background: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px;">
     Commencer l'entraînement
 </a>

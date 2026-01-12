@@ -6,7 +6,7 @@ use App\Models\Badge;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class BadgeEarnedNotification extends Notification
+class BadgeEarnedNotification extends Notification implements \Illuminate\Contracts\Queue\ShouldQueue
 {
     use Queueable;
 

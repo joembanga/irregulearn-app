@@ -1,7 +1,7 @@
 <div class="relative inline-block">
-    <button class="p-2 rounded-full bg-surface border border-muted shadow-sm">
-        <a href="{{ route('notifications') }}">
-            <span class="text-xl">🔔</span>
+    <button class="p-1 lg:p-2">
+        <a href="{{ route('notifications') }}" wire:navigate >
+            <span class="w-6 h-6 lg:text-xl">🔔</span>
         </a>
     </button>
     {{-- Show badge when there are unread notifications --}}
