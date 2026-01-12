@@ -37,7 +37,7 @@
             
             @if($dailyVerbs->count() > 0)
                 <div class="flex justify-center pt-8">
-                    <a href="{{ route('learn.daily') }}"
+                    <a href="{{ route('learn.session', ['mode' => 'daily']) }}"
                         class="group flex items-center gap-4 px-10 py-5 bg-primary text-surface font-black rounded-2xl shadow-2xl shadow-primary/30 hover:scale-105 transition-all text-lg active:scale-95">
                         <span class="text-2xl group-hover:rotate-12 transition-transform">🚀</span> 
                         <span>PRATIQUER MAINTENANT</span>

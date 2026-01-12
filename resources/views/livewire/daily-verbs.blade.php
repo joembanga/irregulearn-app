@@ -27,7 +27,7 @@
             </div>
 
             <div class="mt-8 flex gap-3">
-                <a href="{{ route('verbs.show', $verb->slug) }}"
+                <a href="{{ route('verbs.show', $verb->slug) }}" wire.navigate
                     class="flex-1 py-4 bg-primary text-surface text-center text-xs font-black rounded-2xl uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
                     Détails du verbe
                 </a>
@@ -40,7 +40,7 @@
             <p class="text-muted mb-10 max-w-sm mx-auto font-medium">
                 Tu as terminé tous tes verbes prévus. Reviens demain pour de nouveaux défis.
             </p>
-            <a href="{{ route('verbs.index') }}" class="px-10 py-4 bg-body text-surface font-black rounded-2xl uppercase text-xs tracking-widest hover:scale-105 transition-all active:scale-95 shadow-xl">
+            <a href="{{ route('verbs.index') }}" wire.navigate class="px-10 py-4 bg-body text-surface font-black rounded-2xl uppercase text-xs tracking-widest hover:scale-105 transition-all active:scale-95 shadow-xl">
                 Parcourir la bibliothèque
             </a>
         </div>
