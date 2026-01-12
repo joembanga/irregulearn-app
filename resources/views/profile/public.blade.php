@@ -44,21 +44,20 @@
                                 {{ $user->level_name }}
                             </div>
                             <h1 class="text-4xl md:text-5xl font-black text-body tracking-tight">
-                                {{ $user->username }}</h1>
+                                {{ $user->username }}
+                            </h1>
                             <p class="text-muted font-medium mt-1">Maîtrise les verbes depuis
-                                {{ $user->created_at->format('M Y') }}</p>
+                                {{ $user->created_at->format('M Y') }}
+                            </p>
                         </div>
 
                         <div class="flex flex-wrap justify-center md:justify-start gap-3">
                             @if(auth()->id() !== $user->id)
                             <livewire:follow-button :user="$user" />
                             @endif
-                             <x-share-button 
-                                :title="$user->username . ' sur IrreguLearn'" 
-                                :text="'Viens voir mon profil sur IrreguLearn et apprends les verbes irréguliers avec moi !'" 
-                                :url="route('profile.public', $user->username)"
-                                class="mt-6"
-                            />
+                            <x-share-button :title="$user->username . ' sur IrreguLearn'"
+                                :text="'Viens voir mon profil sur IrreguLearn et apprends les verbes irréguliers avec moi !'"
+                                :url="route('profile.public', $user->username)" class="mt-6" />
                             <button x-data="{ copied: false }"
                                 @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'stats', 'identifier' => $user->username]) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                                 class="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-primary/10 border border-primary/20 text-primary rounded-2xl font-bold text-sm hover:bg-primary/20 transition active:scale-95 shadow-sm">
