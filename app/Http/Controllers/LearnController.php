@@ -11,46 +11,43 @@ class LearnController extends Controller
     {
         $user = $request->user();
 
-        // Optimized query: eager load verb counts and use subquery for mastered counts
-        $categories = Category::withCount('verbs')
-            ->orderBy('order')
-            ->get()
-            ->map(function ($category) use ($user) {
-                // Efficiently get mastered count for this specific category
-                // We could optimize this further with a single massive query if needed,
-                // but this removes the loop over the relationship collection.
-                $masteredCount = $user->masteredVerbs()
-                    ->whereHas('categories', function ($q) use ($category) {
-                        $q->where('categories.id', $category->id);
-                    })->count();
+        $cacheKey = "user_categories_progress_{$user->id}";
+        
+        $categories = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(30), function() use ($user) {
+            return Category::withCount('verbs')
+                ->orderBy('order')
+                ->get()
+                ->map(function ($category) use ($user) {
+                    $masteredCount = $user->masteredVerbs()
+                        ->whereHas('categories', function ($q) use ($category) {
+                            $q->where('categories.id', $category->id);
+                        })->count();
 
-                $totalVerbs = $category->verbs_count;
-                $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-                $category->is_locked = false;
+                    $totalVerbs = $category->verbs_count;
+                    $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
+                    $category->is_locked = false; // Add logic if needed, but keeping simple for now
 
-                return $category;
-            });
+                    return $category;
+                });
+        });
 
         return view('learn', compact('categories'));
     }
 
-    public function show($slug)
+    public function startSession(Request $request)
     {
-        return view('learn-session', ['slug' => $slug, 'mode' => 'category']);
-    }
-
-    public function daily()
-    {
-        return view('learn-session', ['slug' => null, 'mode' => 'daily']);
-    }
-
-    public function favorites()
-    {
-        return view('learn-session', ['slug' => null, 'mode' => 'favorites']);
-    }
-
-    public function knowVerbs()
-    {
-        return view('learn-session', ['slug' => null, 'mode' => 'knowVerbs']);
+        $availableModes = ['category', 'daily', 'favorites', 'knowVerbs'];
+        $mode = $request->input('mode') ?? 'daily';
+        if ($request->input('mode') === null || !in_array($mode, $availableModes)) {
+            $mode = 'daily';
+        }
+        if ($mode === 'category') {
+            $availableCategories = Category::pluck('slug')->toArray();
+            if (!in_array($request->input('name'), $availableCategories)) {
+                return redirect()->route('learn.index');
+            }
+            return view('learn-session', ['slug' => $request->input('name'), 'mode' => 'category']);
+        }
+        return view('learn-session', ['slug' => null, 'mode' => $mode]);
     }
 }

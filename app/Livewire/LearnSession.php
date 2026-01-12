@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ExerciseCompleted;
 use App\Models\Category;
 use App\Models\Verb;
 use App\Models\VerbSentence;
@@ -12,13 +13,15 @@ use Livewire\Component;
 
 class LearnSession extends Component
 {
-    public $questionsNumber = 15;
+    public $questionsNumber = 10;
     public ?Category $category = null;
     public $mode = 'category';
     public $verbs = [];
     public $currentVerb;
     public $currentVerbForms = [];
     public $currentIndex = 0;
+    public $masteredVerbIds = [];
+    public $sessionXp = 0;
 
     // État du jeu
     public $userInput = ''; // For complete
@@ -157,7 +160,8 @@ class LearnSession extends Component
                 );
             if ($this->verbs->isEmpty()) {
                 // If no verbs (should not happen if logic is correct, but safe fallback)
-                return redirect()->route('learn.daily');
+                Auth::user()->generateDailyVerbs();
+                return redirect()->route('learn.session', ['mode' => 'daily']);
             }
             while (true) {
                 foreach ($this->verbs as $verb) {
@@ -327,9 +331,11 @@ class LearnSession extends Component
         }
 
         // Case insensitive replacement for better UX
-        $this->answer = $sentence->missing_word;
+        $matches = null;
+        preg_match_all('/\b(' . preg_quote($sentence->missing_word, '/') . '\w*)[\p{P}]?/miu', $sentence->sentence, $matches);
+        $this->answer = $matches[1][0];
         // We use a regex to replace the word case-insensitively while keeping the blank
-        $this->currentSentence = preg_replace('/\b' . preg_quote($this->answer, '/') . '\b/i', '_____', $sentence->sentence);
+        $this->currentSentence = preg_replace('/\b' . preg_quote($sentence->missing_word, '/') . '\w*\p{P}?/miu', '_____', $sentence->sentence);
     }
 
     public function checkAnswer($submittedAnswer = null)
@@ -357,20 +363,17 @@ class LearnSession extends Component
         if ($this->mode === 'daily') {
             $verb = Auth::user()->learnedVerbs(false)->wherePivot('verb_id', $this->currentVerb->id)->withPivot('is_learned')->first();
             if ($verb) {
+                // Keep this synchronous as it's critical for immediate view "learned" status
                 $verb->pivot->is_learned = true;
                 $verb->pivot->save();
             }
         }
-        Auth::user()->increment('xp_balance', 10);
-        Auth::user()->increment('xp_total', 10);
-        Auth::user()->increment('xp_weekly', 10);
 
-        Auth::user()->verb()->syncWithoutDetaching([
-            $this->currentVerb->id => ['mastered' => true]
-        ]);
-
-        // Badge system hook
-        app(BadgeService::class)->checkAndAwardBadges(Auth::user());
+        // Add to batch for background persistence
+        $this->sessionXp += 10;
+        if (!in_array($this->currentVerb->id, $this->masteredVerbIds)) {
+            $this->masteredVerbIds[] = $this->currentVerb->id;
+        }
     }
 
     public function nextVerb()
@@ -380,12 +383,18 @@ class LearnSession extends Component
             $this->loadQuestion();
         } else {
             $this->finished = true;
-            Auth::user()->updateStreak();
             $this->finished_reward = (count($this->verbs) - $this->mistakes) * count($this->verbs);
-            // Bonus de fin de série
-            Auth::user()->increment('xp_balance', $this->finished_reward);
-            Auth::user()->increment('xp_total', $this->finished_reward);
-            Auth::user()->increment('xp_weekly', $this->finished_reward);
+            
+            // Dispatch event for background processing
+            ExerciseCompleted::dispatch(
+                Auth::user(),
+                $this->sessionXp + $this->finished_reward,
+                $this->mistakes,
+                $this->category,
+                $this->masteredVerbIds
+            );
+
+            Auth::user()->updateStreak();
         }
     }
 

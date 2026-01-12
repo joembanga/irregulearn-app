@@ -3,8 +3,8 @@
         <div class="absolute top-0 right-0 p-4 opacity-10">
             <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M14,17H17L19,13V7H13V13H16L14,17M6,17H9L11,13V7H5V13H8L6,17Z"/></svg>
         </div>
-        <p class="text-xl md:text-2xl font-medium leading-relaxed text-body italic relative z-10">
-            "{!! nl2br(e($currentSentence)) !!}"
+        <p class="text-xl md:text-2xl font-medium leading-relaxed text-body font-serif italic relative z-10">
+            "{!! nl2br(e(ucfirst($currentSentence))) !!}"
         </p>
     </div>
 

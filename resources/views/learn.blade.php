@@ -9,7 +9,8 @@
                         <p class="text-sm text-muted">{{ $category->description }}</p>
                     </div>
                     <div class="hidden sm:flex items-center gap-3">
-                        <a href="{{ route('verbs.index') }}" class="text-sm text-muted hover:text-primary hover:underline">
+                        <a href="{{ route('verbs.index') }}" wire.navigate
+                            class="text-sm text-muted hover:text-primary hover:underline">
                             Voir la liste des verbes
                         </a>
                     </div>
@@ -24,8 +25,9 @@
                             et débloquer la suite.</p>
                     </div>
                     <div class="hidden sm:flex items-center gap-3">
-                        <a href="{{ route('verbs.index') }}" class="text-sm text-muted hover:text-accent">Voir la liste
-                            des verbes</a>
+                        <a href="{{ route('verbs.index') }}" wire.navigate class="text-sm text-muted hover:text-accent">
+                            Voir la liste des verbes
+                        </a>
                     </div>
                 </div>
 
@@ -78,7 +80,7 @@
                                     </div>
 
                                     <div class="flex items-center justify-between gap-3 mt-auto">
-                                        <a href="{{ route('learn.category', $category->slug) }}"
+                                        <a href="{{ route('learn.session', ['mode' => 'category', 'name' => $category->slug]) }}" wire:navigate
                                             class="inline-flex items-center gap-2 px-4 py-2 {{ $category->progress == 100 ? 'bg-success' : 'bg-primary' }} text-surface rounded-lg font-semibold shadow-sm">
                                             {{ $category->progress == 100 ? '🎓 Reviser' : 'Continuer' }}
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
