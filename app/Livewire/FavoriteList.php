@@ -13,7 +13,7 @@ class FavoriteList extends Component
     {
         $this->verb = $verb;
     }
-    
+
     public function removeFavorite($verbId)
     {
         // On utilise toggle comme pour le bouton de description

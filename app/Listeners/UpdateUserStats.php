@@ -25,7 +25,7 @@ class UpdateUserStats implements ShouldQueue
     public function handle(ExerciseCompleted $event): void
     {
         $user = $event->user;
-        
+
         // 1. Update XP
         $user->increment('xp_balance', $event->xp);
         $user->increment('xp_total', $event->xp);

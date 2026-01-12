@@ -99,7 +99,8 @@ use function Illuminate\Support\now;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -287,7 +288,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // 4. Calculate yesterday's date (local)
         $localYesterday = $localNow->copy()->subDay()->toDateString();
-        
+
         $currentStreak = $this->current_streak;
 
         // 5. Comparison logic
@@ -307,45 +308,45 @@ class User extends Authenticatable implements MustVerifyEmail
                  // If he has a freeze, we save the streak for the *missed* day.
                  // To make it simple: if he has a freeze, we consider the streak "frozen"
                  // so we don't reset it to 1, but we don't increment it either for the missing days.
-                 
+
                  // However, usually a freeze saves you from reset ONCE.
                  // So we use 1 freeze. And we keep the current_streak value.
-                 
+
                  // If he comes back after 10 days, 1 freeze shouldn't save him.
                  // Simplified logic: If the gap is exactly 2 days (missed 1 day), use freeze.
                  // If gap > 2 days (missed > 1 day), we need > 1 freeze?
-                 // Let's stick to: He missed yesterday. 
-                 
+                 // Let's stick to: He missed yesterday.
+
                  $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
                  // if last activity = 2023-01-01. Today = 2023-01-03. Diff = 2. Missed 1 day (02).
                  // if last activity = 2023-01-01. Today = 2023-01-04. Diff = 3. Missed 2 days (02, 03).
-                 
+
                  // We can consume 1 freeze per missed day?
                  // Let's implement: If he has enough freezes to cover the gap, use them.
                  // gap - 1 = number of missed days.
-                 
+
                  $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
-                 
-                 if ($missedDays <= $this->streak_freezes) {
-                     // Saved!
-                     $this->decrement('streak_freezes', $missedDays);
-                     // Streak continues (we don't increment because he didn't play yesterday, or maybe we do? 
-                     // Usually freezes just prevent reset. The streak count stays same.)
-                     // But since he played TODAY, we should increment or just keep?
-                     // Duolingo logic: Freeze used = streak maintained. 
-                     // And doing a lesson today = streak + 1.
-                     $this->increment('current_streak');
-                 } else {
+
+                if ($missedDays <= $this->streak_freezes) {
+                    // Saved!
+                    $this->decrement('streak_freezes', $missedDays);
+                    // Streak continues (we don't increment because he didn't play yesterday, or maybe we do?
+                    // Usually freezes just prevent reset. The streak count stays same.)
+                    // But since he played TODAY, we should increment or just keep?
+                    // Duolingo logic: Freeze used = streak maintained.
+                    // And doing a lesson today = streak + 1.
+                    $this->increment('current_streak');
+                } else {
                     // Not enough freezes
                     $currentStreak = 1;
                     $this->current_streak = 1;
-                 }
+                }
             } else {
                 $currentStreak = 1;
                 $this->current_streak = 1;
             }
         }
-        
+
         // Update best streak
         if ($currentStreak > $this->best_streak) {
             $this->best_streak = $currentStreak;
@@ -414,7 +415,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if (!empty($this->avatar_url)) {
             return $this->avatar_url;
         }
-        
+
         if (empty($this->avatar_code)) {
             return '';
         }

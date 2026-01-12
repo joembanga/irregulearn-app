@@ -13,7 +13,8 @@ use Illuminate\Queue\SerializesModels;
 
 class DailyVerbsMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     protected $signature = 'mail:send-daily-verbs';
 

@@ -19,16 +19,7 @@ class SetLocale
         $locale = $request->segment(1);
 
         if (!in_array($locale, ['en', 'fr'])) {
-            // Default to 'fr' if not valid or missing (though missing should be caught by route group, this handles failures)
             $default = 'en';
-            
-            // Check segments to see if we are already at root but somehow here?
-            // Actually, if we use prefix routes, this middleware should be applied TO those routes.
-            // If the URL is just '/' it won't hit the prefixed routes unless we handle it separately.
-            
-            // However, assuming this runs on prefixed routes:
-            // return $next($request);
-            // Wait, we need to SET the locale.
         }
 
         if (in_array($locale, ['en', 'fr'])) {

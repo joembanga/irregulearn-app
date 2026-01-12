@@ -13,7 +13,8 @@ use Illuminate\Queue\SerializesModels;
 
 class VerbsExportMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -21,7 +22,8 @@ class VerbsExportMail extends Mailable
     public function __construct(
         public User $user,
         public string $pdfContent
-    ) {}
+    ) {
+    }
 
     public function envelope(): Envelope
     {

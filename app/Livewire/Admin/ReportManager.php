@@ -34,7 +34,9 @@ class ReportManager extends Component
             session()->flash('message', 'Content deleted and report resolved.');
         } else {
             // If example is already gone, just delete report
-            if ($report) $report->delete();
+            if ($report) {
+                $report->delete();
+            }
         }
     }
 

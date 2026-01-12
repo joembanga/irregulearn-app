@@ -35,7 +35,7 @@ class NewFriendNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Vous avez une nouvelle connection')
             ->line($this->sender->username . ' a commencé à vous suivre')
             ->action('Voir son profil', url("/u/{$this->sender->username}"))

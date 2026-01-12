@@ -29,7 +29,7 @@ class TransferPoints extends Component
         }
 
         $sender->decrement('xp_balance', $this->amount);
-        
+
         $this->receiver->increment('xp_balance', $this->amount);
 
         $this->receiver->notify(new XpReceivedNotification($sender, $this->receiver, $this->amount));

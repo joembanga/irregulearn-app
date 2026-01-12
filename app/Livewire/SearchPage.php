@@ -59,9 +59,9 @@ class SearchPage extends Component
             $history = array_filter($history, fn($t) => $t !== $term);
         }
         array_push($history, $term); // Add to the end
-        
+
         User::where('id', $user->id)->update(['search_history' => $history]);
-        
+
         // Redirect to the selected result
         return redirect($url);
     }
@@ -71,7 +71,7 @@ class SearchPage extends Component
         $user = Auth::user();
         User::where('id', $user->id)->update(['search_history' => null]);
     }
-    
+
     // Remplir la barre de recherche quand on clique sur un élément de l'historique
     public function searchFromHistory($term)
     {

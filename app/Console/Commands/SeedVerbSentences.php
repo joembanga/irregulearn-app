@@ -39,7 +39,7 @@ class SeedVerbSentences extends Command
                 foreach ($allForms as $oneForm) {
                     $example = $this->fetchWordDetails($oneForm);
                     if ($example) {
-                        $verbSentence = VerbSentence::create([
+                        VerbSentence::create([
                             'verb_id' => $verb->id,
                             'sentence' => $example['example'],
                             'missing_word' => $oneForm,
@@ -62,7 +62,7 @@ class SeedVerbSentences extends Command
     /**
      * Fetch word details from multiple APIs
      */
-    function fetchWordDetails($word)
+    private function fetchWordDetails($word)
     {
         // 1. Try DictionaryAPI.dev first
         $url1 = "https://api.dictionaryapi.dev/api/v2/entries/en/" . urlencode($word);
@@ -70,10 +70,8 @@ class SeedVerbSentences extends Command
 
         if ($response1) {
             $data = json_decode($response1, true);
-
             if (isset($data[0])) {
                 $result = $this->parseDictionaryApiDev($data[0]);
-                // If we found data, return it. Otherwise fall through to backup API.
                 if ($result['example']) {
                     return $result;
                 }
@@ -86,8 +84,7 @@ class SeedVerbSentences extends Command
 
         if ($response2) {
             $data = json_decode($response2, true);
-
-            if (isset($data['entries'])) { // Validating FreeDictionaryAPI structure
+            if (isset($data['entries'])) {
                 $result = $this->parseFreeDictionaryApi($data);
                 if ($result['example']) {
                     return $result;
@@ -101,22 +98,25 @@ class SeedVerbSentences extends Command
     /**
      * Logic to parse DictionaryAPI.dev JSON structure
      */
-    function parseDictionaryApiDev($entry)
+    private function parseDictionaryApiDev($entry)
     {
         $example = null;
 
-        // Extract Verb Example
-        if (isset($entry['meanings'])) {
-            foreach ($entry['meanings'] as $meaning) {
-                if (isset($meaning['partOfSpeech']) && $meaning['partOfSpeech'] === 'verb') {
-                    if (isset($meaning['definitions']) && is_array($meaning['definitions'])) {
-                        foreach ($meaning['definitions'] as $def) {
-                            // This API typically provides a single string in 'example'
-                            if (isset($def['example']) && !empty($def['example'])) {
-                                if (str_contains(strtolower($def['example']), strtolower($entry['word']))) {
-                                    $example = $def['example'];
-                                }
-                            }
+        if (!isset($entry['meanings']) || !is_array($entry['meanings'])) {
+            return ['example' => $example];
+        }
+
+        foreach ($entry['meanings'] as $meaning) {
+            if (
+                isset($meaning['partOfSpeech']) &&
+                $meaning['partOfSpeech'] === 'verb' &&
+                isset($meaning['definitions'])
+            ) {
+                foreach ($meaning['definitions'] as $def) {
+                    if (isset($def['example']) && !empty($def['example'])) {
+                        if (str_contains(strtolower($def['example']), strtolower($entry['word']))) {
+                            $example = $def['example'];
+                            break 2;
                         }
                     }
                 }
@@ -129,23 +129,22 @@ class SeedVerbSentences extends Command
     /**
      * Logic to parse FreeDictionaryAPI.com JSON structure
      */
-    function parseFreeDictionaryApi($data)
+    private function parseFreeDictionaryApi($data)
     {
         $example = null;
 
-        if (isset($data['entries'])) {
-            foreach ($data['entries'] as $entry) {
-                if (isset($entry['partOfSpeech']) && $entry['partOfSpeech'] === 'verb') {
-                    if (isset($entry['senses'])) {
-                        foreach ($entry['senses'] as $sense) {
-                            // This API provides an array of strings in 'examples'
-                            if (isset($sense['examples']) && is_array($sense['examples'])) {
-                                foreach ($sense['examples'] as $examples) {
-                                    if (str_contains(strtolower($examples), strtolower($data['word']))) {
-                                        $example = $examples;
-                                        break;
-                                    }
-                                }
+        if (!isset($data['entries']) || !is_array($data['entries'])) {
+            return ['example' => $example];
+        }
+
+        foreach ($data['entries'] as $entry) {
+            if (isset($entry['partOfSpeech']) && $entry['partOfSpeech'] === 'verb' && isset($entry['senses'])) {
+                foreach ($entry['senses'] as $sense) {
+                    if (isset($sense['examples']) && is_array($sense['examples'])) {
+                        foreach ($sense['examples'] as $ex) {
+                            if (str_contains(strtolower($ex), strtolower($data['word']))) {
+                                $example = $ex;
+                                break 3;
                             }
                         }
                     }
@@ -153,14 +152,13 @@ class SeedVerbSentences extends Command
             }
         }
 
-
         return ['example' => $example];
     }
 
     /**
      * Helper function to execute cURL requests
      */
-    function executeCurl($url)
+    private function executeCurl($url)
     {
         $ch = curl_init();
 
@@ -168,16 +166,11 @@ class SeedVerbSentences extends Command
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        // User agent is polite to API providers
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (WordFetcher/1.0)');
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        if ($httpCode === 200) {
-            return $response;
-        }
-
-        return null;
+        return $httpCode === 200 ? $response : null;
     }
 }

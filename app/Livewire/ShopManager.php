@@ -34,7 +34,7 @@ class ShopManager extends Component
 
         if ($user->xp_balance >= $price) {
             $user->decrement('xp_balance', $price);
-            
+
             $unlocked[] = $itemId;
             $user->unlocked_items = $unlocked;
             $user->save();
@@ -49,7 +49,7 @@ class ShopManager extends Component
     {
         $user = Auth::user();
         $price = 800; // Cheaper than buying specific
-        
+
         if ($user->xp_balance < $price) {
              session()->flash('error', 'XP insuffisants...');
              return;

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Cache;
 
 class VerbController extends Controller
 {
-
     public function getVerb($slug): View
     {
         $verb = Verb::where('slug', $slug)->firstOrFail();
@@ -42,7 +41,7 @@ class VerbController extends Controller
         $page = $request->input('page', 1);
         $cacheKey = "verbs_list_{$filter}_page_{$page}";
 
-        $verbs = Cache::remember($cacheKey, now()->addHours(1), function() use ($query) {
+        $verbs = Cache::remember($cacheKey, now()->addHours(1), function () use ($query) {
             return $query->paginate(20);
         });
 

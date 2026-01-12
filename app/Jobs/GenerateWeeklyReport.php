@@ -29,7 +29,7 @@ class GenerateWeeklyReport implements ShouldQueue
     {
         try {
             $user = $this->user;
-            
+
             // Gather statistics for the week
             $startOfWeek = now()->startOfWeek();
             $endOfWeek = now()->endOfWeek();
@@ -39,7 +39,7 @@ class GenerateWeeklyReport implements ShouldQueue
                 ->wherePivot('is_learned', true)
                 ->wherePivotBetween('daily_verbs.created_at', [$startOfWeek, $endOfWeek])
                 ->count();
-            
+
             // This would likely need a dedicated view
             $data = [
                 'user' => $user,
@@ -50,14 +50,13 @@ class GenerateWeeklyReport implements ShouldQueue
             ];
 
             // Reset weekly XP after generating report (if running on Sunday/Monday)
-            // Or just rely on a separate scheduled task for reset. 
+            // Or just rely on a separate scheduled task for reset.
             // For now, we just report.
 
             // Only send if there was some activity
             if ($weeklyXp > 0 || $verbsLearned > 0) {
                  Mail::to($user)->send(new WeeklyReportMail($data));
             }
-
         } catch (\Throwable $e) {
             Log::error("Failed to generate weekly report for user {$this->user->id}: " . $e->getMessage());
             $this->fail($e);

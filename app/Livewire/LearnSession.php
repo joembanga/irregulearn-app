@@ -153,7 +153,7 @@ class LearnSession extends Component
 
         if (in_array($this->mode, ['daily', 'favorites', 'knowVerbs'])) {
             // Load verbs
-            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() : 
+            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() :
                 (
                     $this->mode === 'favorites' ? $this->verbs = Auth::user()->favorites()->get() :
                     $this->verbs = Auth::user()->learnedVerbs()->inRandomOrder()->get()
@@ -174,7 +174,7 @@ class LearnSession extends Component
         } else {
             // Category mode
             $this->category = Category::where('slug', $slug)->firstOrFail();
-            
+
             if (!Auth::user()->canAccessCategory($this->category)) {
                 return redirect()->route('learn.index');
             }
@@ -340,7 +340,11 @@ class LearnSession extends Component
         preg_match_all('/\b(' . preg_quote($sentence->missing_word, '/') . '\w*)[\p{P}]?/miu', $sentence->sentence, $matches);
         $this->answer = $matches[1][0];
         // We use a regex to replace the word case-insensitively while keeping the blank
-        $this->currentSentence = preg_replace('/\b' . preg_quote($sentence->missing_word, '/') . '\w*\p{P}?/miu', '_____', $sentence->sentence);
+        $this->currentSentence = preg_replace(
+            '/\b' . preg_quote($sentence->missing_word, '/') . '\w*\p{P}?/miu',
+            '_____',
+            $sentence->sentence
+        );
     }
 
     public function checkAnswer($submittedAnswer = null)
@@ -366,7 +370,11 @@ class LearnSession extends Component
     {
         $this->isCorrect = true;
         if ($this->mode === 'daily') {
-            $verb = Auth::user()->learnedVerbs(false)->wherePivot('verb_id', $this->currentVerb->id)->withPivot('is_learned')->first();
+            $verb = Auth::user()
+                ->learnedVerbs(false)
+                ->wherePivot('verb_id', $this->currentVerb->id)
+                ->withPivot('is_learned')
+                ->first();
             if ($verb) {
                 // Keep this synchronous as it's critical for immediate view "learned" status
                 $verb->pivot->is_learned = true;
@@ -389,7 +397,7 @@ class LearnSession extends Component
         } else {
             $this->finished = true;
             $this->finished_reward = (count($this->verbs) - $this->mistakes) * count($this->verbs);
-            
+
             // Dispatch event for background processing
             ExerciseCompleted::dispatch(
                 Auth::user(),

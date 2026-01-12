@@ -61,7 +61,9 @@ class BadgeService
 
         // Efficiently count completed categories in one go
         $categoriesData = Category::withCount('verbs')->get();
-        if ($categoriesData->isEmpty()) return;
+        if ($categoriesData->isEmpty()) {
+            return;
+        }
 
         // Efficiently get mastery counts per category for this user using a single query
         $categoryMasteryCounts = DB::table('category_verb')
@@ -75,7 +77,9 @@ class BadgeService
 
         foreach ($categoriesData as $category) {
             $totalVerbs = $category->verbs_count;
-            if ($totalVerbs === 0) continue;
+            if ($totalVerbs === 0) {
+                continue;
+            }
 
             $masteredCount = $categoryMasteryCounts->get($category->id)->mastered_count ?? 0;
 

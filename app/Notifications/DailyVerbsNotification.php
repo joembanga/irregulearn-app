@@ -34,7 +34,7 @@ class DailyVerbsNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Tes 5 verbes du jour sont prêts !')
             ->line('Il est temps de s\'entraîner.')
             ->action('Apprendre maintenant', url('/learn'))

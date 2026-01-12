@@ -5,6 +5,8 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+phpcs.xml
+_ide_helper.php
 /.fleet
 /.idea
 /.nova
@@ -22,4 +24,3 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-_ide_helper.php

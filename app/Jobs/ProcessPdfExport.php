@@ -27,7 +27,7 @@ class ProcessPdfExport implements ShouldQueue
     public function handle(): void
     {
         $user = $this->user;
-        
+
         $verbs = Verb::with(['users' => function ($query) use ($user) {
             $query->where('user_id', $user->id);
         }])->orderBy('infinitive')->get();
@@ -39,7 +39,7 @@ class ProcessPdfExport implements ShouldQueue
         ];
 
         $pdf = Pdf::loadView('pdf.my-verbs', $data);
-        
+
         Mail::to($user)->send(new VerbsExportMail($user, $pdf->output()));
     }
 }

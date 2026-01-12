@@ -33,7 +33,7 @@ class HandleStreakMilestones implements ShouldQueue
             $bonus = 100 * ($streak / 5);
             $user->increment('xp_balance', $bonus);
             $user->increment('xp_total', $bonus);
-            
+
             // Log for debugging
             Log::info("User {$user->id} earned {$bonus} XP for {$streak} day streak!");
         }

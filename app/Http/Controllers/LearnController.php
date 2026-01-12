@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class LearnController extends Controller
 {
@@ -12,8 +13,8 @@ class LearnController extends Controller
         $user = $request->user();
 
         $cacheKey = "user_categories_progress_{$user->id}";
-        
-        $categories = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(30), function() use ($user) {
+
+        $categories = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($user) {
             return Category::orderBy('order')
                 ->get()
                 ->map(function ($category) use ($user) {

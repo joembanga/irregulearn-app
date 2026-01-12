@@ -49,33 +49,38 @@ class EnrichVerbs extends Command
     /**
      * Fetch word details from multiple APIs
      */
-    function fetchWordDetails($word)
+    private function fetchWordDetails($word)
     {
         // 1. Try DictionaryAPI.dev first
-        $url1 = "https://api.dictionaryapi.dev/api/v2/entries/en/" . urlencode($word);
-        $response1 = $this->executeCurl($url1);
+        return $this->tryDictionaryApiDev($word) ?? $this->tryFreeDictionaryApi($word);
+    }
 
-        if ($response1) {
-            $data = json_decode($response1, true);
+    private function tryDictionaryApiDev($word)
+    {
+        $url = "https://api.dictionaryapi.dev/api/v2/entries/en/" . urlencode($word);
+        $response = $this->executeCurl($url);
 
+        if ($response) {
+            $data = json_decode($response, true);
             if (isset($data[0])) {
                 $result = $this->parseDictionaryApiDev($data[0]);
-                // If we found data, return it. Otherwise fall through to backup API.
                 if ($result['phonetic'] || $result['source_url'] || !empty($result['verb_definitions'])) {
                     $result['source_api'] = 'https://dictionaryapi.dev/';
                     return $result;
                 }
             }
         }
+        return null;
+    }
 
-        // 2. Try FreeDictionaryAPI as fallback
-        $url2 = "https://freedictionaryapi.com/api/v1/entries/en/" . urlencode($word);
-        $response2 = $this->executeCurl($url2);
+    private function tryFreeDictionaryApi($word)
+    {
+        $url = "https://freedictionaryapi.com/api/v1/entries/en/" . urlencode($word);
+        $response = $this->executeCurl($url);
 
-        if ($response2) {
-            $data = json_decode($response2, true);
-
-            if (isset($data['entries'])) { // Validating FreeDictionaryAPI structure
+        if ($response) {
+            $data = json_decode($response, true);
+            if (isset($data['entries'])) {
                 $result = $this->parseFreeDictionaryApi($data);
                 if ($result['phonetic'] || $result['source_url'] || !empty($result['verb_definitions'])) {
                     $result['source_api'] = 'https://freedictionaryapi.com/';
@@ -83,128 +88,121 @@ class EnrichVerbs extends Command
                 }
             }
         }
-
         return null;
     }
 
     /**
      * Logic to parse DictionaryAPI.dev JSON structure
      */
-    function parseDictionaryApiDev($entry)
+    private function parseDictionaryApiDev($entry)
     {
-        $phonetic = null;
-        $sourceUrl = null;
-        $verbDefs = [];
-
-        // 1. Extract Phonetic
-        if (isset($entry['phonetic'])) {
-            $phonetic = $entry['phonetic'];
-        } elseif (isset($entry['phonetics'])) {
-            foreach ($entry['phonetics'] as $p) {
-                if (isset($p['text'])) {
-                    $phonetic = $p['text'];
-                    break;
-                }
-            }
-        }
-
-        // 2. Extract Source URL
-        if (isset($entry['sourceUrls'][0])) {
-            $sourceUrl = $entry['sourceUrls'][0];
-        }
-
-        // 3. Extract Verb Definitions
-        if (isset($entry['meanings'])) {
-            foreach ($entry['meanings'] as $meaning) {
-                if (isset($meaning['partOfSpeech']) && $meaning['partOfSpeech'] === 'verb') {
-                    if (isset($meaning['definitions'])) {
-                        if (count($meaning['definitions']) <= 3) {
-                            foreach ($meaning['definitions'] as $defItem) {
-                                if (isset($defItem['definition'])) {
-                                    $verbDefs[] = $defItem['definition'];
-                                }
-                            }
-                        } else {
-                            $accepted = array_slice($meaning['definitions'], 0, 3, true);
-                            foreach ($accepted as $defItem) {
-                                if (isset($defItem['definition'])) {
-                                    $verbDefs[] = $defItem['definition'];
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
         return [
-            'phonetic' => $phonetic,
-            'source_url' => $sourceUrl,
-            'verb_definitions' => $verbDefs
+            'phonetic' => $this->extractPhoneticDictionaryApi($entry),
+            'source_url' => $this->extractSourceUrlDictionaryApi($entry),
+            'verb_definitions' => $this->extractVerbDefinitionsDictionaryApi($entry)
         ];
     }
 
-    /**
-     * Logic to parse FreeDictionaryAPI.com JSON structure
-     */
-    function parseFreeDictionaryApi($data)
+    private function extractPhoneticDictionaryApi($entry)
     {
-        $phonetic = null;
-        $sourceUrl = null;
-        $verbDefs = [];
+        if (isset($entry['phonetic'])) {
+            return $entry['phonetic'];
+        }
 
-        // 1. Extract Phonetic (from the first entry)
-        if (isset($data['entries'][0]['pronunciations'])) {
-            foreach ($data['entries'][0]['pronunciations'] as $pronunciation) {
-                if (isset($pronunciation['text'])) {
-                    $phonetic = $pronunciation['text'];
-                    break;
+        if (isset($entry['phonetics'])) {
+            foreach ($entry['phonetics'] as $p) {
+                if (isset($p['text'])) {
+                    return $p['text'];
                 }
             }
         }
 
-        // 2. Extract Source URL
-        if (isset($data['source']['url'])) {
-            $sourceUrl = $data['source']['url'];
+        return null;
+    }
+
+    private function extractSourceUrlDictionaryApi($entry)
+    {
+        return $entry['sourceUrls'][0] ?? null;
+    }
+
+    private function extractVerbDefinitionsDictionaryApi($entry)
+    {
+        $verbDefs = [];
+        if (!isset($entry['meanings'])) {
+            return $verbDefs;
         }
 
-        // 3. Extract Verb Definitions (iterate all entries to find verbs)
-        if (isset($data['entries'])) {
-            foreach ($data['entries'] as $entry) {
-                if (isset($entry['partOfSpeech']) && $entry['partOfSpeech'] === 'verb') {
-                    if (isset($entry['senses'])) {
-                        if (count($entry['senses']) <= 3) {
-                            foreach ($entry['senses'] as $sense) {
-                                if (isset($sense['definition'])) {
-                                    $verbDefs[] = $sense['definition'];
-                                }
-                            }
-                        } else {
-                            $accepted = array_slice($entry['senses'], 0, 3, true);
-                            foreach ($accepted as $sense) {
-                                if (isset($sense['definition'])) {
-                                    $verbDefs[] = $sense['definition'];
-                                }
-                            }
-                        }
+        foreach ($entry['meanings'] as $meaning) {
+            if (
+                isset($meaning['partOfSpeech']) &&
+                $meaning['partOfSpeech'] === 'verb' &&
+                isset($meaning['definitions'])
+            ) {
+                $count = count($meaning['definitions']);
+                $definitions = $count <= 3 ? $meaning['definitions'] : array_slice($meaning['definitions'], 0, 3, true);
+
+                foreach ($definitions as $defItem) {
+                    if (isset($defItem['definition'])) {
+                        $verbDefs[] = $defItem['definition'];
                     }
                 }
                 break;
             }
         }
+        return $verbDefs;
+    }
 
+    /**
+     * Logic to parse FreeDictionaryAPI.com JSON structure
+     */
+    private function parseFreeDictionaryApi($data)
+    {
         return [
-            'phonetic' => $phonetic,
-            'source_url' => $sourceUrl,
-            'verb_definitions' => $verbDefs
+            'phonetic' => $this->extractPhoneticFreeDictionary($data),
+            'source_url' => $data['source']['url'] ?? null,
+            'verb_definitions' => $this->extractVerbDefinitionsFreeDictionary($data)
         ];
+    }
+
+    private function extractPhoneticFreeDictionary($data)
+    {
+        if (isset($data['entries'][0]['pronunciations'])) {
+            foreach ($data['entries'][0]['pronunciations'] as $pronunciation) {
+                if (isset($pronunciation['text'])) {
+                    return $pronunciation['text'];
+                }
+            }
+        }
+        return null;
+    }
+
+    private function extractVerbDefinitionsFreeDictionary($data)
+    {
+        $verbDefs = [];
+        if (!isset($data['entries'])) {
+            return $verbDefs;
+        }
+
+        foreach ($data['entries'] as $entry) {
+            if (isset($entry['partOfSpeech']) && $entry['partOfSpeech'] === 'verb' && isset($entry['senses'])) {
+                $count = count($entry['senses']);
+                $senses = $count <= 3 ? $entry['senses'] : array_slice($entry['senses'], 0, 3, true);
+
+                foreach ($senses as $sense) {
+                    if (isset($sense['definition'])) {
+                        $verbDefs[] = $sense['definition'];
+                    }
+                }
+                break;
+            }
+        }
+        return $verbDefs;
     }
 
     /**
      * Helper function to execute cURL requests
      */
-    function executeCurl($url)
+    private function executeCurl($url)
     {
         $ch = curl_init();
 
@@ -212,16 +210,11 @@ class EnrichVerbs extends Command
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        // User agent is polite to API providers
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (WordFetcher/1.0)');
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        if ($httpCode === 200) {
-            return $response;
-        }
-
-        return null;
+        return $httpCode === 200 ? $response : null;
     }
 }

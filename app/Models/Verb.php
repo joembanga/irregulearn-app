@@ -103,12 +103,12 @@ class Verb extends Model
         if ($user && method_exists($user, 'friends')) {
             $friends = $user->friends();
             $friendIds = $friends->pluck('id');
-            
+
             $friendsWhoFavorited = $this->favoritedByUsers()
                 ->whereIn('users.id', $friendIds)
                 ->take(3)
                 ->get();
-                
+
             $friendsCount = $this->favoritedByUsers()
                 ->whereIn('users.id', $friendIds)
                 ->count();

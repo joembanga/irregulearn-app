@@ -10,7 +10,6 @@ use Livewire\Component;
 
 class DailyVerbs extends Component
 {
-
     public $dailyVerbs = null;
 
     public function mount($dailyVerbs)

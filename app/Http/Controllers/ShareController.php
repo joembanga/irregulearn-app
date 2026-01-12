@@ -19,7 +19,7 @@ class ShareController extends Controller
         $this->fontPath = base_path('vendor/dompdf/dompdf/lib/fonts/DejaVuSans.ttf');
         if (!file_exists($this->fontPath)) {
             // Fallback just in case
-            $this->fontPath = 'arial.ttf'; 
+            $this->fontPath = 'arial.ttf';
         }
     }
 
@@ -33,7 +33,7 @@ class ShareController extends Controller
         // Cache for 24 hours to balance freshness and performance
         $imageData = Cache::remember($cacheKey, now()->addHours(24), function () use ($type, $identifier) {
             $manager = new ImageManager(new Driver());
-            
+
             try {
                 $image = match ($type) {
                     'profile' => $this->generateProfileImage($manager, User::where('username', $identifier)->firstOrFail()),
@@ -50,7 +50,9 @@ class ShareController extends Controller
             }
         });
 
-        if (!$imageData) abort(404);
+        if (!$imageData) {
+            abort(404);
+        }
 
         return response($imageData)->header('Content-Type', 'image/png');
     }
@@ -59,7 +61,7 @@ class ShareController extends Controller
     {
         // 1200x630 is the standard Open Graph size
         $image = $manager->create(1200, 630);
-        
+
         // Background color (Slate 900)
         $image->fill('#0f172a');
 
@@ -68,7 +70,7 @@ class ShareController extends Controller
             $draw->radius(250);
             $draw->background('rgba(124, 58, 237, 0.1)'); // Violet
         });
-        
+
         $image->drawCircle(100, 500, function ($draw) {
             $draw->radius(350);
             $draw->background('rgba(59, 130, 246, 0.05)'); // Blue
@@ -215,15 +217,20 @@ class ShareController extends Controller
 
         // Mocking/Getting random 5 verbs
         $verbs = Verb::inRandomOrder()->limit(5)->get();
-        
+
         $y = 280;
         foreach ($verbs as $index => $verb) {
-            $image->text($verb->infinitive . " → " . $verb->past_simple . ", " . $verb->past_participle, 600, $y, function ($font) {
-                $font->file($this->fontPath);
-                $font->size(38);
-                $font->color('#ffffff');
-                $font->align('center');
-            });
+            $image->text(
+                $verb->infinitive . " → " . $verb->past_simple . ", " . $verb->past_participle,
+                600,
+                $y,
+                function ($font) {
+                    $font->file($this->fontPath);
+                    $font->size(38);
+                    $font->color('#ffffff');
+                    $font->align('center');
+                }
+            );
             $y += 65;
         }
 
