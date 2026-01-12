@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Mail\WeeklyReportMail;
 use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -55,10 +54,10 @@ class GenerateWeeklyReport implements ShouldQueue
 
             // Only send if there was some activity
             if ($weeklyXp > 0 || $verbsLearned > 0) {
-                 Mail::to($user)->send(new WeeklyReportMail($data));
+                Mail::to($user)->send(new WeeklyReportMail($data));
             }
         } catch (\Throwable $e) {
-            Log::error("Failed to generate weekly report for user {$this->user->id}: " . $e->getMessage());
+            Log::error("Failed to generate weekly report for user {$this->user->id}: ".$e->getMessage());
             $this->fail($e);
         }
     }
@@ -68,6 +67,6 @@ class GenerateWeeklyReport implements ShouldQueue
      */
     public function failed(\Throwable $exception): void
     {
-        Log::error('GenerateWeeklyReport job failed: ' . $exception->getMessage());
+        Log::error('GenerateWeeklyReport job failed: '.$exception->getMessage());
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Verb;
+use Livewire\Component;
 
 class FavoriteList extends Component
 {
@@ -27,7 +27,7 @@ class FavoriteList extends Component
     public function render()
     {
         return view('livewire.favorite-list', [
-            'verbs' => auth()->user()->favorites()->get()
+            'verbs' => auth()->user()->favorites()->get(),
         ]);
     }
 }

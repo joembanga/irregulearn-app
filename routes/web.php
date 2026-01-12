@@ -3,12 +3,12 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LeaderboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\VerbController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LearnController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\VerbController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 // Share image generation (public)
 Route::get('/share/image/{type}/{identifier}', [ShareController::class, 'generate'])->name('share.image');
@@ -18,7 +18,7 @@ Route::get('/', function () {
     return redirect('/en');
 });
 
-Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'setLocale'], function() {
+Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'setLocale'], function () {
 
     // Public pages: privacy and terms
     Route::view('/privacy', 'privacy')->name('privacy');
@@ -36,7 +36,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
         Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');
 
-        //Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
+        // Route::get('/profile/{username}', App\Livewire\ProfilePage::class)->name('profile.public');
         Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
 
         Route::post('/user/timezone', [ProfileController::class, 'userTz'])->name('user.timezone');
@@ -47,8 +47,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
         Route::get('/notifications', function () {
             Auth::user()->unreadNotifications->markAsRead();
+
             return view('notifications', [
-                'notifications' => Auth::user()->notifications
+                'notifications' => Auth::user()->notifications,
             ]);
         })->name('notifications');
 
@@ -98,5 +99,4 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 });
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

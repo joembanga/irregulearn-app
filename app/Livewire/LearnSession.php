@@ -6,7 +6,6 @@ use App\Events\ExerciseCompleted;
 use App\Models\Category;
 use App\Models\Verb;
 use App\Models\VerbSentence;
-use App\Services\BadgeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -14,30 +13,48 @@ use Livewire\Component;
 class LearnSession extends Component
 {
     public $questionsNumber = 10;
+
     public ?Category $category = null;
+
     public $mode = 'category';
+
     public $verbs = [];
+
     public $currentVerb;
+
     public $currentVerbForms = [];
+
     public $currentIndex = 0;
+
     public $masteredVerbIds = [];
+
     public $sessionXp = 0;
 
     // État du jeu
     public $userInput = ''; // For complete
+
     public $answer = '';        // Pour Input
+
     public $choices = [];       // Pour QCM
+
     public $jumbledLetters = []; // Pour Jumble (lettres disponibles)
+
     public $selectedLetters = []; // Pour Jumble (lettres choisies)
+
     public $removedForm = ''; // Pour Complete
 
     public $currentType = 'input'; // 'input', 'quiz', 'jumble', 'sentence'
+
     public $currentTargetForm = 'past_simple'; // 'input', 'quiz', 'jumble'
+
     public $currentSentence = ''; // For sentence completion
 
     public $isCorrect = null;
+
     public $finished = false;
+
     public $mistakes = 0;
+
     public $finished_reward = 0;
 
     // Liste de verbes réguliers pour le mode "Intrus"
@@ -144,7 +161,7 @@ class LearnSession extends Component
         'watch',
         'wish',
         'worry',
-        'yell'
+        'yell',
     ];
 
     public function mount($slug = null, $mode = 'category')
@@ -161,13 +178,14 @@ class LearnSession extends Component
             if ($this->verbs->isEmpty()) {
                 // If no verbs (should not happen if logic is correct, but safe fallback)
                 Auth::user()->generateDailyVerbs();
+
                 return redirect()->route('learn.session', ['mode' => 'daily']);
             }
             while (true) {
                 foreach ($this->verbs as $verb) {
                     $this->verbs->add($verb);
                     if ($this->verbs->count() === $this->questionsNumber) {
-                        break(2);
+                        break 2;
                     }
                 }
             }
@@ -175,7 +193,7 @@ class LearnSession extends Component
             // Category mode
             $this->category = Category::where('slug', $slug)->firstOrFail();
 
-            if (!Auth::user()->canAccessCategory($this->category)) {
+            if (! Auth::user()->canAccessCategory($this->category)) {
                 return redirect()->route('learn.index');
             }
 
@@ -213,7 +231,7 @@ class LearnSession extends Component
         $this->currentSentence = '';
 
         // 2. Préparation selon le type
-        $correctAnswers = explode("/", $this->currentVerb->{$this->currentTargetForm});
+        $correctAnswers = explode('/', $this->currentVerb->{$this->currentTargetForm});
 
         switch ($this->currentType) {
             case 'quiz':
@@ -257,7 +275,7 @@ class LearnSession extends Component
             ->toArray();
 
         foreach ($distractors as $k => $distractor) {
-            $forms = explode("/", $distractor);
+            $forms = explode('/', $distractor);
             $distractors[$k] = $forms[array_rand($forms)];
         }
 
@@ -288,7 +306,7 @@ class LearnSession extends Component
         $rawForms = [
             'infinitive' => $this->currentVerb->infinitive,
             'past_simple' => $this->currentVerb->past_simple,
-            'past_participle' => $this->currentVerb->past_participle
+            'past_participle' => $this->currentVerb->past_participle,
         ];
         foreach ($rawForms as $key => $rawForm) {
             $rawForm = explode('/', $rawForm);
@@ -327,21 +345,22 @@ class LearnSession extends Component
     {
         $sentence = VerbSentence::where('verb_id', $this->currentVerb->id)->inRandomOrder()->first();
 
-        if (!$sentence) {
+        if (! $sentence) {
             // Fallback if something went wrong (should be handled by loadQuestion check, but safety first)
             $this->currentType = 'input';
             $this->answer = $this->currentVerb->{$this->currentTargetForm};
             $this->userInput = '';
+
             return;
         }
 
         // Case insensitive replacement for better UX
         $matches = null;
-        preg_match_all('/\b(' . preg_quote($sentence->missing_word, '/') . '\w*)[\p{P}]?/miu', $sentence->sentence, $matches);
+        preg_match_all('/\b('.preg_quote($sentence->missing_word, '/').'\w*)[\p{P}]?/miu', $sentence->sentence, $matches);
         $this->answer = $matches[1][0];
         // We use a regex to replace the word case-insensitively while keeping the blank
         $this->currentSentence = preg_replace(
-            '/\b' . preg_quote($sentence->missing_word, '/') . '\w*\p{P}?/miu',
+            '/\b'.preg_quote($sentence->missing_word, '/').'\w*\p{P}?/miu',
             '_____',
             $sentence->sentence
         );
@@ -384,7 +403,7 @@ class LearnSession extends Component
 
         // Add to batch for background persistence
         $this->sessionXp += 10;
-        if (!in_array($this->currentVerb->id, $this->masteredVerbIds)) {
+        if (! in_array($this->currentVerb->id, $this->masteredVerbIds)) {
             $this->masteredVerbIds[] = $this->currentVerb->id;
         }
     }

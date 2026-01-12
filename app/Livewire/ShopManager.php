@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ShopManager extends Component
 {
@@ -29,6 +29,7 @@ class ShopManager extends Component
 
         if (in_array($itemId, $unlocked)) {
             session()->flash('error', 'Déjà possédé !');
+
             return;
         }
 
@@ -51,23 +52,25 @@ class ShopManager extends Component
         $price = 800; // Cheaper than buying specific
 
         if ($user->xp_balance < $price) {
-             session()->flash('error', 'XP insuffisants...');
-             return;
+            session()->flash('error', 'XP insuffisants...');
+
+            return;
         }
 
         // Define pool of premium items
         $premiumItems = [
             'Sunglasses', 'Wayfarers', // Accessories
             'WinterHat4', 'LongHairFrida', 'ShortHairDreads02', // Tops
-            'Skull', 'Diamond', 'Bear' // Graphics
+            'Skull', 'Diamond', 'Bear', // Graphics
         ];
 
         $unlocked = $user->unlocked_items ?? [];
         $available = array_diff($premiumItems, $unlocked);
 
         if (empty($available)) {
-             session()->flash('error', 'Tu as déjà tout débloqué !');
-             return;
+            session()->flash('error', 'Tu as déjà tout débloqué !');
+
+            return;
         }
 
         $wonItem = $available[array_rand($available)];

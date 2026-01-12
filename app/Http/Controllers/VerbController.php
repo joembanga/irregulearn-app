@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcessPdfExport;
 use App\Models\Verb;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
 
 class VerbController extends Controller
 {
@@ -70,6 +70,7 @@ class VerbController extends Controller
          */
         $user = Auth::user();
         $verbs = $user->favorites; // Get all favorite verbs of the user
+
         return view('favorites', compact('verbs'));
     }
 
@@ -78,6 +79,7 @@ class VerbController extends Controller
         $user = Auth::user();
         $user->generateDailyVerbs();
         $dailyVerbs = $user->dailyVerbs;
+
         return view('daily-verbs', compact('dailyVerbs'));
     }
 }

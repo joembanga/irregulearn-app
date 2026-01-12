@@ -2,15 +2,17 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\User;
 use App\Notifications\XpReceivedNotification;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class TransferPoints extends Component
 {
     public User $receiver;
-    public int|null $userInput = null;
+
+    public ?int $userInput = null;
+
     public $amount = 100;
 
     public function transfer()
@@ -20,11 +22,13 @@ class TransferPoints extends Component
 
         if ($this->amount <= 50) {
             session()->flash('error', "Tu n'as pas assez de points pour faire un transfert");
+
             return;
         }
 
         if ($sender->xp_balance < $this->amount) {
             session()->flash('error', 'Solde XP insuffisant !');
+
             return;
         }
 
@@ -35,7 +39,7 @@ class TransferPoints extends Component
         $this->receiver->notify(new XpReceivedNotification($sender, $this->receiver, $this->amount));
 
         session()->flash('success', "Tu as envoyé {$this->amount} XP à {$this->receiver->username} !");
-        $this->userInput = null ;
+        $this->userInput = null;
     }
 
     public function render()

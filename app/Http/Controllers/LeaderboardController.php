@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class LeaderboardController extends Controller
 {
@@ -30,12 +29,12 @@ class LeaderboardController extends Controller
             $query->whereIn('id', $friendIds);
         }
 
-        $cacheKey = "leaderboard_{$filter}_{$period}_page_" . ($request->input('page', 1));
+        $cacheKey = "leaderboard_{$filter}_{$period}_page_".($request->input('page', 1));
 
         $data = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($query) {
             return [
                 'top3' => (clone $query)->limit(3)->get(),
-                'users' => $query->paginate(20)
+                'users' => $query->paginate(20),
             ];
         });
 

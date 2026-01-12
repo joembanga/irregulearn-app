@@ -4,10 +4,8 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
 class XpReceivedNotification extends Notification
 {
@@ -36,7 +34,7 @@ class XpReceivedNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');
@@ -53,7 +51,7 @@ class XpReceivedNotification extends Notification
             'message' => "{$this->sender->username} t'a offert {$this->amount} XP ! 🎁",
             'icon' => '🎁',
             'url' => '/shop',
-            'new_balance' => $this->receiver->xp_balance
+            'new_balance' => $this->receiver->xp_balance,
         ];
     }
 }

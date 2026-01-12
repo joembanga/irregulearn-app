@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Verb;
 use App\Models\VerbTranslation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class VerbTranslationSeeder extends Seeder
@@ -17,7 +16,7 @@ class VerbTranslationSeeder extends Seeder
         $csvFile = fopen(database_path('seeders/verbs.csv'), 'r');
         fgetcsv($csvFile);
 
-        while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
+        while (($data = fgetcsv($csvFile, 1000, ',')) !== false) {
 
             $verb = Verb::where('infinitive', '=', $data[0])->pluck('id')->first();
             $translatedForm = $data[3];

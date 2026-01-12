@@ -40,7 +40,7 @@ class BadgeEarnedNotification extends Notification implements \Illuminate\Contra
             'icon' => $this->badge->icon,
             'url' => '/profile',
             'badge_id' => $this->badge->id,
-            'badge_name' => $this->badge->name
+            'badge_name' => $this->badge->name,
         ];
     }
 }

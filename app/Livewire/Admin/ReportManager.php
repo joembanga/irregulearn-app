@@ -47,7 +47,7 @@ class ReportManager extends Component
             ->paginate(10);
 
         return view('livewire.admin.report-manager', [
-            'reports' => $reports
+            'reports' => $reports,
         ]);
     }
 }

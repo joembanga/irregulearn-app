@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{
-    Report,
-    User,
-    Verb
-};
-use Illuminate\Http\Request;
+use App\Models\Report;
+use App\Models\User;
+use App\Models\Verb;
 
 class AdminController extends Controller
 {

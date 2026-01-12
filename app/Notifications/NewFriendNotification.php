@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -35,9 +34,9 @@ class NewFriendNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('Vous avez une nouvelle connection')
-            ->line($this->sender->username . ' a commencé à vous suivre')
+            ->line($this->sender->username.' a commencé à vous suivre')
             ->action('Voir son profil', url("/u/{$this->sender->username}"))
             ->line('Thank you for using our application!');
     }
@@ -53,7 +52,7 @@ class NewFriendNotification extends Notification
             'message' => 'Vous avez une nouvelle connection',
             'sender_username' => $this->sender->username,
             'url' => "/u/{$this->sender->username}",
-            'icon' => '👥'
+            'icon' => '👥',
         ];
     }
 }

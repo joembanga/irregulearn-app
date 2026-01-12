@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 
 use function Illuminate\Support\now;
 
@@ -61,6 +60,7 @@ use function Illuminate\Support\now;
  * @property-read int|null $received_transfers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Verb> $verb
  * @property-read int|null $verb_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
@@ -94,12 +94,14 @@ use function Illuminate\Support\now;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpBalance($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereXpWeekly($value)
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**
@@ -151,7 +153,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the friends of the user where the friendship status is accepted.
      */
-    public function friends(int|null $limit = null)
+    public function friends(?int $limit = null)
     {
         // Returns a collection of friend users (status = accepted) regardless of direction
         $friendships = Friendship::where('status', 'accepted')
@@ -166,6 +168,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($limit) {
             return User::whereIn('id', $friendIds)->limit($limit)->get();
         }
+
         return User::whereIn('id', $friendIds)->get();
     }
 
@@ -224,6 +227,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function dailyVerbs()
     {
         $timezone = $this->timezone ?? 'UTC';
+
         return $this->belongsToMany(Verb::class, 'daily_verbs')
             ->withPivot('is_learned', 'day')
             ->wherePivot('day', now($timezone)->toDateString());
@@ -300,32 +304,32 @@ class User extends Authenticatable implements MustVerifyEmail
             // It was before yesterday or never -> Reset :(
             // Check for STREAK FREEZE
             if ($this->streak_freezes > 0) {
-                 // Consumer a freeze
-                 $this->decrement('streak_freezes');
-                 // Do NOT reset streak, keep it as is
-                 // BUT we must verify if he missed more than 1 day?
-                 // The logic "It was before yesterday" implies he missed strictly > 1 day.
-                 // If he has a freeze, we save the streak for the *missed* day.
-                 // To make it simple: if he has a freeze, we consider the streak "frozen"
-                 // so we don't reset it to 1, but we don't increment it either for the missing days.
+                // Consumer a freeze
+                $this->decrement('streak_freezes');
+                // Do NOT reset streak, keep it as is
+                // BUT we must verify if he missed more than 1 day?
+                // The logic "It was before yesterday" implies he missed strictly > 1 day.
+                // If he has a freeze, we save the streak for the *missed* day.
+                // To make it simple: if he has a freeze, we consider the streak "frozen"
+                // so we don't reset it to 1, but we don't increment it either for the missing days.
 
-                 // However, usually a freeze saves you from reset ONCE.
-                 // So we use 1 freeze. And we keep the current_streak value.
+                // However, usually a freeze saves you from reset ONCE.
+                // So we use 1 freeze. And we keep the current_streak value.
 
-                 // If he comes back after 10 days, 1 freeze shouldn't save him.
-                 // Simplified logic: If the gap is exactly 2 days (missed 1 day), use freeze.
-                 // If gap > 2 days (missed > 1 day), we need > 1 freeze?
-                 // Let's stick to: He missed yesterday.
+                // If he comes back after 10 days, 1 freeze shouldn't save him.
+                // Simplified logic: If the gap is exactly 2 days (missed 1 day), use freeze.
+                // If gap > 2 days (missed > 1 day), we need > 1 freeze?
+                // Let's stick to: He missed yesterday.
 
-                 $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
-                 // if last activity = 2023-01-01. Today = 2023-01-03. Diff = 2. Missed 1 day (02).
-                 // if last activity = 2023-01-01. Today = 2023-01-04. Diff = 3. Missed 2 days (02, 03).
+                $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
+                // if last activity = 2023-01-01. Today = 2023-01-03. Diff = 2. Missed 1 day (02).
+                // if last activity = 2023-01-01. Today = 2023-01-04. Diff = 3. Missed 2 days (02, 03).
 
-                 // We can consume 1 freeze per missed day?
-                 // Let's implement: If he has enough freezes to cover the gap, use them.
-                 // gap - 1 = number of missed days.
+                // We can consume 1 freeze per missed day?
+                // Let's implement: If he has enough freezes to cover the gap, use them.
+                // gap - 1 = number of missed days.
 
-                 $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
+                $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
 
                 if ($missedDays <= $this->streak_freezes) {
                     // Saved!
@@ -362,9 +366,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user can access a specific category.
-     *
-     * @param Category $category
-     * @return bool
      */
     public function canAccessCategory(Category $category): bool
     {
@@ -388,7 +389,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->orderBy('order', 'desc')
             ->first();
 
-        if (!$previousCategory) {
+        if (! $previousCategory) {
             return true;
         }
 
@@ -412,14 +413,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrl(): string
     {
-        if (!empty($this->avatar_url)) {
+        if (! empty($this->avatar_url)) {
             return $this->avatar_url;
         }
 
         if (empty($this->avatar_code)) {
             return '';
         }
-        return "https://avataaars.io/?" . $this->avatar_code;
+
+        return 'https://avataaars.io/?'.$this->avatar_code;
     }
 
     /**

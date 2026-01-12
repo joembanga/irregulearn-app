@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read int|null $translations_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb query()
@@ -45,11 +46,13 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereSourceUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Verb whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Verb extends Model
 {
     public $translation = '';
+
     protected $fillable = [
         'infinitive',
         'past_simple',
@@ -59,8 +62,9 @@ class Verb extends Model
         'description',
         'source_url',
         'phonetic',
-        'details_origin'
+        'details_origin',
     ];
+
     protected $casts = ['description' => 'array'];
 
     public function users()
@@ -75,7 +79,7 @@ class Verb extends Model
 
     public function isLearnedBy(User $user)
     {
-        return !$user->learnedVerbs()->wherePivot('verb_id', $this->id)->get()->isEmpty();
+        return ! $user->learnedVerbs()->wherePivot('verb_id', $this->id)->get()->isEmpty();
     }
 
     public function favoritedByUsers()
@@ -117,7 +121,7 @@ class Verb extends Model
         return [
             'percentage' => round($percentage),
             'friends' => $friendsWhoFavorited,
-            'friends_count' => $friendsCount
+            'friends_count' => $friendsCount,
         ];
     }
 

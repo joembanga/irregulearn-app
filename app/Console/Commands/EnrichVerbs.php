@@ -13,6 +13,7 @@ class EnrichVerbs extends Command
      * @var string
      */
     protected $signature = 'verbs:enrich';
+
     protected $description = 'Fetch definitions for verbs from external APIs';
 
     public function handle()
@@ -57,37 +58,41 @@ class EnrichVerbs extends Command
 
     private function tryDictionaryApiDev($word)
     {
-        $url = "https://api.dictionaryapi.dev/api/v2/entries/en/" . urlencode($word);
+        $url = 'https://api.dictionaryapi.dev/api/v2/entries/en/'.urlencode($word);
         $response = $this->executeCurl($url);
 
         if ($response) {
             $data = json_decode($response, true);
             if (isset($data[0])) {
                 $result = $this->parseDictionaryApiDev($data[0]);
-                if ($result['phonetic'] || $result['source_url'] || !empty($result['verb_definitions'])) {
+                if ($result['phonetic'] || $result['source_url'] || ! empty($result['verb_definitions'])) {
                     $result['source_api'] = 'https://dictionaryapi.dev/';
+
                     return $result;
                 }
             }
         }
+
         return null;
     }
 
     private function tryFreeDictionaryApi($word)
     {
-        $url = "https://freedictionaryapi.com/api/v1/entries/en/" . urlencode($word);
+        $url = 'https://freedictionaryapi.com/api/v1/entries/en/'.urlencode($word);
         $response = $this->executeCurl($url);
 
         if ($response) {
             $data = json_decode($response, true);
             if (isset($data['entries'])) {
                 $result = $this->parseFreeDictionaryApi($data);
-                if ($result['phonetic'] || $result['source_url'] || !empty($result['verb_definitions'])) {
+                if ($result['phonetic'] || $result['source_url'] || ! empty($result['verb_definitions'])) {
                     $result['source_api'] = 'https://freedictionaryapi.com/';
+
                     return $result;
                 }
             }
         }
+
         return null;
     }
 
@@ -99,7 +104,7 @@ class EnrichVerbs extends Command
         return [
             'phonetic' => $this->extractPhoneticDictionaryApi($entry),
             'source_url' => $this->extractSourceUrlDictionaryApi($entry),
-            'verb_definitions' => $this->extractVerbDefinitionsDictionaryApi($entry)
+            'verb_definitions' => $this->extractVerbDefinitionsDictionaryApi($entry),
         ];
     }
 
@@ -128,7 +133,7 @@ class EnrichVerbs extends Command
     private function extractVerbDefinitionsDictionaryApi($entry)
     {
         $verbDefs = [];
-        if (!isset($entry['meanings'])) {
+        if (! isset($entry['meanings'])) {
             return $verbDefs;
         }
 
@@ -149,6 +154,7 @@ class EnrichVerbs extends Command
                 break;
             }
         }
+
         return $verbDefs;
     }
 
@@ -160,7 +166,7 @@ class EnrichVerbs extends Command
         return [
             'phonetic' => $this->extractPhoneticFreeDictionary($data),
             'source_url' => $data['source']['url'] ?? null,
-            'verb_definitions' => $this->extractVerbDefinitionsFreeDictionary($data)
+            'verb_definitions' => $this->extractVerbDefinitionsFreeDictionary($data),
         ];
     }
 
@@ -173,13 +179,14 @@ class EnrichVerbs extends Command
                 }
             }
         }
+
         return null;
     }
 
     private function extractVerbDefinitionsFreeDictionary($data)
     {
         $verbDefs = [];
-        if (!isset($data['entries'])) {
+        if (! isset($data['entries'])) {
             return $verbDefs;
         }
 
@@ -196,6 +203,7 @@ class EnrichVerbs extends Command
                 break;
             }
         }
+
         return $verbDefs;
     }
 

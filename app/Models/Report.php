@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\VerbExample|null $example
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report query()
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereVerbExampleId($value)
+ *
  * @mixin \Eloquent
  */
 class Report extends Model

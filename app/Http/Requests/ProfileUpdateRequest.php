@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'firstname' => ['required', 'string', 'max:255'],
-            'daily_target' => ['required', 'integer', "in:3,5,10"],
+            'daily_target' => ['required', 'integer', 'in:3,5,10'],
             'lastname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255', 'min:3', 'regex:/^[a-z0-9_-]+$/', 'unique:users,username'],
             'email' => [

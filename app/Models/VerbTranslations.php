@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $translation
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations query()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations whereTranslation($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbTranslations whereVerbId($value)
+ *
  * @mixin \Eloquent
  */
 class VerbTranslations extends Model

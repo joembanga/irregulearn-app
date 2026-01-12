@@ -31,6 +31,7 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
             $origin = session('google_auth_origin', route('login'));
+
             return redirect($origin)->with('error', 'Erreur de connexion avec Google. Veuillez réessayer.');
         }
 
@@ -41,12 +42,12 @@ class GoogleController extends Controller
 
         if ($user) {
             // Update google_id if user exists but logged in via email before
-            if (!$user->google_id) {
+            if (! $user->google_id) {
                 $user->update(['google_id' => $googleUser->getId()]);
             }
 
             // Mark email as verified since Google has verified it
-            if (!$user->email_verified_at) {
+            if (! $user->email_verified_at) {
                 $user->email_verified_at = now();
                 $user->save();
             }
@@ -61,7 +62,7 @@ class GoogleController extends Controller
             $username = $baseUsername;
             $counter = 1;
             while (User::where('username', $username)->exists()) {
-                $username = $baseUsername . $counter;
+                $username = $baseUsername.$counter;
                 $counter++;
             }
 

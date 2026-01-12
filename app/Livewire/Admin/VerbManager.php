@@ -11,7 +11,9 @@ class VerbManager extends Component
     use WithPagination;
 
     public $search = '';
+
     public $confirmingVerbDeletion = false;
+
     public $verbIdToDelete = null;
 
     public $isEditing = false; // To toggle form visibility if we want inline, or we can use a separate route.
@@ -47,12 +49,12 @@ class VerbManager extends Component
     public function render()
     {
         $verbs = Verb::query()
-            ->where('infinitive', 'like', '%' . $this->search . '%')
+            ->where('infinitive', 'like', '%'.$this->search.'%')
             ->orderBy('infinitive')
             ->paginate(10);
 
         return view('livewire.admin.verb-manager', [
-            'verbs' => $verbs
+            'verbs' => $verbs,
         ]);
     }
 }

@@ -43,7 +43,7 @@ class SeedVerbSentences extends Command
                             'verb_id' => $verb->id,
                             'sentence' => $example['example'],
                             'missing_word' => $oneForm,
-                            'form' => $form
+                            'form' => $form,
                         ]);
                     }
                 }
@@ -58,14 +58,13 @@ class SeedVerbSentences extends Command
         $this->info('Examples added successfully!');
     }
 
-
     /**
      * Fetch word details from multiple APIs
      */
     private function fetchWordDetails($word)
     {
         // 1. Try DictionaryAPI.dev first
-        $url1 = "https://api.dictionaryapi.dev/api/v2/entries/en/" . urlencode($word);
+        $url1 = 'https://api.dictionaryapi.dev/api/v2/entries/en/'.urlencode($word);
         $response1 = $this->executeCurl($url1);
 
         if ($response1) {
@@ -79,7 +78,7 @@ class SeedVerbSentences extends Command
         }
 
         // 2. Try FreeDictionaryAPI as fallback
-        $url2 = "https://freedictionaryapi.com/api/v1/entries/en/" . urlencode($word);
+        $url2 = 'https://freedictionaryapi.com/api/v1/entries/en/'.urlencode($word);
         $response2 = $this->executeCurl($url2);
 
         if ($response2) {
@@ -102,7 +101,7 @@ class SeedVerbSentences extends Command
     {
         $example = null;
 
-        if (!isset($entry['meanings']) || !is_array($entry['meanings'])) {
+        if (! isset($entry['meanings']) || ! is_array($entry['meanings'])) {
             return ['example' => $example];
         }
 
@@ -113,7 +112,7 @@ class SeedVerbSentences extends Command
                 isset($meaning['definitions'])
             ) {
                 foreach ($meaning['definitions'] as $def) {
-                    if (isset($def['example']) && !empty($def['example'])) {
+                    if (isset($def['example']) && ! empty($def['example'])) {
                         if (str_contains(strtolower($def['example']), strtolower($entry['word']))) {
                             $example = $def['example'];
                             break 2;
@@ -133,7 +132,7 @@ class SeedVerbSentences extends Command
     {
         $example = null;
 
-        if (!isset($data['entries']) || !is_array($data['entries'])) {
+        if (! isset($data['entries']) || ! is_array($data['entries'])) {
             return ['example' => $example];
         }
 

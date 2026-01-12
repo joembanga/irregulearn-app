@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -22,8 +21,7 @@ class VerbsExportMail extends Mailable
     public function __construct(
         public User $user,
         public string $pdfContent
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {

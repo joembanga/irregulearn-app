@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Verb $verb
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence query()
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence whereSentence($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbSentence whereVerbId($value)
+ *
  * @mixin \Eloquent
  */
 class VerbSentence extends Model

@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Models\Verb;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
 use Livewire\Attributes\Url;
+use Livewire\Component;
 
 class SearchPage extends Component
 {
@@ -22,16 +22,16 @@ class SearchPage extends Component
 
         if (strlen($this->query) >= 1) {
             $verbs = Verb::where('infinitive', 'like', "%{$this->query}%")
-                        ->orWhere('past_simple', 'like', "%{$this->query}%")
-                        ->orWhere('past_participle', 'like', "%{$this->query}%")
-                        ->limit(10)
-                        ->get();
+                ->orWhere('past_simple', 'like', "%{$this->query}%")
+                ->orWhere('past_participle', 'like', "%{$this->query}%")
+                ->limit(10)
+                ->get();
 
             // Recherche des Utilisateurs (sauf soi-même)
             $users = User::where('username', 'like', "%{$this->query}%")
-                        ->where('id', '!=', Auth::id())
-                        ->limit(5)
-                        ->get();
+                ->where('id', '!=', Auth::id())
+                ->limit(5)
+                ->get();
         }
 
         return view('livewire.search-page', [
@@ -41,7 +41,6 @@ class SearchPage extends Component
             'history' => array_reverse($history), // More recent first
         ]);
     }
-
 
     public function selectResult($term, $url)
     {
@@ -56,7 +55,7 @@ class SearchPage extends Component
 
         if (in_array($term, $history)) {
             // Remove existing occurrence
-            $history = array_filter($history, fn($t) => $t !== $term);
+            $history = array_filter($history, fn ($t) => $t !== $term);
         }
         array_push($history, $term); // Add to the end
 

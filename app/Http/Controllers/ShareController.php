@@ -4,27 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Verb;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ShareController extends Controller
 {
     private const COLOR_WHITE = '#ffffff';
+
     private const COLOR_PRIMARY = '#7c3aed';
+
     private const COLOR_MUTED = '#94a3b8';
 
     protected string $fontPath;
 
-     /**
+    /**
      * Constructor to set up font path.
      */
     public function __construct()
     {
         // Path to font file from vendor (DejaVuSans is included with dompdf)
         $this->fontPath = base_path('vendor/dompdf/dompdf/lib/fonts/DejaVuSans.ttf');
-        if (!file_exists($this->fontPath)) {
+        if (! file_exists($this->fontPath)) {
             // Fallback just in case
             $this->fontPath = 'arial.ttf';
         }
@@ -39,7 +40,7 @@ class ShareController extends Controller
 
         // Cache for 24 hours to balance freshness and performance
         $imageData = Cache::remember($cacheKey, now()->addHours(24), function () use ($type, $identifier) {
-            $manager = new ImageManager(new Driver());
+            $manager = new ImageManager(new Driver);
 
             try {
                 $image = match ($type) {
@@ -57,7 +58,7 @@ class ShareController extends Controller
             }
         });
 
-        if (!$imageData) {
+        if (! $imageData) {
             abort(404);
         }
 
@@ -143,7 +144,7 @@ class ShareController extends Controller
             }
         }
 
-        if (!$avatarLoaded) {
+        if (! $avatarLoaded) {
             $image->text(substr($user->username, 0, 1), 220, 315, function ($font) {
                 $font->file($this->fontPath);
                 $font->size(100);
@@ -161,7 +162,7 @@ class ShareController extends Controller
             $font->align('left');
         });
 
-        $image->text("Niveau " . ($user->level ?? 1) . " • " . $user->level_name, 380, 345, function ($font) {
+        $image->text('Niveau '.($user->level ?? 1).' • '.$user->level_name, 380, 345, function ($font) {
             $font->file($this->fontPath);
             $font->size(36);
             $font->color(self::COLOR_MUTED);
@@ -169,8 +170,8 @@ class ShareController extends Controller
         });
 
         // Stats Cards
-        $this->drawStatCard($image, 380, 410, 'SÉRIE ACTUELLE', $user->current_streak . ' JOURS', '🔥');
-        $this->drawStatCard($image, 720, 410, 'XP TOTAL', number_format($user->xp_total ?? 0) . ' XP', '✨');
+        $this->drawStatCard($image, 380, 410, 'SÉRIE ACTUELLE', $user->current_streak.' JOURS', '🔥');
+        $this->drawStatCard($image, 720, 410, 'XP TOTAL', number_format($user->xp_total ?? 0).' XP', '✨');
 
         return $image;
     }
@@ -179,7 +180,7 @@ class ShareController extends Controller
     {
         $image = $this->createBaseCanvas($manager);
 
-        $image->text("VERBE DU MOMENT", 600, 180, function ($font) {
+        $image->text('VERBE DU MOMENT', 600, 180, function ($font) {
             $font->file($this->fontPath);
             $font->size(30);
             $font->color(self::COLOR_PRIMARY);
@@ -194,14 +195,14 @@ class ShareController extends Controller
         });
 
         // Forms list
-        $image->text("Past Simple : " . $verb->past_simple, 600, 420, function ($font) {
+        $image->text('Past Simple : '.$verb->past_simple, 600, 420, function ($font) {
             $font->file($this->fontPath);
             $font->size(45);
             $font->color(self::COLOR_MUTED);
             $font->align('center');
         });
 
-        $image->text("Past Participle : " . $verb->past_participle, 600, 490, function ($font) {
+        $image->text('Past Participle : '.$verb->past_participle, 600, 490, function ($font) {
             $font->file($this->fontPath);
             $font->size(45);
             $font->color(self::COLOR_MUTED);
@@ -215,7 +216,7 @@ class ShareController extends Controller
     {
         $image = $this->createBaseCanvas($manager);
 
-        $image->text("VERBES DU JOUR", 600, 180, function ($font) {
+        $image->text('VERBES DU JOUR', 600, 180, function ($font) {
             $font->file($this->fontPath);
             $font->size(50);
             $font->color(self::COLOR_WHITE);
@@ -228,7 +229,7 @@ class ShareController extends Controller
         $y = 280;
         foreach ($verbs as $verb) {
             $image->text(
-                $verb->infinitive . " → " . $verb->past_simple . ", " . $verb->past_participle,
+                $verb->infinitive.' → '.$verb->past_simple.', '.$verb->past_participle,
                 600,
                 $y,
                 function ($font) {
@@ -241,7 +242,7 @@ class ShareController extends Controller
             $y += 65;
         }
 
-        $image->text("Prêt à relever le défi ?", 600, 560, function ($font) {
+        $image->text('Prêt à relever le défi ?', 600, 560, function ($font) {
             $font->file($this->fontPath);
             $font->size(28);
             $font->color(self::COLOR_PRIMARY);
@@ -256,7 +257,7 @@ class ShareController extends Controller
         $image = $this->createBaseCanvas($manager);
         $masteredCount = $user->masteredVerbs()->count();
 
-        $image->text("MAÎTRISE TOTALE", 600, 200, function ($font) {
+        $image->text('MAÎTRISE TOTALE', 600, 200, function ($font) {
             $font->file($this->fontPath);
             $font->size(50);
             $font->color(self::COLOR_WHITE);
@@ -271,14 +272,14 @@ class ShareController extends Controller
             $font->valign('middle');
         });
 
-        $image->text("VERBES IRRÉGULIERS MAÎTRISÉS", 600, 480, function ($font) {
+        $image->text('VERBES IRRÉGULIERS MAÎTRISÉS', 600, 480, function ($font) {
             $font->file($this->fontPath);
             $font->size(35);
             $font->color(self::COLOR_MUTED);
             $font->align('center');
         });
 
-        $image->text("Surpasse " . $user->username . " sur IrreguLearn !", 600, 560, function ($font) {
+        $image->text('Surpasse '.$user->username.' sur IrreguLearn !', 600, 560, function ($font) {
             $font->file($this->fontPath);
             $font->size(28);
             $font->color(self::COLOR_WHITE);
@@ -296,7 +297,7 @@ class ShareController extends Controller
             $draw->border('#334155', 2);
         });
 
-        $image->text($emoji . ' ' . $label, $x + 20, $y + 45, function ($font) {
+        $image->text($emoji.' '.$label, $x + 20, $y + 45, function ($font) {
             $font->file($this->fontPath);
             $font->size(18);
             $font->color('#64748b'); // Slate 500

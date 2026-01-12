@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -34,7 +33,7 @@ class DailyVerbsNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('Tes 5 verbes du jour sont prêts !')
             ->line('Il est temps de s\'entraîner.')
             ->action('Apprendre maintenant', url('/learn'))
@@ -52,7 +51,7 @@ class DailyVerbsNotification extends Notification
             'message' => 'Tes 5 verbes du jour sont arrivés !',
             'verb_count' => $this->verbs->count(),
             'url' => route('verbs.today'),
-            'icon' => '📚'
+            'icon' => '📚',
         ];
     }
 }

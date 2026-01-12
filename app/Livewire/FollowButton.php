@@ -2,15 +2,16 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
+use App\Models\Friendship;
 use App\Models\User;
 use App\Notifications\NewFriendNotification;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Friendship;
+use Livewire\Component;
 
 class FollowButton extends Component
 {
     public User $user;
+
     public $status;
 
     public function mount(User $user)

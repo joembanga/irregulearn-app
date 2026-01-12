@@ -2,10 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Category;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class DailyVerbs extends Component
@@ -27,6 +25,7 @@ class DailyVerbs extends Component
         } else {
             $dailyVerbs = collect();
         }
+
         return view('livewire.daily-verbs', [
             'dailyVerbs' => $dailyVerbs,
         ]);

@@ -2,13 +2,15 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\User;
+use Livewire\Component;
 
 class RegisterUsernameInput extends Component
 {
     public $username = '';
+
     public $status = 'neutral'; // neutral, valid, invalid
+
     public $message = '';
 
     public function updatedUsername()
@@ -17,6 +19,7 @@ class RegisterUsernameInput extends Component
         if (empty($this->username)) {
             $this->status = 'neutral';
             $this->message = '';
+
             return;
         }
 
@@ -29,7 +32,7 @@ class RegisterUsernameInput extends Component
         } elseif (strlen($this->username) < 3) {
             $this->status = 'invalid';
             $this->message = '⚠️ Trop court (min 3 lettres)';
-        } elseif (!preg_match('/^[a-zA-Z0-9_-]+$/', $this->username)) {
+        } elseif (! preg_match('/^[a-zA-Z0-9_-]+$/', $this->username)) {
             $this->status = 'invalid';
             $this->message = '⚠️ Ni espace ni caractères spéciaux (sauf _ et -)';
         } else {

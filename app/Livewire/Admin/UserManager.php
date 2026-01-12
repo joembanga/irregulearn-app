@@ -20,13 +20,13 @@ class UserManager extends Component
     public function render()
     {
         $users = User::query()
-            ->where('username', 'like', '%' . $this->search . '%')
-            ->orWhere('email', 'like', '%' . $this->search . '%')
+            ->where('username', 'like', '%'.$this->search.'%')
+            ->orWhere('email', 'like', '%'.$this->search.'%')
             ->latest()
             ->paginate(15);
 
         return view('livewire.admin.user-manager', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 }

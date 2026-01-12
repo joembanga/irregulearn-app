@@ -3,15 +3,16 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class AvatarEditor extends Component
 {
     public $settings = [];
+
     public $dependencies = [
         'hatColor' => [
-            'topType' => ['Hat', 'WinterHat1', 'WinterHat2', 'WinterHat3', 'WinterHat4', 'Hijab', 'Turban']
+            'topType' => ['Hat', 'WinterHat1', 'WinterHat2', 'WinterHat3', 'WinterHat4', 'Hijab', 'Turban'],
         ],
         'hairColor' => [
             'topType' => [
@@ -40,14 +41,14 @@ class AvatarEditor extends Component
                 'ShortHairShortWaved',
                 'ShortHairSides',
                 'ShortHairTheCaesar',
-                'ShortHairTheCaesarSidePart'
-            ]
+                'ShortHairTheCaesarSidePart',
+            ],
         ],
         'facialHairColor' => [
-            'facialHairType' => ['BeardMedium', 'BeardLight', 'BeardMajestic', 'MoustacheFancy', 'MoustacheMagnum']
+            'facialHairType' => ['BeardMedium', 'BeardLight', 'BeardMajestic', 'MoustacheFancy', 'MoustacheMagnum'],
         ],
         'graphicType' => [
-            'clotheType' => ['GraphicShirt']
+            'clotheType' => ['GraphicShirt'],
         ],
     ];
 
@@ -89,7 +90,7 @@ class AvatarEditor extends Component
             'ShortHairShortWaved',
             'ShortHairSides',
             'ShortHairTheCaesar',
-            'ShortHairTheCaesarSidePart'
+            'ShortHairTheCaesarSidePart',
         ],
         'accessoriesType' => ['Blank', 'Kurt', 'Prescription01', 'Prescription02', 'Round', 'Sunglasses', 'Wayfarers'],
         'hairColor' => [
@@ -103,7 +104,7 @@ class AvatarEditor extends Component
             'Blue',
             'Platinum',
             'Red',
-            'SilverGray'
+            'SilverGray',
         ],
         'facialHairType' => ['Blank', 'BeardMedium', 'BeardLight', 'BeardMajestic', 'MoustacheFancy', 'MoustacheMagnum'],
         'facialHairColor' => ['Auburn', 'Black', 'Blonde', 'BlondeGolden', 'Brown', 'BrownDark', 'Platinum', 'Red'],
@@ -116,7 +117,7 @@ class AvatarEditor extends Component
             'Overall',
             'ShirtCrewNeck',
             'ShirtScoopNeck',
-            'ShirtVNeck'
+            'ShirtVNeck',
         ],
         'clotheColor' => [
             'Black',
@@ -133,7 +134,7 @@ class AvatarEditor extends Component
             'PastelYellow',
             'Pink',
             'Red',
-            'White'
+            'White',
         ],
         'graphicType' => [
             'Bat',
@@ -146,7 +147,7 @@ class AvatarEditor extends Component
             'Selena',
             'Bear',
             'SkullOutline',
-            'Skull'
+            'Skull',
         ],
         'eyeType' => [
             'Close',
@@ -160,7 +161,7 @@ class AvatarEditor extends Component
             'Squint',
             'Surprised',
             'Wink',
-            'WinkWacky'
+            'WinkWacky',
         ],
         'eyebrowType' => [
             'Angry',
@@ -174,7 +175,7 @@ class AvatarEditor extends Component
             'SadConcernedNatural',
             'UnibrowNatural',
             'UpDown',
-            'UpDownNatural'
+            'UpDownNatural',
         ],
         'mouthType' => [
             'Concerned',
@@ -188,7 +189,7 @@ class AvatarEditor extends Component
             'Smile',
             'Tongue',
             'Twinkle',
-            'Vomit'
+            'Vomit',
         ],
         'skinColor' => ['Tanned', 'Yellow', 'Pale', 'Light', 'Brown', 'DarkBrown', 'Black'],
         'hatColor' => [
@@ -206,7 +207,7 @@ class AvatarEditor extends Component
             'PastelYellow',
             'Pink',
             'Red',
-            'White'
+            'White',
         ],
     ];
 
@@ -232,9 +233,10 @@ class AvatarEditor extends Component
         // 1. Premium Check
         if (isset($this->premiumOptions[$property]) && in_array($value, $this->premiumOptions[$property])) {
             // Check if unlocked via shop
-             $unlocked = Auth::user()->unlocked_items ?? [];
-            if (!in_array($value, $unlocked)) {
-                session()->flash('message', "🔒 Item verrouillé ! Achète le dans la boutique.");
+            $unlocked = Auth::user()->unlocked_items ?? [];
+            if (! in_array($value, $unlocked)) {
+                session()->flash('message', '🔒 Item verrouillé ! Achète le dans la boutique.');
+
                 return;
             }
         }
@@ -254,7 +256,7 @@ class AvatarEditor extends Component
     public function save()
     {
         $queryString = http_build_query($this->settings);
-        $fullUrl = "https://avataaars.io/?" . $queryString;
+        $fullUrl = 'https://avataaars.io/?'.$queryString;
 
         /** @var User $user */
         $user = Auth::user();
@@ -266,7 +268,8 @@ class AvatarEditor extends Component
 
     public function render()
     {
-        $currentUrl = "https://avataaars.io/?" . http_build_query($this->settings);
+        $currentUrl = 'https://avataaars.io/?'.http_build_query($this->settings);
+
         return view('livewire.avatar-editor', ['currentUrl' => $currentUrl]);
     }
 }

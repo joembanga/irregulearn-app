@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Verb $verb
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample query()
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample whereVerbId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|VerbExample whereXpGiven($value)
+ *
  * @mixin \Eloquent
  */
 class VerbExample extends Model
@@ -36,7 +38,7 @@ class VerbExample extends Model
         'verb_id',
         'user_id',
         'body',
-        'xp_given'
+        'xp_given',
     ];
 
     public function user()

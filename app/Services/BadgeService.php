@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Notifications\BadgeEarnedNotification;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class BadgeService
 {
@@ -30,7 +29,6 @@ class BadgeService
         $badges = Badge::where('requirement_type', 'xp')
             ->where('requirement_value', '<=', $user->xp_total)
             ->get();
-
 
         foreach ($badges as $badge) {
             $this->awardBadgeIfNotEarned($user, $badge);
@@ -132,6 +130,6 @@ class BadgeService
      */
     public function failed(\Throwable $exception): void
     {
-        \Illuminate\Support\Facades\Log::error('BadgeService error: ' . $exception->getMessage());
+        \Illuminate\Support\Facades\Log::error('BadgeService error: '.$exception->getMessage());
     }
 }

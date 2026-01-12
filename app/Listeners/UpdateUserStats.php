@@ -32,7 +32,7 @@ class UpdateUserStats implements ShouldQueue
         $user->increment('xp_weekly', $event->xp);
 
         // 2. Update Mastery
-        if (!empty($event->masteredVerbIds)) {
+        if (! empty($event->masteredVerbIds)) {
             $syncData = [];
             foreach ($event->masteredVerbIds as $id) {
                 $syncData[$id] = ['mastered' => true];
@@ -43,7 +43,7 @@ class UpdateUserStats implements ShouldQueue
         // 3. Cache Clearing
         Cache::forget("user_stats_{$user->id}");
         Cache::forget("user_categories_progress_{$user->id}");
-        Cache::forget("leaderboard_weekly");
-        Cache::forget("leaderboard_global");
+        Cache::forget('leaderboard_weekly');
+        Cache::forget('leaderboard_global');
     }
 }

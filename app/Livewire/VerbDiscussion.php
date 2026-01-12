@@ -4,15 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Report;
 use App\Models\User;
-use Livewire\Component;
 use App\Models\Verb;
 use App\Models\VerbExample;
 use App\Notifications\ExampleLiked;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class VerbDiscussion extends Component
 {
     public Verb $verb;
+
     public $body = '';
 
     protected $rules = ['body' => 'required|min:5|max:150'];
@@ -34,7 +35,6 @@ class VerbDiscussion extends Component
         $this->reset('body');
         session()->flash('status', 'Exemple publié ! +10 XP ⚡');
     }
-
 
     public function like($id)
     {
@@ -71,12 +71,12 @@ class VerbDiscussion extends Component
             ->where('verb_example_id', $id)
             ->exists();
 
-        if (!$alreadyReported) {
+        if (! $alreadyReported) {
             // 2. Créer le signalement
             Report::create([
                 'user_id' => $user->id,
                 'verb_example_id' => $id,
-                'reason' => 'Inappropriate content' // Raison par défaut
+                'reason' => 'Inappropriate content', // Raison par défaut
             ]);
 
             $reportCount = Report::where('verb_example_id', $id)->count();
@@ -95,7 +95,7 @@ class VerbDiscussion extends Component
         return view('livewire.verb-discussion', [
             'examples' => $this->verb->communityExamples()
                 ->where('is_hidden', false)
-                ->get()
+                ->get(),
         ]);
     }
 }

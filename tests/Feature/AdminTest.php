@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Models\Verb;
-use App\Models\Report;
-use App\Models\VerbExample;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

@@ -25,7 +25,7 @@ class LearnController extends Controller
                         })->count();
 
                     $category->progress = ($totalVerbs > 0) ? round(($masteredCount / $totalVerbs) * 100) : 0;
-                    $category->is_locked = !$user->canAccessCategory($category);
+                    $category->is_locked = ! $user->canAccessCategory($category);
 
                     return $category;
                 });
@@ -38,16 +38,18 @@ class LearnController extends Controller
     {
         $availableModes = ['category', 'daily', 'favorites', 'knowVerbs'];
         $mode = $request->input('mode') ?? 'daily';
-        if ($request->input('mode') === null || !in_array($mode, $availableModes)) {
+        if ($request->input('mode') === null || ! in_array($mode, $availableModes)) {
             $mode = 'daily';
         }
         if ($mode === 'category') {
             $category = Category::where('slug', $request->input('name'))->first();
-            if (!$category || !$request->user()->canAccessCategory($category)) {
+            if (! $category || ! $request->user()->canAccessCategory($category)) {
                 return redirect()->route('learn.index');
             }
+
             return view('learn-session', ['slug' => $category->slug, 'mode' => 'category']);
         }
+
         return view('learn-session', ['slug' => null, 'mode' => $mode]);
     }
 }
