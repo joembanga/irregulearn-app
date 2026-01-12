@@ -26,12 +26,21 @@
 
             <div>
                 <h4 class="font-bold text-body mb-6 uppercase text-[10px] tracking-[0.2em]">{{ __('Légal') }}</h4>
-                <nav class="flex flex-col gap-3 text-sm">
-                    <a href="{{ route('about') }}" wire:navigate class="text-muted hover:text-primary transition-colors font-medium">{{ __('À propos') }}</a>
-                    <a href="{{ route('privacy') }}" wire:navigate
-                        class="text-muted hover:text-primary transition-colors font-medium">{{ __('Confidentialité') }}</a>
-                    <li><a href="{{ route('contact') }}" wire:navigate
-                            class="text-muted hover:text-primary transition-colors font-medium">{{ __('Contact') }}</a></li>
+                <nav>
+                    <ul class="flex flex-col gap-3 text-sm list-none">
+                        <li>
+                            <a href="{{ route('about') }}" wire:navigate
+                                class="text-muted hover:text-primary transition-colors font-medium">{{ __('À propos') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('privacy') }}" wire:navigate
+                                class="text-muted hover:text-primary transition-colors font-medium">{{ __('Confidentialité') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact') }}" wire:navigate
+                                class="text-muted hover:text-primary transition-colors font-medium">{{ __('Contact') }}</a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </div>
