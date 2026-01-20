@@ -30,24 +30,23 @@ class LearnSession extends Component
 
     public $sessionXp = 0;
 
-    // État du jeu
-    public $userInput = ''; // For complete
+    public $userInput = '';
 
-    public $answer = '';        // Pour Input
+    public $answer = '';
 
-    public $choices = [];       // Pour QCM
+    public $choices = [];
 
-    public $jumbledLetters = []; // Pour Jumble (lettres disponibles)
+    public $jumbledLetters = [];
 
-    public $selectedLetters = []; // Pour Jumble (lettres choisies)
+    public $selectedLetters = [];
 
-    public $removedForm = ''; // Pour Complete
+    public $removedForm = '';
 
-    public $currentType = 'input'; // 'input', 'quiz', 'jumble', 'sentence'
+    public $currentType = 'input';
 
-    public $currentTargetForm = 'past_simple'; // 'input', 'quiz', 'jumble'
+    public $currentTargetForm = 'past_simple';
 
-    public $currentSentence = ''; // For sentence completion
+    public $currentSentence = '';
 
     public $isCorrect = null;
 
@@ -57,7 +56,7 @@ class LearnSession extends Component
 
     public $finished_reward = 0;
 
-    // Liste de verbes réguliers pour le mode "Intrus"
+    // Some regular verbs
     protected $regularVerbs = [
         'work',
         'play',
@@ -168,21 +167,45 @@ class LearnSession extends Component
     {
         $this->mode = $mode;
 
-        if (in_array($this->mode, ['daily', 'favorites', 'knowVerbs'])) {
-            // Load verbs
-            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->get() :
-                (
-                    $this->mode === 'favorites' ? $this->verbs = Auth::user()->favorites()->get() :
-                    $this->verbs = Auth::user()->learnedVerbs()->inRandomOrder()->get()
-                );
+        // Handle different modes
+        if ($mode === 'revision') {
+            // Load all learned verbs for revision
+            $this->verbs = Auth::user()->learnedVerbs()->inRandomOrder()->limit($this->questionsNumber)->get();
             if ($this->verbs->isEmpty()) {
-                // If no verbs (should not happen if logic is correct, but safe fallback)
-                Auth::user()->generateDailyVerbs();
-
-                return redirect()->route('learn.session', ['mode' => 'daily']);
+                session()->flash('error', __('Vous n\'avez pas encore de verbes à réviser.'));
+                return redirect()->route('learn.index');
             }
-            while (true) {
-                foreach ($this->verbs as $verb) {
+        } elseif ($mode === 'timed') {
+            // Load 20 random verbs for timed challenge
+            $this->questionsNumber = 20;
+            $this->verbs = Verb::inRandomOrder()->limit($this->questionsNumber)->get();
+        } elseif ($mode === 'custom') {
+            // Load custom selected verbs
+            $verbIds = explode(',', request('verbs', ''));
+            if (count($verbIds) < 5) {
+                session()->flash('error', __('Veuillez sélectionner au moins 5 verbes.'));
+                return redirect()->route('learn.custom');
+            }
+            $this->verbs = Verb::whereIn('id', $verbIds)->inRandomOrder()->get();
+            $this->questionsNumber = $this->verbs->count();
+        } elseif (in_array($this->mode, ['daily', 'favorites'])) {
+            // Load verbs
+            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->inRandomOrder()->get() :
+                $this->verbs = Auth::user()->favorites()->inRandomOrder()->get();
+            
+            if ($this->verbs->isEmpty()) {
+                if ($this->mode === 'daily') {
+                    Auth::user()->generateDailyVerbs();
+                    return redirect()->route('learn.session', ['mode' => 'daily']);
+                } else {
+                    session()->flash('error', __('Vous n\'avez pas encore de verbes favoris.'));
+                    return redirect()->route('learn.index');
+                }
+            }
+
+            // Ensure we have exactly questionsNumber verbs by repeating if necessary
+            while ($this->verbs->count() < $this->questionsNumber) {
+                foreach ($this->verbs->take($this->questionsNumber - $this->verbs->count()) as $verb) {
                     $this->verbs->add($verb);
                     if ($this->verbs->count() === $this->questionsNumber) {
                         break 2;
@@ -199,7 +222,7 @@ class LearnSession extends Component
 
             $this->verbs = $this->category->verbs()->inRandomOrder()->limit($this->questionsNumber)->get();
             if ($this->verbs->isEmpty()) {
-                return redirect()->route('learn');
+                return redirect()->route('learn.index');
             }
         }
 
@@ -213,9 +236,17 @@ class LearnSession extends Component
         // Check if verb has sentences available
         $hasSentences = VerbSentence::where('verb_id', $this->currentVerb->id)->exists();
 
-        $types = ['input', 'jumble', 'quiz', 'odd_one_out', 'complete'];
+        $types = ['input', 'jumble', 'odd_one_out', 'complete'];
         if ($hasSentences) {
             $types[] = 'sentence';
+        }
+
+        if ($this->currentVerb->past_simple !== $this->currentVerb->past_participle) {
+            foreach (explode('/', $this->currentVerb->past_simple) as $pSimpleForm) {
+                if (!in_array($pSimpleForm, explode('/', $this->currentVerb->past_participle))) {
+                    $types[] = 'quiz';
+                }
+            }
         }
 
         $this->currentType = $types[array_rand($types)];
@@ -265,21 +296,24 @@ class LearnSession extends Component
     public function prepareQuiz(array $answers)
     {
         $this->answer = $answers[array_rand($answers)];
-        $options = [$this->answer];
 
-        // On cherche 3 autres verbes aléatoires pour faire les leurres
-        $distractors = Verb::inRandomOrder()
-            ->where('id', '!=', $this->currentVerb->id)
-            ->limit(3)
-            ->pluck("{$this->currentTargetForm}")
-            ->toArray();
+        $this->currentTargetForm === 'past_simple' ?
+            $options = [$this->currentVerb->past_participle] :
+            $options = [$this->currentVerb->past_simple];
 
-        foreach ($distractors as $k => $distractor) {
-            $forms = explode('/', $distractor);
-            $distractors[$k] = $forms[array_rand($forms)];
+        foreach ($options as $k => $option) {
+            $forms = explode('/', $option);
+            foreach ($forms as $form) {
+                if (!in_array($form, $options)) {
+                    $options[$k] = $form;
+                    break;
+                }
+            }
         }
 
-        $this->choices = array_merge($options, $distractors);
+        $options[] = $this->answer;
+
+        $this->choices = $options;
         shuffle($this->choices);
     }
 
@@ -380,6 +414,7 @@ class LearnSession extends Component
         if (in_array($attempt, $possibleAnswers)) {
             $this->handleSuccess();
         } else {
+            $this->userInput = $this->answer;
             $this->isCorrect = false;
             $this->mistakes++;
         }
@@ -402,7 +437,7 @@ class LearnSession extends Component
         }
 
         // Add to batch for background persistence
-        $this->sessionXp += 10;
+        $this->sessionXp += 5;
         if (! in_array($this->currentVerb->id, $this->masteredVerbIds)) {
             $this->masteredVerbIds[] = $this->currentVerb->id;
         }
@@ -414,20 +449,31 @@ class LearnSession extends Component
             $this->currentIndex++;
             $this->loadQuestion();
         } else {
-            $this->finished = true;
-            $this->finished_reward = (count($this->verbs) - $this->mistakes) * count($this->verbs);
-
-            // Dispatch event for background processing
-            ExerciseCompleted::dispatch(
-                Auth::user(),
-                $this->sessionXp + $this->finished_reward,
-                $this->mistakes,
-                $this->category,
-                $this->masteredVerbIds
-            );
-
-            Auth::user()->updateStreak();
+            $this->finishSession();
         }
+    }
+
+    public function finishTimedSession()
+    {
+        // Force finish the session when timer expires
+        $this->finishSession();
+    }
+
+    protected function finishSession()
+    {
+        $this->finished = true;
+        $this->finished_reward = (count($this->verbs) - $this->mistakes) * count($this->verbs);
+
+        // Dispatch event for background processing
+        ExerciseCompleted::dispatch(
+            Auth::user(),
+            $this->sessionXp + $this->finished_reward,
+            $this->mistakes,
+            $this->category,
+            $this->masteredVerbIds
+        );
+
+        Auth::user()->updateStreak();
     }
 
     public function render()

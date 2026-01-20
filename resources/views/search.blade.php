@@ -6,7 +6,7 @@
 
         <div class="max-w-4xl mx-auto px-6 relative z-10">
             <div class="mb-12 text-center md:text-left">
-                <h1 class="text-4xl md:text-5xl font-black text-body tracking-tighter uppercase mb-4">
+                <h1 class="text-4xl md:text-5xl font-bold text-body tracking-tighter uppercase mb-4">
                     Exploration
                 </h1>
                 <p class="text-muted text-lg font-medium">Recherche un verbe complexe ou un camarade de classe.</p>

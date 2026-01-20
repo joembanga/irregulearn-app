@@ -13,7 +13,7 @@
 
 @if($show)
 <div>
-    <h4 class="text-[10px] font-black uppercase text-muted mb-4 tracking-widest flex items-center">
+    <h4 class="text-[10px] font-bold uppercase text-muted mb-4 tracking-widest flex items-center">
         {{ preg_replace('/(?<!^)[A-Z]/', ' $0', $trait) }}
         <div class="ml-2 flex-1 h-px bg-surface dark:bg-gray-700"></div>
     </h4>

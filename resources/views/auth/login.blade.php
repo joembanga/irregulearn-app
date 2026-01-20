@@ -13,7 +13,7 @@
 
     <div class="space-y-8">
         <div class="text-center">
-            <h2 class="text-3xl font-black text-body tracking-tight">Bon retour !</h2>
+            <h2 class="text-3xl font-bold text-body tracking-tight">Bon retour !</h2>
             <p class="mt-2 text-muted font-medium">Continue ton apprentissage là où tu t'es arrêté.</p>
         </div>
 

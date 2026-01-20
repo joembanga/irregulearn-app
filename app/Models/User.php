@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use function Illuminate\Support\now;
 
@@ -33,7 +35,6 @@ use function Illuminate\Support\now;
  * @property string|null $last_activity_local_date
  * @property int $daily_target
  * @property string|null $avatar_code
- * @property string|null $avatar_url
  * @property array<array-key, mixed>|null $unlocked_items
  * @property string $role
  * @property int $is_premium
@@ -120,7 +121,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'daily_target',
         'timezone',
         'google_id',
-        'avatar_url',
         'unlocked_items',
         'best_streak',
     ];
@@ -166,10 +166,10 @@ class User extends Authenticatable implements MustVerifyEmail
         })->unique()->toArray();
 
         if ($limit) {
-            return User::whereIn('id', $friendIds)->limit($limit)->get();
+            return User::whereIn('id', $friendIds)->limit($limit);
         }
 
-        return User::whereIn('id', $friendIds)->get();
+        return User::whereIn('id', $friendIds);
     }
 
     public function verb()
@@ -243,7 +243,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Generate daily verbs for the user if not already present.
      */
-    public function generateDailyVerbs()
+    public function generateDailyVerbs(): void
     {
         // If user hasn't already dailyverbs
         if ($this->dailyVerbs()->count() === 0) {
@@ -264,7 +264,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
-    public function masteredVerbs()
+    public function masteredVerbs(): BelongsToMany
     {
         return $this->verb()
             ->wherePivot('mastered', true);
@@ -370,7 +370,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function canAccessCategory(Category $category): bool
     {
         // Identify the first category (minimal order)
-        $firstCategoryOrder = \App\Models\Category::min('order');
+        $firstCategoryOrder = Category::min('order');
         if ($category->order === $firstCategoryOrder) {
             return true;
         }
@@ -413,15 +413,11 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrl(): string
     {
-        if (! empty($this->avatar_url)) {
-            return $this->avatar_url;
+        if ($this->avatar_code) {
+            return 'https://avataaars.io/?' . $this->avatar_code;
         }
 
-        if (empty($this->avatar_code)) {
-            return '';
-        }
-
-        return 'https://avataaars.io/?'.$this->avatar_code;
+        return '';
     }
 
     /**
@@ -453,5 +449,43 @@ class User extends Authenticatable implements MustVerifyEmail
             $level >= 6 => 'Beginner',
             default => 'Starter',
         };
+    }
+
+    /**
+     * Send the email verification notification.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyEmailNotification());
+    }
+
+    /**
+     * Calculate when the streak will expire based on user's timezone.
+     */
+    public function getStreakExpiresAtAttribute(): ?Carbon
+    {
+        $timezone = $this->timezone ?? 'UTC';
+        $localNow = Carbon::now($timezone);
+        $localToday = $localNow->toDateString();
+
+        if (! $this->last_activity_local_date) {
+            return null;
+        }
+
+        $lastActivityDate = Carbon::parse($this->last_activity_local_date)->toDateString();
+
+        // If user played today, they have until the end of tomorrow to play again.
+        if ($lastActivityDate === $localToday) {
+            return $localNow->copy()->addDay()->endOfDay();
+        }
+
+        // If they played yesterday, they have until the end of today.
+        $localYesterday = $localNow->copy()->subDay()->toDateString();
+        if ($lastActivityDate === $localYesterday) {
+            return $localNow->copy()->endOfDay();
+        }
+
+        // Otherwise, the streak is already technically expired (awaiting next login to reset).
+        return null;
     }
 }

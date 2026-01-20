@@ -1,28 +1,22 @@
 <x-app-layout>
-    <div class="py-12 px-8 bg-app text-body transition-colors duration-300">
-        <div class="max-w-5xl mx-auto px-6">
+    <div class="py-6 px-2 md:py-8 md:px-6 bg-app text-body transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-3 md:px-6">
 
             <!-- Podium for Top 3 (Desktop) -->
-            <div class="hidden md:flex items-end justify-center gap-4 pt-10 pb-4">
+            <div class="hidden md:flex items-end justify-center gap-6 pt-10 pb-4">
 
                 @if($top3->count() >= 2)
                 <!-- 2nd Place -->
                 <div class="flex flex-col items-center gap-4 group">
                     <div class="relative">
-                        <div
-                            class="w-24 h-24 rounded-3xl bg-surface border-4 border-slate-300 flex items-center justify-center text-3xl font-black text-slate-400 shadow-lg group-hover:scale-110 transition-transform">
-                            {{ substr($top3[1]->username, 0, 1) }}
+                        <div class="w-24 h-24 rounded-full bg-surface border-4 border-slate-300 flex items-center justify-center text-2xl font-black text-slate-400 group-hover:scale-110 transition-transform">
+                        <x-user-avatar :user="$top3[1]" />
                         </div>
-                        <div
-                            class="absolute -bottom-3 -right-3 w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center text-white font-black text-sm">
-                            2</div>
+                        <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center text-white font-black text-sm">2</div>
                     </div>
                     <div class="text-center">
-                        <p class="font-black text-body">{{ $top3[1]->username }}</p>
-                        <p class="text-xs font-bold text-primary">
-                            {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }}
-                            XP
-                        </p>
+                        <p class="font-bold text-body">{{ $top3[1]->username }}</p>
+                        <p class="text-xs font-bold text-primary"> {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }} XP</p>
                     </div>
                 </div>
                 @endif
@@ -31,21 +25,17 @@
                 <!-- 1st Place -->
                 <div class="flex flex-col items-center gap-4 group -mt-10">
                     <div class="relative">
-                        <div
-                            class="w-32 h-32 rounded-[2.5rem] bg-surface border-4 border-warning flex items-center justify-center text-5xl font-black text-warning shadow-2xl group-hover:scale-110 transition-transform">
-                            {{ substr($top3[0]->username, 0, 1) }}
+                        <div class="w-32 h-32 rounded-full bg-surface border-3 border-warning flex items-center justify-center text-5xl font-black text-warning shadow-2xl group-hover:scale-110 transition-transform">
+                            <x-user-avatar :user="$top3[0]" />
                         </div>
-                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 text-4xl animate-bounce">👑</div>
-                        <div
-                            class="absolute -bottom-3 -right-3 w-12 h-12 bg-warning rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg">
-                            1</div>
+                        <div class="absolute -top-6 left-1/2 -translate-x-1/2 text-warning animate-bounce">
+                            <x-lucide-crown class="size-9 fill-current" />
+                        </div>
+                        <div class="absolute -bottom-3 -right-3 w-12 h-12 bg-warning rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg">1</div>
                     </div>
                     <div class="text-center">
-                        <p class="text-xl font-black text-body">{{ $top3[0]->username }}</p>
-                        <p class="text-sm font-bold text-primary">
-                            {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }}
-                            XP
-                        </p>
+                        <p class="text-xl font-bold text-body">{{ $top3[0]->username }}</p>
+                        <p class="text-sm font-bold text-primary"> {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }} XP</p>
                     </div>
                 </div>
                 @endif
@@ -54,20 +44,14 @@
                 <!-- 3rd Place -->
                 <div class="flex flex-col items-center gap-4 group">
                     <div class="relative">
-                        <div
-                            class="w-24 h-24 rounded-3xl bg-surface border-4 border-orange-400 flex items-center justify-center text-3xl font-black text-orange-400 shadow-lg group-hover:scale-110 transition-transform">
-                            {{ substr($top3[2]->username, 0, 1) }}
+                        <div class="w-24 h-24 rounded-full bg-surface border-3 border-orange-900 text-orange-900 flex items-center justify-center text-3xl font-black shadow-lg group-hover:scale-110 transition-transform">
+                            <x-user-avatar :user="$top3[2]" />
                         </div>
-                        <div
-                            class="absolute -bottom-3 -right-3 w-10 h-10 bg-orange-400 rounded-xl flex items-center justify-center text-white font-black text-sm">
-                            3</div>
+                        <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-orange-900 rounded-xl flex items-center justify-center text-white font-black text-sm">3</div>
                     </div>
                     <div class="text-center">
-                        <p class="font-black text-body">{{ $top3[2]->username }}</p>
-                        <p class="text-xs font-bold text-primary">
-                            {{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }}
-                            XP
-                        </p>
+                        <p class="font-bold text-body">{{ $top3[2]->username }}</p>
+                        <p class="text-xs font-bold text-primary">{{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }} XP</p>
                     </div>
                 </div>
                 @endif
@@ -75,30 +59,34 @@
 
             <!-- Mobile Header (Rich Greeting) -->
             <div class="md:hidden text-center space-y-2 mb-8">
-                <h3 class="text-3xl font-black text-body uppercase tracking-tighter">Le Classement</h3>
+                <h1 class="text-3xl font-black text-body uppercase tracking-tighter">Le Classement</h1>
                 <p class="text-sm text-muted font-medium italic">Seul on va vite, ensemble on va loin.</p>
             </div>
 
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
                 <div class="flex gap-2 bg-surface p-1 rounded-2xl">
                     <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}" wire:navigate
-                        class="w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'global' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
-                        🌎 Global
+                        class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'global' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
+                        <x-lucide-globe class="size-4" />
+                        <span>Global</span>
                     </a>
                     <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}" wire:navigate
-                        class="w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'friends' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
-                        👥 Amis
+                        class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'friends' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
+                        <x-lucide-users-round class="size-4" />
+                        <span>Amis</span>
                     </a>
                 </div>
 
                 <div class="flex gap-2 bg-primary/60 p-1 rounded-2xl">
                     <a href="{{ route('leaderboard', ['period' => 'weekly', 'filter' => $filter]) }}" wire:navigate
-                        class="w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'weekly' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
-                        Cette Semaine
+                        class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'weekly' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
+                        <x-lucide-calendar-1 class="size-4" />
+                        <span>Cette Semaine</span>
                     </a>
                     <a href="{{ route('leaderboard', ['period' => 'alltime', 'filter' => $filter]) }}" wire:navigate
-                        class="w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'alltime' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
-                        Tout temps
+                        class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'alltime' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
+                        <x-lucide-star class="size-4" />
+                        <span>Tout temps</span>
                     </a>
                 </div>
             </div>
@@ -112,21 +100,24 @@
                         class="block p-2 rounded-xl bg-surface/40 hover:bg-surface/60 transition">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black truncate">
-                                    {{ substr($user->username,0,1) }}
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                                    <x-user-avatar :user="$user" />
                                 </div>
                                 <div class="min-w-0">
                                     <div class="font-black text-body truncate">{{ $user->username }}</div>
-                                    <div class="text-[11px] text-muted truncate">{{ $user->current_streak }} jours de
-                                        série •
-                                        {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }}
-                                        XP
+                                    <div class="text-[10px] text-muted truncate">
+                                        {{ $user->current_streak }} <x-lucide-flame class="size-2 inline text-orange-600 fill-current" /> • {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }} XP
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-left">
-                                <div class="font-bold text-primary">@if($rank==1) 🥇 @elseif($rank==2) 🥈
-                                    @elseif($rank==3) 🥉 @else #{{ $rank }} @endif</div>
+                            <div class="text-center">
+                                <div class="font-bold text-primary">
+                                    @if($rank==1) <x-lucide-circle-star class="size-6 inline text-warning" />
+                                    @elseif($rank==2) <x-lucide-medal class="size-6 inline text-slate-300" />
+                                    @elseif($rank==3) <x-lucide-medal class="size-6 inline text-orange-900" />
+                                    @else #{{ $rank }}
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -154,25 +145,25 @@
                             <tr
                                 class="group hover:bg-primary/5 transition-colors {{ $user->id == auth()->id() ? 'bg-primary/10' : '' }}">
                                 <td class="px-8 py-6">
-                                    @if($rank == 1) <span class="text-2xl">🥇</span>
-                                    @elseif($rank == 2) <span class="text-2xl">🥈</span>
-                                    @elseif($rank == 3) <span class="text-2xl">🥉</span>
+                                    @if($rank == 1) <x-lucide-circle-star class="size-6 text-warning" />
+                                    @elseif($rank == 2) <x-lucide-medal class="size-6 text-slate-300" />
+                                    @elseif($rank == 3) <x-lucide-medal class="size-6 text-orange-900" />
                                     @else <span class="text-lg font-black text-muted">#{{ $rank }}</span>
                                     @endif
                                 </td>
                                 <td class="px-8 py-6">
                                     <a href="{{ route('profile.public', $user->username) }}" wire:navigate
                                         class="flex items-center gap-4">
-                                        <div
-                                            class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner group-hover:scale-110 transition-transform">
-                                            {{ substr($user->username, 0, 1) }}
+                                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner group-hover:scale-110 transition-transform">
+                                            <x-user-avatar :user="$user" />
                                         </div>
                                         <div>
                                             <p class="font-black text-body group-hover:text-primary transition-colors">
                                                 {{ $user->username }}
                                             </p>
-                                            <p class="text-[10px] font-bold text-muted uppercase tracking-widest">
-                                                {{ $user->current_streak }} jours de série 🔥
+                                            <p class="text-[14px] font-bold text-muted uppercase tracking-widest">
+                                                {{ $user->current_streak }}
+                                                <x-lucide-flame class="size-3 inline text-orange-600 fill-current" />
                                             </p>
                                         </div>
                                     </a>

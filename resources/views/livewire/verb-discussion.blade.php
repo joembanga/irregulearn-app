@@ -20,9 +20,8 @@
             $author = \App\Models\User::where('id', $example->user_id)->first();
         @endphp
         <div class="flex gap-4 p-4 rounded-2xl bg-surface/50 border border-muted group">
-            <div
-                class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-10 flex items-center justify-center font-bold text-primary">
-                {{ substr($author->username, 0, 1) }}
+            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                <x-user-avatar :user="$author"/>
             </div>
             <div class="flex-1">
                 <div class="flex justify-between items-start">
@@ -45,7 +44,7 @@
                     </button>
 
                     <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="text-muted hover:text-body text-xs font-black">•••</button>
+                        <button @click="open = !open" class="text-muted hover:text-body text-xs font-bold">•••</button>
                     
                         <div x-show="open" @click.away="open = false"
                             class="absolute right-0 mt-2 w-48 card-surface shadow-xl rounded-xl z-50 py-2 border-muted">

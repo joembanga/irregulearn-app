@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
-class SetLocale
-{
+class SetLocale {
     /**
      * Handle an incoming request.
      *
@@ -16,15 +15,21 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->segment(1);
+        $locale = $request->route('locale');
 
-        if (! in_array($locale, ['en', 'fr'])) {
-            $locale = 'en';
+        if ($locale && in_array($locale, ['en', 'fr'])) {
+            session(['locale' => $locale]);
+        } else {
+            $locale = session('locale', config('app.locale', 'en'));
+            $request->route()->setParameter('locale', $locale);
         }
 
-        if (in_array($locale, ['en', 'fr'])) {
-            app()->setLocale($locale);
-            URL::defaults(['locale' => $locale]);
+        app()->setLocale($locale);
+        URL::defaults(['locale' => $locale]);
+
+        // Forget the locale parameter so it's not passed to controllers if it was in the route
+        if ($request->route() && $request->route()->hasParameter('locale')) {
+            $request->route()->forgetParameter('locale');
         }
 
         return $next($request);

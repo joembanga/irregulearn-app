@@ -4,49 +4,38 @@
 <x-app-layout>
     @php
     $isFriend = DB::table('friendships')
-    ->where(function($q) use ($user) {
-    $q->where('sender_id', auth()->id())->where('recipient_id', $user->id);
-    })
-    ->where('status', 'accepted')
-    ->exists();
+        ->where(function($q) use ($user) {
+            $q->where('sender_id', auth()->id())
+                ->where('recipient_id', $user->id);
+        })
+        ->where('status', 'accepted')
+        ->exists();
     @endphp
 
-    <div class="py-12 bg-app min-h-screen">
-        <div class="max-w-5xl mx-auto px-6 space-y-8">
+    <div class="py-2 bg-app min-h-screen">
+        <div class="max-w-5xl mx-auto space-y-8">
 
             <!-- Hero Profile Section -->
-            <div class="card-surface rounded-[2.5rem] p-8 md:p-12 shadow-xl border border-muted relative overflow-hidden group">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl rounded-full -mr-20 -mt-20 group-hover:bg-primary/10 transition-colors duration-700">
-                </div>
+            <div class="p-6 md:p-10 relative overflow-hidden">
 
-                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
                     <div class="relative">
-                        <div class="absolute -inset-1 bg-gradient-to-tr from-primary to-purple-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-700">
+                        <div class="absolute -inset-1 bg-linear-to-tr from-primary to-purple-600 rounded-full blur opacity-25 hover:opacity-40 transition duration-700">
                         </div>
-                        <div
-                            class="relative w-32 h-32 md:w-40 md:h-40 bg-surface rounded-full flex items-center justify-center text-5xl md:text-6xl text-primary font-black shadow-2xl border-4 border-surface overflow-hidden">
-                            @if(!empty($user->avatar_code))
-                            @php
-                            $options = [];
-                            parse_str($user->avatar_code, $options);
-                            @endphp
-                            <img src="{{ 'https://avataaars.io/?' . http_build_query($options) }}" alt="Avatar"
-                                class="w-full h-full object-cover">
-                            @else
-                            {{ substr($user->username, 0, 1) }}
-                            @endif
+                        <div class="relative size-32 md:size-40 bg-surface rounded-full flex items-center justify-center text-4xl text-primary font-bold shadow-2xl border-4 border-surface overflow-hidden">
+                            <x-user-avatar :user="$user" />
                         </div>
                     </div>
 
-                    <div class="flex-1 text-center md:text-left space-y-4">
+                    <div class="flex-1 text-center md:text-left space-y-2">
                         <div>
-                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-2">
+                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider mb-3 animate-pulse">
                                 {{ $user->level_name }}
                             </div>
-                            <h1 class="text-4xl md:text-5xl font-black text-body tracking-tight">
+                            <h1 class="text-4xl md:text-5xl mb-2 font-bold text-body tracking-tight">
                                 {{ $user->username }}
                             </h1>
-                            <p class="text-muted font-medium mt-1">Maîtrise les verbes depuis
+                            <p class="text-muted font-medium mt-1">A rejoins la plateforme depuis
                                 {{ $user->created_at->format('M Y') }}
                             </p>
                         </div>
@@ -58,12 +47,12 @@
                             <x-share-button :title="$user->username . ' sur IrreguLearn'"
                                 :text="'Viens voir mon profil sur IrreguLearn et apprends les verbes irréguliers avec moi !'"
                                 :url="route('profile.public', $user->username)" class="mt-6" />
-                            <button x-data="{ copied: false }"
+                            {{-- <button x-data="{ copied: false }"
                                 @click="navigator.clipboard.writeText('{{ route('share.image', ['type' => 'stats', 'identifier' => $user->username]) }}'); copied = true; setTimeout(() => copied = false, 2000)"
                                 class="inline-flex items-center gap-2 mt-6 px-6 py-2 bg-primary/10 border border-primary/20 text-primary rounded-2xl font-bold text-sm hover:bg-primary/20 transition active:scale-95 shadow-sm">
                                 <span x-show="!copied">🏆 Partager mon Trophée</span>
                                 <span x-show="copied" x-cloak class="text-success">✅ Lien image copié !</span>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                 </div>
@@ -74,13 +63,12 @@
             @endif
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="grid grid-cols-3 gap-3 md:gap-6 lg:gap-8">
                 <!-- Streak Card -->
-                <div
-                    class="card-surface p-8 rounded-3xl border border-muted flex flex-col items-center justify-center text-center group hover:border-orange-400 transition-colors">
+                <div class="card-surface p-8 rounded-3xl border border-muted flex flex-col items-center justify-center text-center group hover:border-orange-400 transition-colors">
                     <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔥</div>
                     <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-1">Série</p>
-                    <p class="text-3xl font-black text-body">{{ $user->current_streak }} jours</p>
+                    <p class="text-3xl font-bold text-body">{{ $user->current_streak }} jours</p>
                 </div>
 
                 <!-- XP Card -->
@@ -88,7 +76,7 @@
                     class="card-surface p-8 rounded-3xl border border-muted flex flex-col items-center justify-center text-center group hover:border-primary transition-colors">
                     <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">⚡</div>
                     <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-1">XP Hebdo</p>
-                    <p class="text-3xl font-black text-body">{{ number_format($user->xp_weekly) }}</p>
+                    <p class="text-3xl font-bold text-body">{{ number_format($user->xp_weekly) }}</p>
                 </div>
 
                 <!-- Verbs Card -->
@@ -96,7 +84,7 @@
                     class="card-surface p-8 rounded-3xl border border-muted flex flex-col items-center justify-center text-center group hover:border-purple-500 transition-colors">
                     <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📖</div>
                     <p class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-1">verbes appris</p>
-                    <p class="text-3xl font-black text-body">
+                    <p class="text-3xl font-bold text-body">
                         {{ $user->learnedVerbs()->count() }}
                     </p>
                 </div>
@@ -105,7 +93,7 @@
             <!-- Badges Section -->
             <div class="card-surface p-8 md:p-12 rounded-[2.5rem] border border-muted">
                 <div class="flex items-center justify-between mb-10">
-                    <h3 class="text-2xl font-black text-body uppercase tracking-tighter">Collections de Badges</h3>
+                    <h3 class="text-2xl font-bold text-body uppercase tracking-tighter">Collections de Badges</h3>
                     <span class="text-xs font-bold text-muted uppercase tracking-widest">{{ $user->badges->count() }}
                         débloqués</span>
                 </div>
@@ -123,7 +111,7 @@
                             </div>
                         </div>
                         <span
-                            class="mt-4 text-[10px] font-black text-muted uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="mt-4 text-[10px] font-bold text-muted uppercase tracking-widest text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             {{ $badge->name }}
                         </span>
                     </div>

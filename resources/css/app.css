@@ -1,20 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-size: 90%;
+  }
+}
+
+@theme {
+    /* En déclarant tes couleurs ici, Tailwind crée automatiquement 
+     toutes les classes : text-primary, bg-primary, hover:bg-primary, etc. */
+
+    --color-primary: #3f25e7;
+    --color-accent: #3b82f6;
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-muted-ui: #e2e8f0;
+    /* Renommé pour éviter conflit avec text-muted */
+    --color-danger: #ef4444;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+}
 
 :root {
     /* Primary (Purple - kept as requested but flattened) */
     /* --color-primary: rgb(223, 213, 69);
     --color-primary-rgb: 223, 213, 69; */
-    /* --color-primary: #45df85;
-    --color-primary-rgb: 69, 223, 133; */
+    --color-primary: #3f25e7;
+    --color-primary-rgb: 69, 223, 133;
     /* --color-primary: #edae3a;
     --color-primary-rgb: 237, 174, 58; */
-    --color-primary: #7c3aed;
-    --color-primary-rgb: 124 58 237;
+    /* --color-primary: #7c3aed;
+    --color-primary-rgb: 124 58 237; */
     
     /* Accent (Teal/Blue - softer) */
-    --color-accent: #3b82f6; 
+    --color-accent: #3b82f6;
     --color-accent-rgb: 59 130 246;
 
     /* Neutrals (Clean Slate) */
@@ -25,7 +47,7 @@
     
     /* Text */
     --color-text: #0f172a; /* slate-900 */
-    --color-text-muted: #64748b; /* slate-500 */
+    --color-description: #64748b; /* slate-500 */
 
     /* States */
     --color-success: #10b981;
@@ -43,20 +65,20 @@
     /* Primary Dark */
     /* --color-primary: rgb(223, 213, 69);
     --color-primary-rgb: 223, 213, 69; */
-    /* --color-primary: #45df85;
-    --color-primary-rgb: 69, 223, 133; */
+    --color-primary: #3f25e7;
+    --color-primary-rgb: 69, 223, 133;
     /* --color-primary: #dfa945;
     --color-primary-rgb: 237, 174, 58; */
-    --color-primary: #8b5cf6;
-    --color-primary-rgb: 139 92 246;
+    /* --color-primary: #8b5cf6;
+    --color-primary-rgb: 139 92 246; */
     
     /* Accent Dark */
     --color-accent: #60a5fa; 
     --color-accent-rgb: 96 165 250;
 
     /* Neutrals Dark */
-    --color-bg: #0f172a; /* slate-900 */
-    --color-surface: #1e293b; /* slate-800 */
+    --color-bg: #0A092D; /* slate-900 */
+    --color-surface: #202040; /* slate-800 */
     --color-muted: #334155; /* slate-700 */
     
     /* Text Dark */
@@ -91,7 +113,7 @@ body {
 .text-surface { color: var(--color-surface); }
 .bg-primary { background-color: var(--color-primary); }
 .bg-primary-10 { background-color: rgb(var(--color-primary-rgb) / 0.1); }
-.text-muted { color: var(--color-text-muted); }
+.text-muted { color: var(--color-description); }
 .text-success { color: var(--color-success); }
 .bg-success { background-color: var(--color-success); }
 .border-muted { border-color: var(--color-muted); }
@@ -110,3 +132,29 @@ body {
 .border-primary { border-color: var(--color-primary); }
 
 [x-cloak] { display: none !important; }
+
+@layer utilities {
+
+    /* Une scrollbar invisible mais fonctionnelle */
+    .no-scrollbar {
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    /* Une scrollbar stylisée qui utilise ton thème */
+    .fancy-scroll {
+        scrollbar-color: var(--color-muted) transparent;
+        scrollbar-width: thin;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--color-blue-600);
+            border-radius: 10px;
+        }
+    }
+}

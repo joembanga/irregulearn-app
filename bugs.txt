@@ -1,0 +1,16 @@
+I've redisigned my app dashboard and some pages for a best app style. Look at design of:
+{locale}/dashboard
+{locale}/learn
+{locale}/verbs
+
+And update the design of:
+
+{locale}/u/{username}
+{locale}/grambuds
+{locale}/shop
+{locale}/verbs/favorites
+{locale}/verbs/today
+{locale}/verbs/describe/{slug}
+{locale}/learn/session
+
+Adapt those pages to the new design.

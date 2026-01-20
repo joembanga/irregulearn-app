@@ -17,7 +17,7 @@ class EmailVerificationTest extends TestCase
     {
         $user = User::factory()->unverified()->create();
 
-        $response = $this->actingAs($user)->get('/verify-email');
+        $response = $this->actingAs($user)->get('/en/verify-email');
 
         $response->assertStatus(200);
     }
@@ -31,7 +31,7 @@ class EmailVerificationTest extends TestCase
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->email)]
+            ['locale' => 'en', 'id' => $user->id, 'hash' => sha1($user->email)]
         );
 
         $response = $this->actingAs($user)->get($verificationUrl);
@@ -48,7 +48,7 @@ class EmailVerificationTest extends TestCase
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1('wrong-email')]
+            ['locale' => 'en', 'id' => $user->id, 'hash' => sha1('wrong-email')]
         );
 
         $this->actingAs($user)->get($verificationUrl);

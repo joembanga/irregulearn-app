@@ -7,15 +7,15 @@
         <div class="max-w-6xl mx-auto px-6 relative z-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
                 <div class="text-center md:text-left">
-                    <h1 class="text-4xl md:text-5xl font-black text-body tracking-tighter uppercase mb-4">
+                    <h1 class="text-4xl md:text-5xl font-bold text-body tracking-tighter uppercase mb-4">
                         Ma <span class="text-primary">Sélection</span>
                     </h1>
-                    <p class="text-muted text-lg font-medium">Tes <span class="font-black text-primary">{{ $verbs->count() }}</span> verbes prioritaires pour tes prochaines sessions.</p>
+                    <p class="text-muted text-lg font-medium">Tes <span class="font-bold text-primary">{{ $verbs->count() }}</span> verbes prioritaires pour tes prochaines sessions.</p>
                 </div>
 
                 @if($verbs->count() > 0)
                 <a href="{{ route('learn.session', ['mode' => 'favorites']) }}" wire:navigate
-                    class="group flex items-center justify-center gap-4 px-10 py-5 bg-primary text-surface font-black text-sm uppercase tracking-[0.2em] rounded-[2rem] shadow-2xl shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95">
+                    class="group flex items-center justify-center gap-4 px-10 py-5 bg-primary text-surface font-bold text-sm uppercase tracking-[0.2em] rounded-2xl shadow-2xl shadow-primary/20 transition-all duration-300 hover:scale-105 active:scale-95">
                     <span class="text-xl">🚀</span> 
                     Lancer la Révision
                 </a>

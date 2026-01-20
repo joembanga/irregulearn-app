@@ -146,7 +146,7 @@ header('Retry-After: 3600');
                 <span>85%</span>
             </div>
             <div class="h-3 w-full bg-white rounded-full overflow-hidden shadow-inner border border-gray-100 p-0.5">
-                <div class="h-full bg-gradient-to-r from-primary to-blue-500 rounded-full transition-all duration-1000 ease-out shadow-sm" style="width: 85%"></div>
+                <div class="h-full bg-linear-to-r from-primary to-blue-500 rounded-full transition-all duration-1000 ease-out shadow-sm" style="width: 85%"></div>
             </div>
         </div>
 

@@ -18,18 +18,18 @@
 
                 <div class="mt-8 flex gap-4">
                     <button wire:click="generateRandom"
-                        class="px-6 py-2 bg-surface shadow-sm border border-muted rounded-full text-xs font-black uppercase tracking-widest hover:bg-primary-10 transition">
+                        class="px-6 py-2 bg-surface shadow-sm border border-muted rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary-10 transition">
                         🎲 Aléatoire
                     </button>
                     <button wire:click="save"
-                        class="px-6 py-2 bg-primary text-surface rounded-full text-xs font-black uppercase tracking-widest hover:opacity-95 shadow-lg shadow-primary/20 transition">
+                        class="px-6 py-2 bg-primary text-surface rounded-full text-xs font-bold uppercase tracking-widest hover:opacity-95 shadow-lg shadow-primary/20 transition">
                         💾 Sauver
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="lg:w-3/5 p-6 sm:p-10 max-h-[700px] overflow-y-auto custom-scrollbar" x-data="{ tab: 'visage' }">
+        <div class="lg:w-3/5 p-6 sm:p-10 max-h-[700px] overflow-y-auto fancy-scroll" x-data="{ tab: 'visage' }">
 
             <div class="flex gap-2 mb-10 overflow-x-auto pb-2 no-scrollbar">
                 <button @click="tab = 'visage'"

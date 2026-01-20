@@ -10,7 +10,7 @@
 
     <div class="space-y-8">
         <div class="text-center">
-            <h2 class="text-3xl font-black text-body tracking-tight">Créer un compte</h2>
+            <h2 class="text-3xl font-bold text-body tracking-tight">Créer un compte</h2>
             <p class="mt-2 text-muted font-medium">Rejoins IrreguLearn et commence à maîtriser les verbes.</p>
         </div>
 

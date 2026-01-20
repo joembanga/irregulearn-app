@@ -42,7 +42,7 @@ class VerbController extends Controller
         $cacheKey = "verbs_list_{$filter}_page_{$page}";
 
         $verbs = Cache::remember($cacheKey, now()->addHours(1), function () use ($query) {
-            return $query->paginate(20);
+            return $query->paginate(24);
         });
 
         $verbs->withQueryString();

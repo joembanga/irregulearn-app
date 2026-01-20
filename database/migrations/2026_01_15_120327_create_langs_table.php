@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('avatar_url')->nullable()->after('avatar_code');
-            $table->json('unlocked_items')->nullable()->after('avatar_url');
+        Schema::create('langs', function (Blueprint $table) {
+            $table->id();
+            $table->text('name');
+            $table->string('code', 10);
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['avatar_url', 'unlocked_items']);
-        });
+        Schema::dropIfExists('langs');
     }
 };

@@ -1,47 +1,56 @@
 <x-app-layout>
-    <!-- Header with clean spacing -->
-    <div class="max-w-7xl mx-auto px-6 pt-8 pb-4">
-        <h2 class="font-black text-3xl text-body leading-tight flex items-center gap-3">
-            <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-xl shadow-lg shadow-purple-500/20 text-xl">🛒</span>
-            Boutique <span class="text-primary">IrreguLearn</span>
-        </h2>
-    </div>
-
-    <div class="pb-20">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="py-6 bg-app min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Main Shop Area -->
-            <div class="lg:col-span-8 space-y-8">
-               <!-- We remove the card container wrapper to let the component control its own beautiful background/cards -->
-                <livewire:shop-manager />
+            <!-- Header Section -->
+            <div class="mb-10 text-left">
+                <h1 class="text-3xl md:text-4xl font-bold text-body tracking-tight">
+                    Boutique <span class="text-primary">IrreguLearn</span>
+                </h1>
+                <p class="text-muted font-medium mt-2 text-lg">
+                    {{ __('Utilise tes XP pour personnaliser ton expérience et progresser plus vite') }}
+                </p>
             </div>
 
-            <!-- Sidebar -->
-            <aside class="lg:col-span-4 space-y-6">
-                <!-- Special Offers Card -->
-                <div class="relative overflow-hidden bg-gradient-to-br from-orange-400 to-red-500 rounded-3xl p-6 text-white shadow-xl shadow-orange-500/20 group hover:scale-[1.02] transition">
-                    <div class="absolute -right-6 -top-6 text-8xl opacity-10 rotate-12">🔥</div>
-                    <h4 class="font-black text-lg mb-2 relative z-10">Offres Flash</h4>
-                    <p class="text-white/90 text-sm relative z-10 leading-relaxed mb-4">
-                        Des boosters d'XP et des items légendaires arrivent bientôt ! Reste connecté pour ne rien rater.
-                    </p>
-                    <div class="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">
-                        Coming Soon
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Main Shop Area -->
+                <div class="lg:col-span-8">
+                    <livewire:shop-manager />
                 </div>
 
-                <!-- Support Card -->
-                <div class="bg-surface border border-muted rounded-3xl p-6 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="bg-gray-100 p-2 rounded-lg text-gray-500">🎧</div>
-                        <h4 class="font-bold text-body">Besoin d'aide ?</h4>
+                <!-- Sidebar -->
+                <aside class="lg:col-span-4 space-y-6">
+                    <!-- Special Offers Card -->
+                    <div class="relative overflow-hidden bg-linear-to-br from-orange-500 to-red-600 rounded-2xl p-8 text-white shadow-xl shadow-orange-500/20 group transition-all duration-300 hover:scale-[1.02]">
+                        <div class="absolute -right-6 -top-6 text-8xl opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-700">🔥</div>
+                        <h4 class="font-bold text-xl mb-3 relative z-10">Offres Flash</h4>
+                        <p class="text-white/90 text-sm relative z-10 leading-relaxed mb-6">
+                            Des boosters d'XP et des items légendaires arrivent bientôt ! Reste connecté pour ne rien rater.
+                        </p>
+                        <div class="inline-flex bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                            Coming Soon
+                        </div>
                     </div>
-                    <p class="text-sm text-muted leading-relaxed mb-4">
-                        Un problème avec un achat ? Notre équipe est là pour t'aider à récupérer tes XP.
-                    </p>
-                    <a href="#" class="text-sm font-bold text-primary hover:underline">Contacter le support →</a>
-                </div>
-            </aside>
+
+                    <!-- Support Card -->
+                    <div class="bg-surface border border-muted rounded-2xl p-8 shadow-sm transition-all duration-300 hover:shadow-md">
+                        <div class="flex items-center gap-4 mb-4 text-primary">
+                            <div class="bg-primary/10 p-3 rounded-xl">
+                                <x-lucide-help-circle class="size-6" />
+                            </div>
+                            <h4 class="font-bold text-lg text-body">Besoin d'aide ?</h4>
+                        </div>
+                        <p class="text-muted font-medium leading-relaxed mb-6">
+                            Un problème avec un achat ? Notre équipe est là pour t'aider à récupérer tes XP.
+                        </p>
+                        <a href="{{ route('contact') }}" wire:navigate class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all">
+                            <span>Contacter le support</span>
+                            <x-lucide-arrow-right class="size-4" />
+                        </a>
+                    </div>
+                </aside>
+            </div>
         </div>
     </div>
 </x-app-layout>

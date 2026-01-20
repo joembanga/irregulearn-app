@@ -54,7 +54,7 @@ class AvatarEditor extends Component
 
     // Ton JSON complet converti en Array PHP
     public $options = [
-        'avatarStyle' => ['Circle'],
+        'avatarStyle' => ['Transparent'],
         'topType' => [
             'NoHair',
             'Eyepatch',
@@ -256,12 +256,10 @@ class AvatarEditor extends Component
     public function save()
     {
         $queryString = http_build_query($this->settings);
-        $fullUrl = 'https://avataaars.io/?'.$queryString;
 
         /** @var User $user */
         $user = Auth::user();
         $user->avatar_code = $queryString;
-        $user->avatar_url = $fullUrl;
         $user->save();
         session()->flash('message', 'Apparence sauvegardée ! ⚡');
     }

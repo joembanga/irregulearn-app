@@ -37,6 +37,7 @@ return new class extends Migration
 
             // --- PROFILE & ROLE ---
             $table->text('avatar_code')->nullable();
+            $table->json('unlocked_items')->nullable();
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->boolean('is_premium')->default(false);
 

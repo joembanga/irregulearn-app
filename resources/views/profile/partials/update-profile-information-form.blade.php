@@ -69,7 +69,7 @@
                     <div class="max-w-xl">
                         <section>
                             <header class="mb-4">
-                                <h3 class="text-sm font-black text-body uppercase tracking-widest">Objectif Quotidien</h3>
+                                <h3 class="text-sm font-bold text-body uppercase tracking-widest">Objectif Quotidien</h3>
                                 <p class="mt-1 text-sm text-muted">Combien de nouveaux verbes
                                     veux-tu apprendre chaque jour ?</p>
                             </header>

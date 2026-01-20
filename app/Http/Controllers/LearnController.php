@@ -31,12 +31,12 @@ class LearnController extends Controller
                 });
         });
 
-        return view('learn', compact('categories'));
+        return view('learn', compact('user', 'categories'));
     }
 
     public function startSession(Request $request)
     {
-        $availableModes = ['category', 'daily', 'favorites', 'knowVerbs'];
+        $availableModes = ['category', 'daily', 'favorites', 'revision', 'timed'];
         $mode = $request->input('mode') ?? 'daily';
         if ($request->input('mode') === null || ! in_array($mode, $availableModes)) {
             $mode = 'daily';
@@ -51,5 +51,20 @@ class LearnController extends Controller
         }
 
         return view('learn-session', ['slug' => null, 'mode' => $mode]);
+    }
+
+    public function custom(Request $request)
+    {
+        $user = $request->user();
+        
+        // Get only accessible categories with their verbs
+        $categories = Category::with('verbs')
+            ->orderBy('order')
+            ->get()
+            ->filter(function ($category) use ($user) {
+                return $user->canAccessCategory($category);
+            });
+        
+        return view('learn-custom', compact('categories'));
     }
 }

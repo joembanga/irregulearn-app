@@ -54,6 +54,7 @@ class Verb extends Model
     public $translation = '';
 
     protected $fillable = [
+        'slug',
         'infinitive',
         'past_simple',
         'past_participle',
