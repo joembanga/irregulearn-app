@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'Inter';
+    src: url('../../public/fonts/Inter.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+}
+
+
 @layer base {
   html {
     font-size: 90%;
@@ -22,18 +31,13 @@
 
     --color-text: #0f172a;
     --color-text-muted: #64748b;
+
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 :root {
-    /* Primary (Purple - kept as requested but flattened) */
-    /* --color-primary: rgb(223, 213, 69);
-    --color-primary-rgb: 223, 213, 69; */
-    --color-primary: #3f25e7;
+    --color-primary: #2926eb;
     --color-primary-rgb: 69, 223, 133;
-    /* --color-primary: #edae3a;
-    --color-primary-rgb: 237, 174, 58; */
-    /* --color-primary: #7c3aed;
-    --color-primary-rgb: 124 58 237; */
     
     /* Accent (Teal/Blue - softer) */
     --color-accent: #3b82f6;
@@ -63,14 +67,8 @@
 
 .dark {
     /* Primary Dark */
-    /* --color-primary: rgb(223, 213, 69);
-    --color-primary-rgb: 223, 213, 69; */
-    --color-primary: #3f25e7;
+    --color-primary: #4228e9;
     --color-primary-rgb: 69, 223, 133;
-    /* --color-primary: #dfa945;
-    --color-primary-rgb: 237, 174, 58; */
-    /* --color-primary: #8b5cf6;
-    --color-primary-rgb: 139 92 246; */
     
     /* Accent Dark */
     --color-accent: #60a5fa; 

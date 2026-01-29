@@ -1,0 +1,5 @@
+{
+    "name": "IrreguLearn",
+    "start_url": "/dashboard",
+    "display": "standalone"
+}

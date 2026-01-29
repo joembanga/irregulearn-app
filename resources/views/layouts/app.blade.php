@@ -3,32 +3,34 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="manifest" href="{{ asset("/manifest.json") }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Irregulearn') }}</title>
+    <title>@yield('title', 'Irregulearn - ' . __('Maitrise Les verbes Irreguliers Anglais'))</title>
+    <meta name="description" content="@yield('description', __('Maîtrise les verbes irréguliers anglais avec IrreguLearn !'))">
+    <meta name="author" content="Irregulearn">
+    <meta name="keywords" content="@yield('keywords', '...')">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="robots" content="index, follow">
 
-    <!-- Dynamic Meta Tags (Open Graph / SEO) -->
-    <meta property="og:title" content="@yield('og_title', config('app.name'))">
-    <meta property="og:description"
-        content="@yield('og_description', 'Maîtrise les verbes irréguliers anglais avec IrreguLearn !')">
+    <meta property="og:title" content="@yield('og_title', config('app.name', 'Irregulearn'))">
+    <meta property="og:description" content="@yield('og_description', __('Maîtrise les verbes irréguliers anglais avec IrreguLearn !'))">
     <meta property="og:image" content="@yield('og_image', asset('images/og-default.png'))">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:site_name" content="IrreguLearn" />
+    <meta property="og:locale" content="{{ app()->getLocale() }}" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="@yield('og_title', config('app.name'))">
-    <meta name="twitter:description"
-        content="@yield('og_description', 'Maîtrise les verbes irréguliers anglais avec IrreguLearn !')">
+    <meta name="twitter:description" content="@yield('og_description', __('Maîtrise les verbes irréguliers anglais avec IrreguLearn !'))">
     <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.png'))">
+    <meta  rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     @livewireStyles
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -116,7 +118,7 @@
             </div>
             @endif
             <!-- Page Content -->
-            <main class="pt-32 md:pt-20 grow px-4 sm:px-6 lg:px-8 py-6">
+            <main class="mt-32 md:mt-20 grow px-4 sm:px-6 lg:px-8 py-6">
                 {{ $slot }}
             </main>
             @include('layouts.footer')
