@@ -36,7 +36,7 @@ class DailyVerbsNotification extends Notification
         return (new MailMessage)
             ->subject('Tes 5 verbes du jour sont prêts !')
             ->line('Il est temps de s\'entraîner.')
-            ->action('Apprendre maintenant', url('/learn'))
+            ->action('Apprendre maintenant', url('/learn/session', ['mode' => 'daily']))
             ->line('Bonne chance pour ta série !');
     }
 
@@ -50,7 +50,7 @@ class DailyVerbsNotification extends Notification
         return [
             'message' => 'Tes 5 verbes du jour sont arrivés !',
             'verb_count' => $this->verbs->count(),
-            'url' => route('verbs.today'),
+            'url' => route('learn.session', ['mode' => 'daily']),
             'icon' => '📚',
         ];
     }

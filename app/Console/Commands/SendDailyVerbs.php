@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use App\Notifications\DailyVerbsNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -27,11 +28,10 @@ class SendDailyVerbs extends Command
      */
     public function handle()
     {
-        $users = \App\Models\User::all();
+        $users = User::all();
 
         foreach ($users as $user) {
             $user->generateDailyVerbs();
-            // notify() enverra automatiquement le mail ET créera la notif en base
             $user->notify(new DailyVerbsNotification($user->dailyVerbs));
         }
     }
