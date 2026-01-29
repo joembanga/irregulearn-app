@@ -9,9 +9,8 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class GenerateWeeklyReport implements ShouldQueue
+class GenerateWeeklyReport
 {
-    use Queueable;
 
     /**
      * Create a new job instance.
@@ -58,7 +57,7 @@ class GenerateWeeklyReport implements ShouldQueue
             }
         } catch (\Throwable $e) {
             Log::error("Failed to generate weekly report for user {$this->user->id}: ".$e->getMessage());
-            $this->fail($e);
+            throw $e;
         }
     }
 
