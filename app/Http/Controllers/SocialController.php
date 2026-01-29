@@ -22,18 +22,31 @@ class SocialController extends Controller
     }
 
     /**
-     * Display the user's submitted verb examples.
+     * Display the community's submitted verb examples.
      */
     public function sentences(Request $request): View
     {
-        $user = $request->user();
-        $examples = VerbExample::where('user_id', $user->id)
-            ->with('verb')
+        $userFriendsIds = $request->user()->friends()->pluck('id')->toArray();
+        $examples = VerbExample::where('is_hidden', false)
+            ->with(['verb', 'user'])
             ->orderByDesc('created_at')
             ->paginate(15);
 
         return view('sentences', [
             'examples' => $examples,
+            'friendsIds' => $userFriendsIds
+        ]);
+    }
+
+    /**
+     * Display the user's weekly mastery reports.
+     */
+    public function weeklyReports(Request $request): View
+    {
+        $reports = $request->user()->weeklyReports()->paginate(10);
+
+        return view('weekly-reports', [
+            'reports' => $reports,
         ]);
     }
 }
