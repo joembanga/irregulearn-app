@@ -36,8 +36,7 @@ class RegisteredUserController extends Controller
             'lastname' => $credentials['lastname'],
             'email' => $credentials['email'],
             'password' => Hash::make($credentials['password']),
-            'role' => 'user',
-            // 'avatar' => $credentials->avatar,
+            'role' => 'user'
         ]);
 
         $user->generateDailyVerbs();
@@ -46,6 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('learn.session', ['mode' => 'daily']));
     }
 }

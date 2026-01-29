@@ -27,11 +27,10 @@ class RegisterForm extends Component
     public $password = '';
 
     public $password_confirmation = '';
+    
+    #[Validate('accepted')]
+    public $terms = false;
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
 
     public function register()
     {
@@ -52,7 +51,7 @@ class RegisterForm extends Component
 
         Auth::login($user);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('learn.session', ['mode' => 'daily'], absolute: false));
     }
 
     public function render()
