@@ -27,7 +27,7 @@
     <meta name="twitter:title" content="@yield('og_title', config('app.name'))">
     <meta name="twitter:description" content="@yield('og_description', __('Maîtrise les verbes irréguliers anglais avec IrreguLearn !'))">
     <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.png'))">
-    <meta  rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     @livewireStyles
 

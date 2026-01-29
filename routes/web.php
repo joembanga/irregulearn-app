@@ -31,13 +31,18 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
             return view('welcome');
         })->name('welcome');
 
+        // Public Routes (Accessible by guests & bots)
+        Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
+        Route::get('/verbs/describe/{verb:slug}', [VerbController::class, 'getVerb'])->name('verbs.show');
+        Route::get('/daily-challenge', [VerbController::class, 'today'])->name('verbs.today');
+
+
         Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
             Route::get('/leaderboard', [LeaderboardController::class, 'load'])->name('leaderboard');
 
-            Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
 
             Route::post('/user/timezone', [ProfileController::class, 'userTz'])->name('user.timezone');
 
@@ -69,8 +74,6 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
 
             Route::prefix('verbs')->name('verbs.')->group(function () {
                 Route::get('/', [VerbController::class, 'getList'])->name('index');
-                Route::get('/today', [VerbController::class, 'today'])->name('today');
-                Route::get('/describe/{verb:slug}', [VerbController::class, 'getVerb'])->name('show');
                 Route::get('/export', [VerbController::class, 'exportPdf'])->name('export');
                 Route::get('/favorites', [VerbController::class, 'listFavs'])->name('favorites');
             });

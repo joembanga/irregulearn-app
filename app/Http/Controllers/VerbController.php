@@ -76,9 +76,17 @@ class VerbController extends Controller
 
     public function today()
     {
-        $user = Auth::user();
-        $user->generateDailyVerbs();
-        $dailyVerbs = $user->dailyVerbs;
+        if (Auth::check()) {
+            $user = Auth::user();
+            $user->generateDailyVerbs();
+            $dailyVerbs = $user->dailyVerbs;
+        } else {
+            // Guest logic: seeded random verbs based on date
+            // Seed with today's timestamp (days since epoch) to keep it consistent for 24h
+            $seed = floor(time() / 86400);
+            $dailyVerbs = Verb::inRandomOrder($seed)->limit(5)->get();
+            $user = null;
+        }
 
         return view('daily-verbs', compact('dailyVerbs', 'user'));
     }

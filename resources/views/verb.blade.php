@@ -37,8 +37,10 @@
                 </div>
                 <div class="w-auto flex flex-row gap-3">
                     <x-share-button :title=" __('To') . $verb->infinitive" :text="__('Le verbe To ') . $verb->slug . __(' sur Irregulearn')" :url="route('verbs.show', $verb->slug)" />
+                    @auth
                     @php $verbId = $verb->id; @endphp
                     <livewire:add-to-favs-button :$verbId />
+                    @endauth
                 </div>
             </div>
         </div>
@@ -139,9 +141,18 @@
             </div>
 
             <!-- Discussion Section -->
+            @auth
             <div class="pt-8">
                 <livewire:verb-discussion :verb="$verb" />
             </div>
+            @else
+            <div class="pt-8 text-center text-muted">
+                <p>{{ __('Connectez-vous pour participer à la discussion et aux exemples !') }}</p>
+                <div class="mt-4">
+                    <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-colors">{{ __('Connexion') }}</a>
+                </div>
+            </div>
+            @endauth
         </div>
     </div>
 

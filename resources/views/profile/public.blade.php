@@ -6,13 +6,16 @@
 @section('og_image', route('share.image', ['type' => 'profile', 'identifier' => $user->username]))
 <x-app-layout>
     @php
-    $isFriend = DB::table('friendships')
-        ->where(function($q) use ($user) {
-            $q->where('sender_id', auth()->id())
-                ->where('recipient_id', $user->id);
-        })
-        ->where('status', 'accepted')
-        ->exists();
+    $isFriend = false;
+    if (auth()->check()) {
+        $isFriend = DB::table('friendships')
+            ->where(function($q) use ($user) {
+                $q->where('sender_id', auth()->id())
+                    ->where('recipient_id', $user->id);
+            })
+            ->where('status', 'accepted')
+            ->exists();
+    }
     @endphp
 
     <div class="py-2 bg-app min-h-screen">
@@ -42,9 +45,11 @@
                         </div>
 
                         <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                            @auth
                             @if(auth()->id() !== $user->id)
                             <livewire:follow-button :user="$user" />
                             @endif
+                            @endauth
                             <x-share-button :title="$user->username . ' ' . __('sur') . ' IrreguLearn'"
                                 :text="__('Viens voir mon profil sur IrreguLearn et apprends les verbes irréguliers avec moi !')"
                                 :url="route('profile.public', ['locale' => app()->getLocale(), 'user' => $user->username])" class="mt-6" />
@@ -161,7 +166,7 @@
                                     </svg>
                                 </a>
 
-                                @if($example->user_id === auth()->id())
+                                @if(auth()->check() && $example->user_id === auth()->id())
                                     <livewire:delete-example :exampleId="$example->id" :key="'delete-profile-'.$example->id" />
                                 @endif
                             </div>

@@ -91,6 +91,7 @@
                             <span>{{ __('Grambuds') }}</span>
                         </a>
                     </li>
+                    @auth
                     <li>
                         <a href="{{ route('profile.public', ['user' => auth()->user()]) }}" wire:navigate
                             class="flex items-center p-2 md:p-3 rounded-xl group transition-all duration-200 {{ (request()->routeIs('profile.public') && request()->route('user') == auth()->user()->username) ? 'bg-primary/10 text-primary shadow-sm' : 'hover:bg-muted/30' }}">
@@ -100,6 +101,7 @@
                             <span>{{ __('Ma page publique') }}</span>
                         </a>
                     </li>
+                    @endauth
                 </ul>
             </div>
         </nav>

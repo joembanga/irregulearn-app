@@ -23,6 +23,7 @@
 
             <!-- Right: Actions -->
             <div class="flex items-center gap-2 sm:gap-4">
+                @auth
                 <!-- Streak -->
                 <div x-data="{ showStreak: false }" class="relative">
                     <button @mouseenter="showStreak = true" @mouseleave="showStreak = false" @click="showStreak = !showStreak"
@@ -85,7 +86,9 @@
                         </div>
                     </div>
                 </div>
+                @endauth
 
+                @auth
                 <livewire:notification-icon />
 
                 <div class="h-8 w-0.5 bg-surface"></div>
@@ -159,6 +162,29 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+                @endauth
+                
+                @guest
+                <div class="flex items-center gap-2">
+                     <button @click="toggleTheme" class="flex items-center justify-between px-3 py-2 text-sm text-muted hover:bg-surface rounded-xl transition-colors">
+                        <span x-show="!isDark">
+                            <x-lucide-sun class="size-6" />
+                        </span>
+                        <span x-show="isDark">
+                            <x-lucide-moon class="size-6" />
+                        </span>
+                    </button>
+                    
+                    <a href="{{ route('login', ['locale' => app()->getLocale()]) }}" wire:navigate
+                       class="px-4 py-2 text-sm font-bold text-body hover:text-primary transition-colors">
+                        {{ __('Connexion') }}
+                    </a>
+                    <a href="{{ route('register', ['locale' => app()->getLocale()]) }}" wire:navigate
+                       class="px-4 py-2 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105 transition-all">
+                        {{ __('Commencer') }}
+                    </a>
+                </div>
+                @endguest
             </div>
         </div>
         <!-- Center: Reactive Search Bar -->
