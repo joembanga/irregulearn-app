@@ -1,11 +1,11 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-body">
-            {{ __('Profile Information') }}
+        <h2 class="text-xl font-medium text-body">
+            {{ __('Informations sur le profil') }}
         </h2>
 
         <p class="mt-1 text-sm text-muted">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Change les informations de ton compte et ton adresse email.") }}
         </p>
     </header>
 
@@ -19,30 +19,30 @@
                 <div class="space-y-4">
                     <div>
                         <x-input-label for="firstname" :value="__('Prénom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="firstname" name="firstname" type="text" class="mt-1 block w-full"
-                        :value="old('firstname', $user->firstname)" required autocomplete="firstname" />
-                    <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
-                </div>
+                        <x-text-input id="firstname" name="firstname" type="text" class="mt-1 block w-full"
+                            :value="old('firstname', $user->firstname)" required autocomplete="firstname" />
+                        <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
+                    </div>
 
                     <div class="mt-4">
                         <x-input-label for="lastname" :value="__('Nom')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full"
-                        :value="old('lastname', $user->lastname)" required autocomplete="lastname" />
-                    <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
-                </div>
+                        <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full"
+                            :value="old('lastname', $user->lastname)" required autocomplete="lastname" />
+                        <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
+                    </div>
 
                     <div class="mt-4">
                         <x-input-label for="username" :value="__('Username')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="username" name="username" type="text" class="mt-1 block w-full"
+                        <x-text-input id="username" name="username" type="text" class="mt-1 block w-full"
                         :value="old('username', $user->username)" required autocomplete="username" />
-                    <x-input-error class="mt-2" :messages="$errors->get('username')" />
-                </div>
+                        <x-input-error class="mt-2" :messages="$errors->get('username')" />
+                    </div>
 
                     <div class="mt-4">
                         <x-input-label for="email" :value="__('Email')" class="ml-1 text-muted uppercase text-[10px] tracking-widest" />
-                    <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
-                        :value="old('email', $user->email)" required autocomplete="username" />
-                    <x-input-error class="mt-2" :messages="$errors->get('email')" />
+                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                            :value="old('email', $user->email)" required autocomplete="username" />
+                        <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
                     @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                     <div>
@@ -65,25 +65,24 @@
                 </div>
             </div>
             <div>
-                <div class="p-4 sm:p-8 bg-surface shadow sm:rounded-2xl border border-muted">
+                <div class="p-4 bg-surface rounded-xl border border-muted">
                     <div class="max-w-xl">
                         <section>
                             <header class="mb-4">
-                                <h3 class="text-sm font-bold text-body uppercase tracking-widest">Objectif Quotidien</h3>
-                                <p class="mt-1 text-sm text-muted">Combien de nouveaux verbes
-                                    veux-tu apprendre chaque jour ?</p>
+                                <h3 class="text-sm font-bold text-body uppercase tracking-widest">{{ __('Objectif Quotidien') }}</h3>
+                                <p class="mt-1 text-sm text-muted">{{ __('Combien de nouveaux verbes veux-tu apprendre chaque jour ?') }}</p>
                             </header>
                             <div>
                                 <select name="daily_target"
-                                    class="border-muted focus:border-primary focus:ring-primary rounded-xl shadow-sm w-full dark:bg-gray-900/50 dark:text-white">
+                                    class="h-10 px-4 rounded-xl shadow-sm w-full bg-app text-body">
                                     <option value="3" {{ auth()->user()->daily_target === 3 ? 'selected' : '' }}>3
-                                        verbes
+                                        {{ __('verbes') }}
                                     </option>
                                     <option value="5" {{ auth()->user()->daily_target === 5 ? 'selected' : '' }}>5
-                                        verbes
+                                        {{ __('verbes') }}
                                     </option>
                                     <option value="10" {{ auth()->user()->daily_target === 10 ? 'selected' : '' }}>10
-                                        verbes
+                                        {{ __('verbes') }}
                                     </option>
                                 </select>
                                 <x-input-error class="mt-2" :messages="$errors->get('daily_target')" />
@@ -93,12 +92,12 @@
                 </div>
             </div>
         </div>
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="flex items-center gap-4 pt-6">
+            <x-primary-button>{{ __('Enregistrer') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
             <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
-                class="text-sm text-gray-700">{{ __('Saved.') }}</p>
+                class="text-sm text-success">{{ __('Profil mis à jour !') }}</p>
             @endif
         </div>
     </form>

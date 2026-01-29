@@ -19,11 +19,11 @@
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 translate-y-0 scale-100"
          x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-         class="absolute top-full right-0 mt-3 w-80 bg-surface border border-muted rounded-2xl shadow-2xl overflow-hidden z-70"
+         class="absolute top-full -left-60 mt-3 w-90 bg-surface border border-muted rounded-2xl shadow-2xl overflow-hidden z-70"
          x-cloak>
         
         <div class="px-5 py-4 border-b border-muted flex justify-between items-center bg-surface">
-            <h3 class="font-bold text-body text-sm uppercase tracking-widest">{{ __('Notifications') }}</h3>
+            <h3 class="font-bold text-body text-sm tracking-widest">{{ __('Notifications') }}</h3>
             @if(count($notifications) > 0)
                 <button wire:click="clearAll" 
                         class="text-[10px] font-bold text-muted hover:text-danger uppercase tracking-wider transition-colors">
@@ -32,7 +32,7 @@
             @endif
         </div>
 
-        <div class="max-h-[350px] overflow-y-auto">
+        <div class="max-h-87.5 overflow-y-auto">
             @forelse($notifications as $notification)
                 <div class="px-5 py-4 border-b border-muted/50 hover:bg-muted/5 transition-colors last:border-0 relative group">
                     <div class="flex gap-4">

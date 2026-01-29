@@ -9,14 +9,19 @@
                 <!-- 2nd Place -->
                 <div class="flex flex-col items-center gap-4 group">
                     <div class="relative">
-                        <div class="w-24 h-24 rounded-full bg-surface border-4 border-slate-300 flex items-center justify-center text-2xl font-black text-slate-400 group-hover:scale-110 transition-transform">
-                        <x-user-avatar :user="$top3[1]" />
+                        <div
+                            class="w-24 h-24 rounded-full bg-surface border-4 border-slate-300 flex items-center justify-center text-2xl font-black text-slate-400 group-hover:scale-110 transition-transform">
+                            <x-user-avatar :user="$top3[1]" />
                         </div>
-                        <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center text-white font-black text-sm">2</div>
+                        <div
+                            class="absolute -bottom-3 -right-3 w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center text-white font-black text-sm">
+                            2</div>
                     </div>
                     <div class="text-center">
                         <p class="font-bold text-body">{{ $top3[1]->username }}</p>
-                        <p class="text-xs font-bold text-primary"> {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }} XP</p>
+                        <p class="text-xs font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[1]->xp_weekly) : number_format($top3[1]->xp_total) }}
+                            XP</p>
                     </div>
                 </div>
                 @endif
@@ -35,7 +40,9 @@
                     </div>
                     <div class="text-center">
                         <p class="text-xl font-bold text-body">{{ $top3[0]->username }}</p>
-                        <p class="text-sm font-bold text-primary"> {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }} XP</p>
+                        <p class="text-sm font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[0]->xp_weekly) : number_format($top3[0]->xp_total) }} XP
+                        </p>
                     </div>
                 </div>
                 @endif
@@ -44,14 +51,19 @@
                 <!-- 3rd Place -->
                 <div class="flex flex-col items-center gap-4 group">
                     <div class="relative">
-                        <div class="w-24 h-24 rounded-full bg-surface border-3 border-orange-900 text-orange-900 flex items-center justify-center text-3xl font-black shadow-lg group-hover:scale-110 transition-transform">
+                        <div
+                            class="w-24 h-24 rounded-full bg-surface border-3 border-orange-900 text-orange-900 flex items-center justify-center text-3xl font-black shadow-lg group-hover:scale-110 transition-transform">
                             <x-user-avatar :user="$top3[2]" />
                         </div>
-                        <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-orange-900 rounded-xl flex items-center justify-center text-white font-black text-sm">3</div>
+                        <div
+                            class="absolute -bottom-3 -right-3 w-10 h-10 bg-orange-900 rounded-xl flex items-center justify-center text-white font-black text-sm">
+                            3</div>
                     </div>
                     <div class="text-center">
                         <p class="font-bold text-body">{{ $top3[2]->username }}</p>
-                        <p class="text-xs font-bold text-primary">{{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }} XP</p>
+                        <p class="text-xs font-bold text-primary">
+                            {{ $period === 'weekly' || $period === null ? number_format($top3[2]->xp_weekly) : number_format($top3[2]->xp_total) }}
+                            XP</p>
                     </div>
                 </div>
                 @endif
@@ -59,8 +71,8 @@
 
             <!-- Mobile Header (Rich Greeting) -->
             <div class="md:hidden text-center space-y-2 mb-8">
-                <h1 class="text-3xl font-black text-body uppercase tracking-tighter">Le Classement</h1>
-                <p class="text-sm text-muted font-medium italic">Seul on va vite, ensemble on va loin.</p>
+                <h1 class="text-3xl font-black text-body uppercase er">{{ __("Le Classement") }}</h1>
+                <p class="text-sm text-muted font-medium italic">{{ __("Seul on va vite, ensemble on va loin.") }}</p>
             </div>
 
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
@@ -68,12 +80,12 @@
                     <a href="{{ route('leaderboard', ['filter' => 'global', 'period' => $period]) }}" wire:navigate
                         class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'global' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
                         <x-lucide-globe class="size-4" />
-                        <span>Global</span>
+                        <span>{{ __("Global") }}</span>
                     </a>
                     <a href="{{ route('leaderboard', ['filter' => 'friends', 'period' => $period]) }}" wire:navigate
                         class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-center text-sm font-bold {{ $filter === 'friends' ? 'bg-primary/50 text-body shadow-sm' : 'text-muted' }} transition transition-color">
                         <x-lucide-users-round class="size-4" />
-                        <span>Amis</span>
+                        <span>{{ __("Amis") }}</span>
                     </a>
                 </div>
 
@@ -81,12 +93,12 @@
                     <a href="{{ route('leaderboard', ['period' => 'weekly', 'filter' => $filter]) }}" wire:navigate
                         class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'weekly' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
                         <x-lucide-calendar-1 class="size-4" />
-                        <span>Cette Semaine</span>
+                        <span>{{ __("Cette Semaine") }}</span>
                     </a>
                     <a href="{{ route('leaderboard', ['period' => 'alltime', 'filter' => $filter]) }}" wire:navigate
                         class="flex items-center justify-center gap-2 w-full md:w-auto px-4 py-2 rounded-xl text-sm text-center font-bold {{ $period === 'alltime' ? 'bg-primary text-white shadow-sm' : 'text-muted' }}">
                         <x-lucide-star class="size-4" />
-                        <span>Tout temps</span>
+                        <span>{{ __("Tout temps") }}</span>
                     </a>
                 </div>
             </div>
@@ -97,24 +109,31 @@
                     @foreach($users as $index => $user)
                     @php $rank = $users->firstItem() + $index; @endphp
                     <a href="{{ route('profile.public', $user->username) }}" wire:navigate
-                        class="block p-2 rounded-xl bg-surface/40 hover:bg-surface/60 transition">
+                        class="block p-2 rounded-xl bg-surface transition">
                         <div class="flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-muted font-black truncate">
                                     <x-user-avatar :user="$user" />
                                 </div>
                                 <div class="min-w-0">
                                     <div class="font-black text-body truncate">{{ $user->username }}</div>
                                     <div class="text-[10px] text-muted truncate">
-                                        {{ $user->current_streak }} <x-lucide-flame class="size-2 inline text-orange-600 fill-current" /> • {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }} XP
+                                        {{ $user->current_streak }}
+                                        <x-lucide-flame class="size-2 inline text-orange-600 fill-current" /> •
+                                        {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }}
+                                        XP
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <div class="font-bold text-primary">
-                                    @if($rank==1) <x-lucide-circle-star class="size-6 inline text-warning" />
-                                    @elseif($rank==2) <x-lucide-medal class="size-6 inline text-slate-300" />
-                                    @elseif($rank==3) <x-lucide-medal class="size-6 inline text-orange-900" />
+                                    @if($rank==1)
+                                    <x-lucide-circle-star class="size-6 inline text-warning" />
+                                    @elseif($rank==2)
+                                    <x-lucide-medal class="size-6 inline text-slate-300" />
+                                    @elseif($rank==3)
+                                    <x-lucide-medal class="size-6 inline text-orange-900" />
                                     @else #{{ $rank }}
                                     @endif
                                 </div>
@@ -128,14 +147,15 @@
                     <table class="w-full text-left">
                         <thead class="bg-primary/5 border-b border-muted">
                             <tr>
-                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">Rang
+                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase ">
+                                    {{ __("Rang") }}
                                 </th>
-                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em]">
-                                    Utilisateur
+                                <th class="px-8 py-6 text-[10px] font-black text-muted uppercase ">
+                                    {{ __("Utilisateur") }}
                                 </th>
                                 <th
-                                    class="px-8 py-6 text-[10px] font-black text-muted uppercase tracking-[0.2em] text-right">
-                                    {{ $period === 'weekly' || $period === null ? 'XP GAGNE' : 'XP TOTAL' }}
+                                    class="px-8 py-6 text-[10px] font-black text-muted uppercase  text-right">
+                                    {{ $period === 'weekly' || $period === null ? __("XP GAGNE") : __("XP TOTAL") }}
                                 </th>
                             </tr>
                         </thead>
@@ -145,16 +165,20 @@
                             <tr
                                 class="group hover:bg-primary/5 transition-colors {{ $user->id == auth()->id() ? 'bg-primary/10' : '' }}">
                                 <td class="px-8 py-6">
-                                    @if($rank == 1) <x-lucide-circle-star class="size-6 text-warning" />
-                                    @elseif($rank == 2) <x-lucide-medal class="size-6 text-slate-300" />
-                                    @elseif($rank == 3) <x-lucide-medal class="size-6 text-orange-900" />
+                                    @if($rank == 1)
+                                    <x-lucide-circle-star class="size-6 text-warning" />
+                                    @elseif($rank == 2)
+                                    <x-lucide-medal class="size-6 text-slate-300" />
+                                    @elseif($rank == 3)
+                                    <x-lucide-medal class="size-6 text-orange-900" />
                                     @else <span class="text-lg font-black text-muted">#{{ $rank }}</span>
                                     @endif
                                 </td>
                                 <td class="px-8 py-6">
                                     <a href="{{ route('profile.public', $user->username) }}" wire:navigate
                                         class="flex items-center gap-4">
-                                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black shadow-inner group-hover:scale-110 transition-transform">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-muted font-black shadow-inner group-hover:scale-110 transition-transform">
                                             <x-user-avatar :user="$user" />
                                         </div>
                                         <div>
@@ -169,7 +193,7 @@
                                     </a>
                                 </td>
                                 <td class="px-8 py-6 text-right">
-                                    <span class="text-xl font-black text-primary tracking-tight">
+                                    <span class="text-xl font-black text-primary ">
                                         {{ $period === 'weekly' || $period === null ? number_format($user->xp_weekly) : number_format($user->xp_total) }}
                                     </span>
                                     <span class="text-xs font-bold text-muted uppercase ml-1">XP</span>
@@ -179,7 +203,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="p-8 border-t border-muted bg-surface/50">
+                <div class="p-8 border-t border-muted bg-surface">
                     {{ $users->links() }}
                 </div>
             </div>

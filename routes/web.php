@@ -12,6 +12,7 @@ use App\Http\Controllers\{
 };
 use App\Models\Verb;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 // Redirection racine
 Route::get('/', function () {
@@ -52,6 +53,7 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
 
             Route::get('/grambuds', [SocialController::class, 'grambuds'])->name('grambuds');
             Route::get('/sentences', [SocialController::class, 'sentences'])->name('sentences');
+            Route::get('/weekly-reports', [SocialController::class, 'weeklyReports'])->name('weekly-reports');
 
             Route::prefix('profile')->name('profile.')->group(function () {
                 Route::get('/', [ProfileController::class, 'edit'])->name('edit');
@@ -95,3 +97,14 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
 Route::get('/share/image/{type}/{identifier}', [ShareController::class, 'generate'])->name('share.image');
 
 require __DIR__.'/auth.php';
+
+Route::get('/cron-magic-trigger/{key}', function ($key) {
+    if ($key !== 'T9CoKOC5UNmp6v14h1zT+4+Fi4qcaX93Tv9QGfrLnH8') {
+        return response()->json(['message' => 'Accès refusé'], 403);
+    }
+
+    Artisan::call('schedule:run');
+
+    return response()->json(['message' => 'Tâches exécutées avec succès']);
+})->name('cron.trigger');
+

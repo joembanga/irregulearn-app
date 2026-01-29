@@ -79,7 +79,7 @@ header('Retry-After: 3600');
                 <div class="bg-primary text-white p-3 rounded-xl font-bold text-2xl shadow-lg shadow-primary/20">
                     IL
                 </div>
-                <span class="font-bold text-3xl tracking-tight text-text-body">
+                <span class="font-bold text-3xl  text-text-body">
                     Irregu<span class="text-primary">Learn</span>
                 </span>
             </div>

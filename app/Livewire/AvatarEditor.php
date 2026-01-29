@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Services\AvatarService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -52,7 +53,6 @@ class AvatarEditor extends Component
         ],
     ];
 
-    // Ton JSON complet converti en Array PHP
     public $options = [
         'avatarStyle' => ['Transparent'],
         'topType' => [
@@ -211,11 +211,13 @@ class AvatarEditor extends Component
         ],
     ];
 
-    // On peut garder quelques exclusivités Premium ici
     public $premiumOptions = [
         'accessoriesType' => ['Sunglasses', 'Wayfarers'],
-        'topType' => ['WinterHat4', 'LongHairFrida', 'ShortHairDreads02'],
-        'graphicType' => ['Skull', 'Diamond', 'Bear'],
+        'topType' => ['WinterHat4', 'LongHairFrida', 'ShortHairDreads02', 'LongHairCurvy', 'LongHairStraightStrand', 'ShortHairShortFlat'],
+        'graphicType' => ['Skull', 'Diamond', 'Bear', 'Resist'],
+        'hatColor' => ['PastelGreen', 'Gray02'],
+        'hairColor' => ['Platinum', 'BlondeGolden'],
+        'clotheType' => ['Overall', 'ShirtScoopNeck'],
     ];
 
     public function mount()
@@ -224,7 +226,6 @@ class AvatarEditor extends Component
             parse_str(Auth::user()->avatar_code, $this->settings);
         } else {
             $this->generateRandom();
-            $this->save();
         }
     }
 
@@ -246,14 +247,23 @@ class AvatarEditor extends Component
         // If I change Hat -> NoHair, hairColor should ideally reset or be hidden.
     }
 
-    public function generateRandom()
+    public function generateRandom(): void
     {
         foreach ($this->options as $key => $values) {
-            $this->settings[$key] = $values[array_rand($values)];
+            $valueToAdd = $values[array_rand($values)];
+            if (isset($this->premiumOptions[$key])) {
+                if (!in_array($valueToAdd, $this->premiumOptions[$key])) {
+                    $this->settings[$key] = $valueToAdd;
+                } else {
+                    continue;
+                }
+            } else {
+                $this->settings[$key] = $valueToAdd;
+            }
         }
     }
 
-    public function save()
+    public function save(AvatarService $avatarService)
     {
         $queryString = http_build_query($this->settings);
 
@@ -261,6 +271,10 @@ class AvatarEditor extends Component
         $user = Auth::user();
         $user->avatar_code = $queryString;
         $user->save();
+
+        // Trigger background download of the avatar
+        $avatarService->downloadAndSave($user, $queryString);
+
         session()->flash('message', 'Apparence sauvegardée ! ⚡');
     }
 

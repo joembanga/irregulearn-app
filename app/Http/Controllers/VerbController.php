@@ -57,10 +57,10 @@ class VerbController extends Controller
     {
         $user = Auth::user();
 
-        // Dispatch background job
-        ProcessPdfExport::dispatch($user);
+        // Execute PDF export synchronously
+        (new ProcessPdfExport($user))->handle();
 
-        return back()->with('success', 'Génération du PDF en cours... Tu le recevras par email d\'ici quelques instants !');
+        return back()->with('success', 'Le PDF de tes verbes a été généré et envoyé par email !');
     }
 
     public function listFavs()
@@ -80,6 +80,6 @@ class VerbController extends Controller
         $user->generateDailyVerbs();
         $dailyVerbs = $user->dailyVerbs;
 
-        return view('daily-verbs', compact('dailyVerbs'));
+        return view('daily-verbs', compact('dailyVerbs', 'user'));
     }
 }

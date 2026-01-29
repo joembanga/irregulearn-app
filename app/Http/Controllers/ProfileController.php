@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Badge;
 use App\Models\User;
+use App\Models\VerbExample;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +64,19 @@ class ProfileController extends Controller
     public function showPublicProfile($username): View
     {
         $user = User::where('username', $username)->firstOrFail();
+        $examples = VerbExample::where(['user_id' => $user->id, 'is_hidden' => false])
+            ->with('verb')
+            ->orderByDesc('created_at')
+            ->paginate(15);
+
+        $allBadges = Badge::orderBy('requirement_value')->get();
+        $userBadgeIds = $user->badges->pluck('id')->toArray();
 
         return view('profile.public', [
             'user' => $user,
+            'examples' => $examples,
+            'allBadges' => $allBadges,
+            'userBadgeIds' => $userBadgeIds
         ]);
     }
 

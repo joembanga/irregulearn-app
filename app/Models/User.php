@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 use function Illuminate\Support\now;
 
@@ -98,7 +99,7 @@ use function Illuminate\Support\now;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable /* implements MustVerifyEmail */
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
@@ -224,6 +225,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(PointTransfer::class, 'receiver_id');
     }
 
+    // Weekly mastery reports
+    public function weeklyReports()
+    {
+        return $this->hasMany(WeeklyReport::class)->latest();
+    }
+
     public function dailyVerbs()
     {
         $timezone = $this->timezone ?? 'UTC';
@@ -238,6 +245,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Verb::class, 'daily_verbs')
             ->withPivot('is_learned', 'day')
             ->wherePivot('is_learned', $haveLearned);
+    }
+
+    public function hadLearnedTodaysVerbs()
+    {
+        $timezone = $this->timezone ?? 'UTC';
+        return (
+                $this->belongsToMany(Verb::class, 'daily_verbs')
+                ->withPivot('is_learned', 'day')
+                ->wherePivot('day', now($timezone)->toDateString())
+                ->wherePivot('is_learned', true)
+                ->count()
+            ) === $this->daily_target;
     }
 
     /**
@@ -271,96 +290,79 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Check if the streak has expired and reset it to 0 if necessary.
+     * Can be called independently (e.g., on dashboard load).
+     */
+    public function checkStreak()
+    {
+        $timezone = $this->timezone ?? 'UTC';
+        $localNow = now()->setTimezone($timezone);
+        $localToday = $localNow->toDateString();
+        $localYesterday = $localNow->copy()->subDay()->toDateString();
+
+        $lastActivity = $this->last_activity_local_date ? Carbon::parse($this->last_activity_local_date) : null;
+        if (!$lastActivity) return;
+
+        $lastDate = $lastActivity->toDateString();
+
+        // If last activity was before yesterday, and he hasn't practiced yet today
+        if ($lastDate !== $localToday && $lastDate !== $localYesterday) {
+            // Gap detected! (He missed yesterday)
+            $missedDays = Carbon::parse($lastDate)->diffInDays(Carbon::parse($localToday)) - 1;
+            if ($missedDays > 0) {
+                if ($this->streak_freezes >= $missedDays) {
+                    // Saved by freezes!
+                    $this->decrement('streak_freezes', $missedDays);
+                    // Move last activity to "Yesterday" so it's ready to be continued
+                    $this->last_activity_local_date = $localNow->copy()->subDay()->startOfDay();
+                    $this->save();
+                } else {
+                    // Streak lost :(
+                    if ($this->current_streak > 0) {
+                        $this->current_streak = 0;
+                        $this->save();
+                        StreakUpdated::dispatch($this, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Update the user's login streak based on local timezone.
+     * Called when a session is finished.
      */
     public function updateStreak()
     {
-        // 1. Get "Now" in the user's timezone
+        // 1. First, make sure we catch up on missed days
+        $this->checkStreak();
+
         $timezone = $this->timezone ?? 'UTC';
-        $localNow = Carbon::now()->setTimezone($timezone);
-        $localToday = $localNow->toDateString(); // Use date only (YYYY-MM-DD)
+        $localNow = now()->setTimezone($timezone);
+        $localToday = $localNow->toDateString();
 
-        // 2. Get stored last activity date (extract date part if stored as datetime)
-        $lastActivityDate = $this->last_activity_local_date
-            ? Carbon::parse($this->last_activity_local_date)->toDateString()
-            : null;
+        $lastActivity = $this->last_activity_local_date ? Carbon::parse($this->last_activity_local_date) : null;
+        $lastDate = $lastActivity ? $lastActivity->toDateString() : null;
 
-        // 3. If streak is already validated for today, do nothing
-        if ($lastActivityDate === $localToday) {
+        // 2. If already practiced today, nothing more to do
+        if ($lastDate === $localToday) {
             return;
         }
 
-        // 4. Calculate yesterday's date (local)
-        $localYesterday = $localNow->copy()->subDay()->toDateString();
+        // 3. At this point, we are practicing for the first time today.
+        // checkStreak already handled gaps, so it's either yesterday or he was reset to 0.
+        $this->current_streak++;
 
-        $currentStreak = $this->current_streak;
-
-        // 5. Comparison logic
-        if ($lastActivityDate === $localYesterday) {
-            // It was yesterday, continue the streak!
-            $currentStreak++;
-            $this->increment('current_streak');
-        } else {
-            // It was before yesterday or never -> Reset :(
-            // Check for STREAK FREEZE
-            if ($this->streak_freezes > 0) {
-                // Consumer a freeze
-                $this->decrement('streak_freezes');
-                // Do NOT reset streak, keep it as is
-                // BUT we must verify if he missed more than 1 day?
-                // The logic "It was before yesterday" implies he missed strictly > 1 day.
-                // If he has a freeze, we save the streak for the *missed* day.
-                // To make it simple: if he has a freeze, we consider the streak "frozen"
-                // so we don't reset it to 1, but we don't increment it either for the missing days.
-
-                // However, usually a freeze saves you from reset ONCE.
-                // So we use 1 freeze. And we keep the current_streak value.
-
-                // If he comes back after 10 days, 1 freeze shouldn't save him.
-                // Simplified logic: If the gap is exactly 2 days (missed 1 day), use freeze.
-                // If gap > 2 days (missed > 1 day), we need > 1 freeze?
-                // Let's stick to: He missed yesterday.
-
-                $daysMissed = Carbon::parse($lastActivityDate)->diffInDays(Carbon::parse($localNow));
-                // if last activity = 2023-01-01. Today = 2023-01-03. Diff = 2. Missed 1 day (02).
-                // if last activity = 2023-01-01. Today = 2023-01-04. Diff = 3. Missed 2 days (02, 03).
-
-                // We can consume 1 freeze per missed day?
-                // Let's implement: If he has enough freezes to cover the gap, use them.
-                // gap - 1 = number of missed days.
-
-                $missedDays = $localNow->diffInDays(Carbon::parse($lastActivityDate)) - 1;
-
-                if ($missedDays <= $this->streak_freezes) {
-                    // Saved!
-                    $this->decrement('streak_freezes', $missedDays);
-                    // Streak continues (we don't increment because he didn't play yesterday, or maybe we do?
-                    // Usually freezes just prevent reset. The streak count stays same.)
-                    // But since he played TODAY, we should increment or just keep?
-                    // Duolingo logic: Freeze used = streak maintained.
-                    // And doing a lesson today = streak + 1.
-                    $this->increment('current_streak');
-                } else {
-                    // Not enough freezes
-                    $currentStreak = 1;
-                    $this->current_streak = 1;
-                }
-            } else {
-                $currentStreak = 1;
-                $this->current_streak = 1;
-            }
+        // 4. Update best streak
+        if ($this->current_streak > $this->best_streak) {
+            $this->best_streak = $this->current_streak;
         }
 
-        // Update best streak
-        if ($currentStreak > $this->best_streak) {
-            $this->best_streak = $currentStreak;
-        }
-
-        // 6. Save today's date (store as date only for consistency)
-        $this->last_activity_local_date = $localToday;
+        // 5. Store activity and save
+        $this->last_activity_local_date = $localNow;
         $this->save();
 
-        // 7. Dispatch event for background logic (milestones, badges)
+        // 6. Notify for milestones/badges
         StreakUpdated::dispatch($this, $this->current_streak);
     }
 
@@ -413,8 +415,16 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getAvatarUrl(): string
     {
+        // 1. Check for local file first (Performance & Reliability)
+        if ($this->avatar_url && Storage::disk('public')->exists($this->avatar_url)) {
+            return asset('storage/' . $this->avatar_url);
+        }
+
+        // 2. Fallback to external API
         if ($this->avatar_code) {
-            return 'https://avataaars.io/?' . $this->avatar_code;
+            $options = [];
+            parse_str($this->avatar_code, $options);
+            return 'https://avataaars.io/?' . http_build_query($options);
         }
 
         return '';

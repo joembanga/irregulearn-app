@@ -10,6 +10,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $user->checkStreak();
 
         // Total number of verbs in the database
         $totalVerbs = Verb::count();

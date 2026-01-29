@@ -6,8 +6,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
         </div>
-        <input wire:model.live.debounce.300ms="query" type="text"
-            class="block w-full pl-16 pr-6 py-6 bg-surface border-4 border-muted/30 rounded-[2rem] text-xl font-bold placeholder:text-muted/40 text-body focus:outline-none focus:border-primary focus:ring-8 focus:ring-primary/5 transition-all duration-300 shadow-xl shadow-muted/5 group-hover:border-muted/50"
+        <input wire:model.live.debounce.200ms="query" type="text"
+            class="block w-full pl-16 pr-6 py-6 bg-surface border-4 border-muted/30 rounded-xl text-xl font-bold placeholder:text-muted/40 text-body focus:outline-none focus:border-primary focus:ring-8 focus:ring-primary/5 transition-all duration-300 shadow-xl shadow-muted/5 group-hover:border-muted/50"
             placeholder="Rechercher un verbe, un utilisateur..." autofocus>
         
         <div wire:loading wire:target="query" class="absolute inset-y-0 right-6 flex items-center">
@@ -23,24 +23,23 @@
         <!-- Verb Results -->
         @if($verbs->count() > 0)
         <div>
-            <h3 class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+            <h3 class="text-[10px] font-bold text-muted uppercase  mb-6 flex items-center gap-3">
                 <x-lucide-book-open class="size-4" /> Verbes irréguliers
-                <div class="h-px flex-1 bg-muted/20"></div>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 @foreach($verbs as $verb)
                 <div wire:click="selectResult('{{ $verb->infinitive }}', '{{ route('verbs.show', $verb->slug) }}')"
-                    class="group cursor-pointer p-6 bg-surface rounded-3xl border-2 border-muted/50 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 active:scale-95 flex items-center justify-between">
+                    class="group cursor-pointer p-6 bg-surface rounded-xl border-2 border-muted/50 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 active:scale-95 flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
                             EN
                         </div>
                         <div>
-                            <span class="text-lg font-bold text-body group-hover:text-primary transition-colors tracking-tight uppercase">
+                            <span class="text-lg font-bold text-body group-hover:text-primary transition-colors  uppercase">
                                 {{ $verb->infinitive }}
                             </span>
                             @php $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first(); @endphp
-                            <div class="text-[10px] font-bold text-muted uppercase tracking-tighter mt-1">
+                            <div class="text-[10px] font-bold text-muted uppercase er mt-1">
                                 {{ app()->getLocale() !== "en" ? Str::limit($verbTranslation->translation, 20) : '' }}
                             </div>
                         </div>
@@ -57,20 +56,19 @@
         <!-- User Results -->
         @if($users->count() > 0)
         <div>
-            <h3 class="text-[10px] font-bold text-muted uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+            <h3 class="text-[10px] font-bold text-muted uppercase  mb-6 flex items-center gap-3">
                 <x-lucide-users-2 class="size-4" /> Étudiants
-                <div class="h-px flex-1 bg-muted/20"></div>
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 @foreach($users as $user)
                 <div wire:click="selectResult('{{ $user->username }}', '{{ route('profile.public', $user->username) }}')"
                     class="group cursor-pointer p-6 bg-surface rounded-3xl border-2 border-muted/50 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 active:scale-95 flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-muted font-black truncate">
                             <x-user-avatar :user="$user"/>
                         </div>
                         <div>
-                            <div class="text-lg font-bold text-body group-hover:text-primary transition-colors tracking-tight">
+                            <div class="text-lg font-bold text-body group-hover:text-primary transition-colors ">
                                 {{ $user->username }}
                             </div>
                             <div class="text-[10px] font-bold text-muted uppercase tracking-widest mt-0.5">
@@ -99,9 +97,9 @@
     @elseif(count($history) > 0)
     <div class="mt-8 animate-fade-in-up">
         <div class="flex items-center justify-between mb-8 px-2">
-            <h3 class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">Historique récent</h3>
+            <h3 class="text-[10px] font-bold text-muted uppercase ">Historique récent</h3>
             <button wire:click="clearHistory"
-                class="text-[10px] font-bold text-danger uppercase tracking-[0.2em] hover:opacity-70 transition-opacity">
+                class="text-[10px] font-bold text-danger uppercase  hover:opacity-70 transition-opacity">
                 Effacer tout
             </button>
         </div>
@@ -113,7 +111,7 @@
                 <span class="mr-4 text-muted group-hover:text-primary transition-colors">
                     <x-lucide-clock-3 class="size-4 inline" />
                 </span>
-                <span class="font-bold text-body tracking-tight group-hover:text-primary transition-colors">{{ $term }}</span>
+                <span class="font-bold text-body  group-hover:text-primary transition-colors">{{ $term }}</span>
                 <svg class="w-4 h-4 ml-auto text-muted group-hover:text-primary/70 opacity-0 group-hover:opacity-100 transition-all duration-300"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path>
@@ -132,7 +130,7 @@
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
             </div>
-            <h3 class="text-2xl font-bold text-body tracking-tight uppercase mb-2">Commence ton exploration</h3>
+            <h3 class="text-2xl font-bold text-body  uppercase mb-2">Commence ton exploration</h3>
             <p class="text-muted max-w-xs mx-auto font-medium leading-relaxed">
                 Apprends de nouveaux verbes ou défie tes amis en recherchant leur profil.
             </p>

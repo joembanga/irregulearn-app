@@ -25,24 +25,21 @@ return new class extends Migration
             $table->bigInteger('xp_total')->default(0)->unsigned();
             $table->bigInteger('xp_balance')->default(0)->unsigned();
             $table->integer('current_streak')->default(0)->unsigned();
-            $table->boolean('streak_is_freezed')->default(false);
-            $table->date('streak_freezed_at')->nullable();
             $table->tinyInteger('streak_freezes')->default(0)->unsigned();
+            $table->unsignedInteger('best_streak')->default(0);
             $table->longText('search_history')->nullable();
 
             // A user keep his streak when he learn day's verbs or do at least one exercise
-            $table->string('timezone')->default('UTC'); // Ex: "Europe/Paris"
+            $table->string('timezone')->default('UTC'); // eg: "Europe/Paris"
             $table->datetime('last_activity_local_date')->nullable();
             $table->tinyInteger('daily_target')->default(5)->max(10);
 
             // --- PROFILE & ROLE ---
             $table->text('avatar_code')->nullable();
+            $table->text('avatar_url')->nullable();
             $table->json('unlocked_items')->nullable();
             $table->enum('role', ['user', 'admin'])->default('user');
             $table->boolean('is_premium')->default(false);
-
-            // --- PARRAINAGE ---
-            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
 
             $table->rememberToken();
             $table->timestamps();

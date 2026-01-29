@@ -72,10 +72,16 @@ class GoogleController extends Controller
                 'firstname' => $firstname,
                 'lastname' => $lastname,
                 'username' => $username,
-                'password' => bcrypt(Str::random(24)), // Random password since they'll use Google
-                'email_verified_at' => now(), // Verified by Google
+                'password' => bcrypt(Str::random(24)),
+                'email_verified_at' => now()
             ]);
+
+            Auth::login($user, true);
+
+            return redirect(route('learn.session', ['mode' => 'daily'], absolute: false));
         }
+
+        $user->generateDailyVerbs();
 
         Auth::login($user, true);
 

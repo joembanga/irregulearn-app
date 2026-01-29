@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('verb_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->text('body'); // La phrase d'exemple
+            $table->text('body');
             $table->integer('likes_count')->default(0);
             $table->boolean('xp_given')->default(false);
             $table->boolean('is_hidden')->default(false);

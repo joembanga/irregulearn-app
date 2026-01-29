@@ -14,7 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Définition des catégories avec leurs critères (basés sur le verbe à l'infinitif)
         $definitions = [
             [
                 'name' => 'Daily Life',
@@ -60,7 +59,6 @@ class CategorySeeder extends Seeder
                 ]
             );
 
-            // 2. Attribution des verbes selon les mots-clés
             $verbIds = Verb::where(function ($query) use ($def) {
                 foreach ($def['keywords'] as $keyword) {
                     $query->orWhere('infinitive', 'like', '%'.$keyword.'%');
@@ -70,7 +68,6 @@ class CategorySeeder extends Seeder
             $category->verbs()->syncWithoutDetaching($verbIds);
         }
 
-        // 3. Sécurité : Assigner les verbes orphelins à la catégorie "Motion" (la plus commune)
         $orphans = Verb::doesntHave('categories')->get();
         if ($orphans->count() > 0) {
             $defaultCat = Category::where('slug', 'motion-physical')->first();

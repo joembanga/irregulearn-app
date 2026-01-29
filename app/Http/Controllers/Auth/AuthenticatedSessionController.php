@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->user()->masteredVerbs()->count() === 0) {
+            $request->user()->generateDailyVerbs();
+            return redirect()->route('learn.session', ['mode' => 'daily']);
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

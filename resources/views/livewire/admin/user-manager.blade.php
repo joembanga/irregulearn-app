@@ -8,17 +8,15 @@
 
     <!-- Search -->
     <div class="mb-6 max-w-md">
-        <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search by username or email..."
+        <input wire:model.live.debounce.200ms="search" type="text" placeholder="Search by username or email..."
             class="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
     </div>
 
-    <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-soft border border-gray-100 dark:border-gray-700 overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-soft border border-gray-100 dark:border-gray-700 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr
-                        class="bg-gray-50 dark:bg-gray-700 text-xs uppercase tracking-wider text-gray-500 font-semibold border-b border-gray-100 dark:border-gray-600">
+                    <tr class="bg-gray-50 dark:bg-gray-700 text-xs uppercase tracking-wider text-gray-500 font-semibold border-b border-gray-100 dark:border-gray-600">
                         <th class="px-6 py-4">User</th>
                         <th class="px-6 py-4">Email</th>
                         <th class="px-6 py-4">Joined</th>

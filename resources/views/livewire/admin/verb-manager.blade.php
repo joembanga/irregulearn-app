@@ -13,7 +13,7 @@
     <!-- Search Tool -->
     <div class="mb-6">
         <div class="relative">
-            <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search verbs..."
+            <input wire:model.live.debounce.200ms="search" type="text" placeholder="Search verbs..."
                 class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

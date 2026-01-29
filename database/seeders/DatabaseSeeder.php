@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(300)->create();
+        //User::factory(300)->create();
 
         $this->call([
             VerbSeeder::class,
