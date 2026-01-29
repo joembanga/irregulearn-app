@@ -15,26 +15,18 @@
             </div>
 
             <!-- Selected Count & Actions -->
-            <div
-                class="sticky top-24 z-30 bg-surface/95 backdrop-blur-lg rounded-2xl border border-muted p-4 mb-6 shadow-lg">
+            <div class="sticky top-24 z-30 bg-surface backdrop-blur-lg rounded-2xl border border-muted p-4 mb-6 shadow-lg">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div class="text-sm">
                             <span class="font-bold text-primary text-2xl" x-text="selectedVerbs.length"></span>
-                            <span class="text-muted font-bold">{{ __('verbes sélectionnés') }}</span>
+                            <span class="text-muted font-bold"> {{ __('verbes sélectionnés') }}</span>
                         </div>
-                        <button
-                            @click="selectAll = !selectAll; selectedVerbs = selectAll ? $refs.verbsList.querySelectorAll('input[type=checkbox]').forEach(cb => { if(!cb.disabled) { cb.checked = true; selectedVerbs.push(parseInt(cb.value)); } }) : []"
-                            class="text-xs font-bold text-primary hover:underline">
-                            <span x-show="!selectAll">{{ __('Tout sélectionner') }}</span>
-                            <span x-show="selectAll">{{ __('Tout désélectionner') }}</span>
-                        </button>
                     </div>
 
                     <template x-if="selectedVerbs.length >= 5">
-                        <form action="{{ route('learn.session') }}" method="GET"
+                        <form action="{{ route('learn.session', ['mode' => 'custom']) }}" method="GET"
                             x-on:submit="$event.target.querySelector('input[name=verbs]').value = selectedVerbs.join(',')">
-                            <input type="hidden" name="mode" value="custom">
                             <input type="hidden" name="verbs" value="">
                             <button type="submit"
                                 class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold shadow-lg transition-all">
@@ -63,21 +55,23 @@
                     <div class="p-6">
                         <div class="grid gap-3">
                             @foreach($category->verbs as $verb)
-                            <label
-                                class="flex items-center gap-4 p-4 rounded-xl border border-muted hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group">
+                            <label class="flex items-center gap-4 p-4 rounded-xl border border-muted hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group">
                                 <input type="checkbox" value="{{ $verb->id }}" x-model="selectedVerbs"
                                     class="w-5 h-5 rounded border-muted text-primary focus:ring-primary focus:ring-2">
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center gap-3 flex-wrap">
-                                        <span
-                                            class="font-bold text-body group-hover:text-primary transition-colors">{{ $verb->infinitive }}</span>
+                                        <span class="font-bold text-body group-hover:text-primary transition-colors">{{ $verb->infinitive }}</span>
                                         <span class="text-sm text-muted">→</span>
                                         <span class="text-sm font-bold text-muted">{{ $verb->past_simple }}</span>
                                         <span class="text-sm text-muted">→</span>
                                         <span class="text-sm font-bold text-muted">{{ $verb->past_participle }}</span>
                                     </div>
-                                    @if($verb->translation_fr)
-                                    <p class="text-xs text-muted mt-1 italic">{{ $verb->translation_fr }}</p>
+                                    @if (app()->getLocale() !== "en")
+                                    <!-- Translation box -->
+                                    @php
+                                    $verbTranslation = $verb->translations()->where('lang_code', app()->getLocale())->first();
+                                    @endphp
+                                    <p class="text-xs text-muted mt-1 italic">{{ $verbTranslation->translation ?? '...' }}</p>
                                     @endif
                                 </div>
                             </label>

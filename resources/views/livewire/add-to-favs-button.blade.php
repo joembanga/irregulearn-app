@@ -1,10 +1,10 @@
 <div>
-    @php
-    $isFav = auth()->user()->favorites()->where('verb_id', $verb->id)->exists();
-    @endphp
-
-    <button wire:click="addTofavs({{ $verb->id }})" type="button"
-        class="px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:opacity-90 active:scale-95 shadow-sm hover:shadow-md {{ $isFav ? 'bg-red-100 text-red-600 border border-red-200' : 'bg-primary text-white' }}">
-        {{ $isFav ? '❤️ Retirer des favoris' : '⭐ Ajouter aux favoris' }}
+    <button wire:click="addTofavs({{ $verbId }})" type="button"
+        class="inline-flex items-center gap-2 p-2 border border-muted text-body rounded-xl font-bold text-sm transition active:scale-95 bg-surface text-body">
+        @if ($isFav)
+            <x-lucide-star class="size-5 fill-yellow-500 stroke-yellow-500" />
+        @else
+            <x-lucide-star class="size-5" />
+        @endif
     </button>
 </div>

@@ -2,7 +2,7 @@
     <div class="py-2 bg-app min-h-screen max-w-7xl mx-auto px-4 sm:px-6">
         <!-- Hero Header -->
         <div class="mb-10 text-left">
-            <h1 class="text-3xl md:text-4xl font-bold text-body tracking-tight">
+            <h1 class="text-3xl md:text-4xl font-bold text-body ">
                 {{ __('Centre d\'Entraînement') }}
             </h1>
             <p class="text-muted font-medium mt-2 text-lg">
@@ -23,7 +23,7 @@
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-3">{{ __('Pratique Quotidienne') }}</h3>
                         <p class="text-white/90 mb-6 leading-relaxed">
-                            {{ __('20 verbes spécialement sélectionnés pour toi aujourd\'hui. Parfait pour maintenir ta progression !') }}
+                            {{ $user->daily_target }}{{ __(' verbes spécialement sélectionnés pour toi aujourd\'hui. Parfait pour maintenir ta progression !') }}
                         </p>
                         <a href="{{ route('learn.session', ['mode' => 'daily']) }}" wire:navigate
                            class="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all group">
@@ -150,7 +150,7 @@
                                 <div class="flex-1">
                                     <h3 class="text-xl font-bold text-body mb-2 flex items-center gap-2">
                                         @if($isLocked)
-                                            <span class="text-2xl">🔒</span>
+                                            <x-lucide-lock class="size-6" />
                                         @else
                                             <span class="text-2xl">{{ ['📘', '📕', '📗', '📙', '📔', '📓'][$index % 6] }}</span>
                                         @endif
@@ -183,7 +183,7 @@
                             @else
                                 <div class="bg-muted/10 rounded-xl p-4 border border-dashed border-muted/30 text-center">
                                     <p class="text-xs font-bold text-muted">
-                                        🔒 {{ __('Complète 80% du niveau précédent') }}
+                                        <x-lucide-lock class="size-4 inline mr-1" /> {{ __("Complète 80% du niveau précédent") }}
                                     </p>
                                 </div>
                             @endif

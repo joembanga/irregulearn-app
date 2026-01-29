@@ -72,11 +72,10 @@ class VerbDiscussion extends Component
             ->exists();
 
         if (! $alreadyReported) {
-            // 2. Créer le signalement
             Report::create([
                 'user_id' => $user->id,
                 'verb_example_id' => $id,
-                'reason' => 'Inappropriate content', // Raison par défaut
+                'reason' => 'Inappropriate content',
             ]);
 
             $reportCount = Report::where('verb_example_id', $id)->count();

@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class AddToFavsButton extends Component
 {
-    public $verb;
+    public $verbId;
 
-    public function mount(Verb $verb)
+    public function mount(int $verbId)
     {
-        $this->verb = $verb;
+        $this->verbId = $verbId;
     }
 
     public function addTofavs(int $verbId)
@@ -26,6 +26,7 @@ class AddToFavsButton extends Component
 
     public function render()
     {
-        return view('livewire.add-to-favs-button');
+        $isFav = Auth::user()->favorites()->where('verb_id', $this->verbId)->exists();
+        return view('livewire.add-to-favs-button', compact('isFav'));
     }
 }

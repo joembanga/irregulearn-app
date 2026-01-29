@@ -8,19 +8,22 @@ use App\Models\Verb;
 use App\Models\VerbSentence;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class LearnSession extends Component
 {
-    public $questionsNumber = 10;
+    public $questionsNumber = 15;
 
     public ?Category $category = null;
 
     public $mode = 'category';
 
-    public $verbs = [];
+    public array $verbIds = [];
 
-    public $currentVerb;
+    public array $questionsData = [];
+
+    public ?int $currentVerbId = null;
 
     public $currentVerbForms = [];
 
@@ -52,12 +55,18 @@ class LearnSession extends Component
 
     public $finished = false;
 
-    public $mistakes = 0;
+    public $goodAnswers = 0;
 
     public $finished_reward = 0;
 
+    #[Computed]
+    public function currentVerb()
+    {
+        return Verb::select('id', 'infinitive', 'past_simple', 'past_participle', 'slug')->find($this->currentVerbId);
+    }
+
     // Some regular verbs
-    protected $regularVerbs = [
+    private static $regularVerbs = [
         'work',
         'play',
         'visit',
@@ -170,15 +179,22 @@ class LearnSession extends Component
         // Handle different modes
         if ($mode === 'revision') {
             // Load all learned verbs for revision
-            $this->verbs = Auth::user()->learnedVerbs()->inRandomOrder()->limit($this->questionsNumber)->get();
-            if ($this->verbs->isEmpty()) {
+            $this->verbIds = Auth::user()->learnedVerbs()
+                ->inRandomOrder()
+                ->limit($this->questionsNumber)
+                ->pluck('verbs.id')
+                ->toArray();
+            if (empty($this->verbIds)) {
                 session()->flash('error', __('Vous n\'avez pas encore de verbes à réviser.'));
                 return redirect()->route('learn.index');
             }
         } elseif ($mode === 'timed') {
             // Load 20 random verbs for timed challenge
             $this->questionsNumber = 20;
-            $this->verbs = Verb::inRandomOrder()->limit($this->questionsNumber)->get();
+            $this->verbIds = Verb::inRandomOrder()
+                ->limit($this->questionsNumber)
+                ->pluck('id')
+                ->toArray();
         } elseif ($mode === 'custom') {
             // Load custom selected verbs
             $verbIds = explode(',', request('verbs', ''));
@@ -186,14 +202,20 @@ class LearnSession extends Component
                 session()->flash('error', __('Veuillez sélectionner au moins 5 verbes.'));
                 return redirect()->route('learn.custom');
             }
-            $this->verbs = Verb::whereIn('id', $verbIds)->inRandomOrder()->get();
-            $this->questionsNumber = $this->verbs->count();
+            $this->verbIds = Verb::whereIn('id', $verbIds)
+                ->inRandomOrder()
+                ->pluck('id')
+                ->toArray();
+            $this->questionsNumber = count($this->verbIds);
         } elseif (in_array($this->mode, ['daily', 'favorites'])) {
             // Load verbs
-            $this->mode === 'daily' ? $this->verbs = Auth::user()->dailyVerbs()->inRandomOrder()->get() :
-                $this->verbs = Auth::user()->favorites()->inRandomOrder()->get();
-            
-            if ($this->verbs->isEmpty()) {
+            $query = ($this->mode === 'daily') 
+                ? Auth::user()->dailyVerbs() 
+                : Auth::user()->favorites();
+
+            $this->verbIds = $query->inRandomOrder()->pluck('verbs.id')->toArray();
+
+            if (empty($this->verbIds)) {
                 if ($this->mode === 'daily') {
                     Auth::user()->generateDailyVerbs();
                     return redirect()->route('learn.session', ['mode' => 'daily']);
@@ -204,46 +226,143 @@ class LearnSession extends Component
             }
 
             // Ensure we have exactly questionsNumber verbs by repeating if necessary
-            while ($this->verbs->count() < $this->questionsNumber) {
-                foreach ($this->verbs->take($this->questionsNumber - $this->verbs->count()) as $verb) {
-                    $this->verbs->add($verb);
-                    if ($this->verbs->count() === $this->questionsNumber) {
-                        break 2;
-                    }
-                }
+            while (count($this->verbIds) < $this->questionsNumber) {
+                $count = count($this->verbIds);
+                $remaining = $this->questionsNumber - $count;
+                $toAdd = array_slice($this->verbIds, 0, $remaining);
+                $this->verbIds = array_merge($this->verbIds, $toAdd);
             }
         } else {
             // Category mode
-            $this->category = Category::where('slug', $slug)->firstOrFail();
+            $this->category = Category::where('slug', $slug)->select('id', 'slug', 'order')->firstOrFail();
 
             if (! Auth::user()->canAccessCategory($this->category)) {
                 return redirect()->route('learn.index');
             }
 
-            $this->verbs = $this->category->verbs()->inRandomOrder()->limit($this->questionsNumber)->get();
-            if ($this->verbs->isEmpty()) {
+            $this->verbIds = $this->category->verbs()
+                ->inRandomOrder()
+                ->limit($this->questionsNumber)
+                ->pluck('verbs.id')
+                ->toArray();
+            if (empty($this->verbIds)) {
                 return redirect()->route('learn.index');
             }
         }
 
+        $this->generateAllQuestions();
+    }
+
+    protected function generateAllQuestions()
+    {
+        $verbs = Verb::whereIn('id', $this->verbIds)
+            ->select('id', 'infinitive', 'past_simple', 'past_participle', 'slug')
+            ->get()
+            ->keyBy('id');
+
+        $sentences = VerbSentence::whereIn('verb_id', $this->verbIds)
+            ->select('id', 'verb_id', 'sentence', 'missing_word')
+            ->get()
+            ->groupBy('verb_id');
+
+        foreach ($this->verbIds as $index => $id) {
+            $verb = $verbs[$id];
+            $hasSentences = isset($sentences[$id]) && $sentences[$id]->isNotEmpty();
+            
+            $types = ['input', 'jumble', 'odd_one_out', 'complete'];
+            if ($hasSentences) $types[] = 'sentence';
+
+            if ($verb->past_simple !== $verb->past_participle) {
+                foreach (explode('/', $verb->past_simple) as $pSimpleForm) {
+                    if (!in_array($pSimpleForm, explode('/', $verb->past_participle))) {
+                        $types[] = 'quiz';
+                        break;
+                    }
+                }
+            }
+
+            $type = $types[array_rand($types)];
+            $targetForms = ['past_simple', 'past_participle'];
+            $targetForm = $targetForms[array_rand($targetForms)];
+            $answer = $verb->{$targetForm};
+            $data = [
+                'id' => $id,
+                'infinitive' => $verb->infinitive,
+                'type' => $type,
+                'targetForm' => $targetForm,
+                'answer' => $answer,
+            ];
+
+            // Specific preparations
+            switch ($type) {
+                case 'quiz':
+                    $correctAnswers = explode('/', $answer);
+                    $actualAnswer = $correctAnswers[array_rand($correctAnswers)];
+                    $otherForm = ($targetForm === 'past_simple') ? $verb->past_participle : $verb->past_simple;
+                    $options = explode('/', $otherForm);
+                    $choices = [$actualAnswer, $options[0]];
+                    shuffle($choices);
+                    $data['choices'] = $choices;
+                    $data['answer'] = $actualAnswer;
+                    break;
+                case 'jumble':
+                    $correctAnswers = explode('/', $answer);
+                    $actualAnswer = $correctAnswers[array_rand($correctAnswers)];
+                    $letters = str_split($actualAnswer);
+                    shuffle($letters);
+                    $data['jumbledLetters'] = $letters;
+                    $data['answer'] = $actualAnswer;
+                    break;
+                case 'complete':
+                    $forms = [
+                        'infinitive' => $verb->infinitive,
+                        'past_simple' => explode('/', $verb->past_simple)[0],
+                        'past_participle' => explode('/', $verb->past_participle)[0],
+                    ];
+                    $removedForm = array_rand($forms);
+                    $data['forms'] = $forms;
+                    $data['removedForm'] = $removedForm;
+                    $data['answer'] = ($removedForm === 'past_simple') ? $verb->past_simple : (($removedForm === 'past_participle') ? $verb->past_participle : $verb->infinitive);
+                    break;
+                case 'odd_one_out':
+                    $actualAnswer = collect(self::$regularVerbs)->random();
+                    $otherIrregulars = Verb::where('id', '!=', $id)->inRandomOrder()->limit(2)->pluck('infinitive')->toArray();
+                    $choices = collect([$verb->infinitive, ...$otherIrregulars, $actualAnswer])->shuffle()->toArray();
+                    $data['choices'] = $choices;
+                    $data['answer'] = $actualAnswer;
+                    break;
+                case 'sentence':
+                    $sentence = $sentences[$id]->random();
+                    $matches = null;
+                    preg_match_all('/\b('.preg_quote($sentence->missing_word, '/').'\w*)[\p{P}]?/miu', $sentence->sentence, $matches);
+                    $data['sentence'] = preg_replace('/\b'.preg_quote($sentence->missing_word, '/').'\w*\p{P}?/miu', '_____', $sentence->sentence);
+                    $data['answer'] = $matches[1][0] ?? $sentence->missing_word;
+                    break;
+            }
+
+            $this->questionsData[] = $data;
+        }
+
+        // Initialize first question for compatibility
         $this->loadQuestion();
     }
 
     public function loadQuestion()
     {
-        $this->currentVerb = $this->verbs[$this->currentIndex];
+        $this->currentVerbId = $this->verbIds[$this->currentIndex];
+        $currentVerb = $this->currentVerb();
 
         // Check if verb has sentences available
-        $hasSentences = VerbSentence::where('verb_id', $this->currentVerb->id)->exists();
+        $hasSentences = VerbSentence::where('verb_id', $this->currentVerbId)->exists();
 
         $types = ['input', 'jumble', 'odd_one_out', 'complete'];
         if ($hasSentences) {
             $types[] = 'sentence';
         }
 
-        if ($this->currentVerb->past_simple !== $this->currentVerb->past_participle) {
-            foreach (explode('/', $this->currentVerb->past_simple) as $pSimpleForm) {
-                if (!in_array($pSimpleForm, explode('/', $this->currentVerb->past_participle))) {
+        if ($currentVerb->past_simple !== $currentVerb->past_participle) {
+            foreach (explode('/', $currentVerb->past_simple) as $pSimpleForm) {
+                if (!in_array($pSimpleForm, explode('/', $currentVerb->past_participle))) {
                     $types[] = 'quiz';
                 }
             }
@@ -262,7 +381,7 @@ class LearnSession extends Component
         $this->currentSentence = '';
 
         // 2. Préparation selon le type
-        $correctAnswers = explode('/', $this->currentVerb->{$this->currentTargetForm});
+        $correctAnswers = explode('/', $currentVerb->{$this->currentTargetForm});
 
         switch ($this->currentType) {
             case 'quiz':
@@ -284,22 +403,25 @@ class LearnSession extends Component
                 $this->prepareSentence();
                 break;
             case 'input':
-                $this->answer = $this->currentVerb->{$this->currentTargetForm};
+                $this->answer = $currentVerb->{$this->currentTargetForm};
                 $this->userInput = '';
                 break;
             default:
                 session()->flash('error', 'Une erreur est survenue');
                 break;
         }
+
+        $this->dispatch('jumble-reset');
     }
 
     public function prepareQuiz(array $answers)
     {
         $this->answer = $answers[array_rand($answers)];
+        $currentVerb = $this->currentVerb();
 
         $this->currentTargetForm === 'past_simple' ?
-            $options = [$this->currentVerb->past_participle] :
-            $options = [$this->currentVerb->past_simple];
+            $options = [$currentVerb->past_participle] :
+            $options = [$currentVerb->past_simple];
 
         foreach ($options as $k => $option) {
             $forms = explode('/', $option);
@@ -319,11 +441,12 @@ class LearnSession extends Component
 
     protected function prepareOddOneOut()
     {
-        $this->answer = collect($this->regularVerbs)->random();
+        $this->answer = collect(self::$regularVerbs)->random();
+        $currentVerb = $this->currentVerb();
 
-        $irregular1 = $this->currentVerb->infinitive;
+        $irregular1 = $currentVerb->infinitive;
 
-        $otherIrregulars = Verb::where('id', '!=', $this->currentVerb->id)
+        $otherIrregulars = Verb::where('id', '!=', $this->currentVerbId)
             ->inRandomOrder()
             ->limit(2)
             ->pluck('infinitive')
@@ -336,11 +459,12 @@ class LearnSession extends Component
 
     public function prepareComplete()
     {
+        $currentVerb = $this->currentVerb();
         // 1. On récupère les formes brutes
         $rawForms = [
-            'infinitive' => $this->currentVerb->infinitive,
-            'past_simple' => $this->currentVerb->past_simple,
-            'past_participle' => $this->currentVerb->past_participle,
+            'infinitive' => $currentVerb->infinitive,
+            'past_simple' => $currentVerb->past_simple,
+            'past_participle' => $currentVerb->past_participle,
         ];
         foreach ($rawForms as $key => $rawForm) {
             $rawForm = explode('/', $rawForm);
@@ -377,12 +501,15 @@ class LearnSession extends Component
 
     public function prepareSentence()
     {
-        $sentence = VerbSentence::where('verb_id', $this->currentVerb->id)->inRandomOrder()->first();
+        $sentence = VerbSentence::where('verb_id', $this->currentVerbId)
+            ->select('id', 'sentence', 'missing_word')
+            ->inRandomOrder()
+            ->first();
 
         if (! $sentence) {
             // Fallback if something went wrong (should be handled by loadQuestion check, but safety first)
             $this->currentType = 'input';
-            $this->answer = $this->currentVerb->{$this->currentTargetForm};
+            $this->answer = $this->currentVerb()->{$this->currentTargetForm};
             $this->userInput = '';
 
             return;
@@ -402,9 +529,9 @@ class LearnSession extends Component
 
     public function checkAnswer($submittedAnswer = null)
     {
+        // This is now a fallback if Alpine sync is slow or for initial load
         $attempt = match ($this->currentType) {
-            'quiz', 'odd_one_out' => $submittedAnswer,
-            'jumble' => implode('', $this->selectedLetters),
+            'quiz', 'odd_one_out', 'jumble' => $submittedAnswer ?? $this->userInput,
             default => $this->userInput,
         };
 
@@ -412,22 +539,37 @@ class LearnSession extends Component
         $possibleAnswers = explode('/', Str::lower($this->answer));
 
         if (in_array($attempt, $possibleAnswers)) {
+            $this->recordResult(true);
+        } else {
+            $this->recordResult(false);
+        }
+    }
+
+    public function recordResult($correct, $verbId = null)
+    {
+        // Ensure we are syncing for the correct verb
+        if ($verbId) {
+            $this->currentVerbId = $verbId;
+        }
+
+        if ($correct) {
+            $this->isCorrect = true;
             $this->handleSuccess();
         } else {
-            $this->userInput = $this->answer;
             $this->isCorrect = false;
-            $this->mistakes++;
         }
     }
 
     public function handleSuccess()
     {
         $this->isCorrect = true;
+        $this->goodAnswers += 1;
         if ($this->mode === 'daily') {
             $verb = Auth::user()
                 ->learnedVerbs(false)
-                ->wherePivot('verb_id', $this->currentVerb->id)
+                ->wherePivot('verb_id', $this->currentVerbId)
                 ->withPivot('is_learned')
+                ->select('verbs.id')
                 ->first();
             if ($verb) {
                 // Keep this synchronous as it's critical for immediate view "learned" status
@@ -438,14 +580,14 @@ class LearnSession extends Component
 
         // Add to batch for background persistence
         $this->sessionXp += 5;
-        if (! in_array($this->currentVerb->id, $this->masteredVerbIds)) {
-            $this->masteredVerbIds[] = $this->currentVerb->id;
+        if (! in_array($this->currentVerbId, $this->masteredVerbIds)) {
+            $this->masteredVerbIds[] = $this->currentVerbId;
         }
     }
 
     public function nextVerb()
     {
-        if ($this->currentIndex < count($this->verbs) - 1) {
+        if ($this->currentIndex < count($this->verbIds) - 1) {
             $this->currentIndex++;
             $this->loadQuestion();
         } else {
@@ -459,16 +601,20 @@ class LearnSession extends Component
         $this->finishSession();
     }
 
-    protected function finishSession()
+    public function finishSession()
     {
         $this->finished = true;
-        $this->finished_reward = (count($this->verbs) - $this->mistakes) * count($this->verbs);
+        $this->sessionXp = 0;
+        $this->finished_reward = $this->goodAnswers * 10;
+        if ($this->mode === 'timed') {
+            $this->finished_reward = $this->goodAnswers * 5;
+        }
 
         // Dispatch event for background processing
         ExerciseCompleted::dispatch(
             Auth::user(),
-            $this->sessionXp + $this->finished_reward,
-            $this->mistakes,
+            $this->finished_reward,
+            $this->goodAnswers,
             $this->category,
             $this->masteredVerbIds
         );

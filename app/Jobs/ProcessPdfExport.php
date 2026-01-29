@@ -10,9 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
 
-class ProcessPdfExport implements ShouldQueue
+class ProcessPdfExport
 {
-    use Queueable;
 
     /**
      * Create a new job instance.

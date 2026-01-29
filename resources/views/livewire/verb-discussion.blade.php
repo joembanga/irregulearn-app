@@ -1,15 +1,15 @@
 <div class="mt-10">
-    <h3 class="text-xl font-bold text-body mb-6">Communauté</h3>
+    <h3 class="text-2xl font-bold text-body mb-6">{{ __('Communauté')}}</h3>
 
     <div class="card-surface p-4 rounded-2xl mb-8 border-muted">
-        <textarea wire:model="body" placeholder="Écris un exemple original pour ce verbe..."
+        <textarea wire:model="body" placeholder="{{ __('Écris un exemple original pour ce verbe...') }}"
             class="w-full bg-transparent border-none focus:ring-0 text-body placeholder:text-muted resize-none"
             rows="2"></textarea>
         <div class="flex justify-between items-center mt-2 pt-2 border-t border-muted">
-            <span class="text-xs text-muted">Gagne +10 XP en aidant les autres</span>
+            <span class="text-xs text-muted">{{ __('Gagne +10 XP en aidant les autres')}}</span>
             <button wire:click="submitExample"
                 class="px-4 py-1.5 bg-primary text-white text-sm font-bold rounded-full transition-transform active:scale-95">
-                Publier
+                {{ __('Publier') }}
             </button>
         </div>
     </div>
@@ -19,8 +19,8 @@
         @php
             $author = \App\Models\User::where('id', $example->user_id)->first();
         @endphp
-        <div class="flex gap-4 p-4 rounded-2xl bg-surface/50 border border-muted group">
-            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black truncate">
+        <div class="flex gap-4 p-4 rounded-2xl bg-surface border border-muted group">
+            <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-muted font-black truncate">
                 <x-user-avatar :user="$author"/>
             </div>
             <div class="flex-1">
@@ -38,8 +38,7 @@
                     
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24"
                             fill="{{ $alreadyLiked ? 'currentColor' : 'none' }}" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </button>
 
