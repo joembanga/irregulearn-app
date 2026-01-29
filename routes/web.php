@@ -35,6 +35,12 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
         Route::get('/u/{user:username}', [ProfileController::class, 'showPublicProfile'])->name('profile.public');
         Route::get('/verbs/describe/{verb:slug}', [VerbController::class, 'getVerb'])->name('verbs.show');
         Route::get('/daily-challenge', [VerbController::class, 'today'])->name('verbs.today');
+        Route::get('/verbs', [VerbController::class, 'getList'])->name('verbs.index');
+
+
+        Route::get('/search', function () {
+            return view('search');
+        })->name('search');
 
 
         Route::middleware(['auth', 'verified'])->group(function () {
@@ -49,12 +55,6 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
             Route::get('/shop', function () {
                 return view('shop');
             })->name('shop');
-
-
-
-            Route::get('/search', function () {
-                return view('search');
-            })->name('search');
 
             Route::get('/grambuds', [SocialController::class, 'grambuds'])->name('grambuds');
             Route::get('/sentences', [SocialController::class, 'sentences'])->name('sentences');
@@ -73,7 +73,6 @@ Route::prefix('{locale}')->middleware('setLocale')->group(
             });
 
             Route::prefix('verbs')->name('verbs.')->group(function () {
-                Route::get('/', [VerbController::class, 'getList'])->name('index');
                 Route::get('/export', [VerbController::class, 'exportPdf'])->name('export');
                 Route::get('/favorites', [VerbController::class, 'listFavs'])->name('favorites');
             });

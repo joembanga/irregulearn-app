@@ -94,7 +94,7 @@
         @endif
     </div>
 
-    @elseif(count($history) > 0)
+    @elseif(count($history) > 0 && auth()->check())
     <div class="mt-8 animate-fade-in-up">
         <div class="flex items-center justify-between mb-8 px-2">
             <h3 class="text-[10px] font-bold text-muted uppercase ">Historique récent</h3>

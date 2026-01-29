@@ -96,11 +96,16 @@
             }
          }" x-cloak class="min-h-screen bg-app text-body transition-colors duration-300">
         @include('layouts.navigation')
+        @auth
         @include('layouts.sidebar')
+        @endauth
 
-        <div x-bind:class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-32 md:mr-auto lg:mr-32'"
-            class="min-h-screen flex flex-col transition-all duration-300"
-            x-bind:style="window.innerWidth >= 1024 && sidebarOpen ? 'margin-left: 16rem' : ''">
+        <div 
+            @auth
+            x-bind:class="sidebarOpen ? 'lg:ml-64' : 'lg:ml-32 md:mr-auto lg:mr-32'"
+            x-bind:style="window.innerWidth >= 1024 && sidebarOpen ? 'margin-left: 16rem' : ''"
+            @endauth
+            class="min-h-screen flex flex-col transition-all duration-300">
             <!-- Messages -->
             @if (session()->has('success'))
             <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)"

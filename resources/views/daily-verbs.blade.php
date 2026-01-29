@@ -1,9 +1,13 @@
 @section('title', __('Verbes du jour'))
-@section('description', __('Les ') . $user->daily_target . __(" verbes qui ont été sélectionnés pour toi aujourd'hui"))
+@if($user)
+    @section('description', __('Les ') . $user->daily_target . __(" verbes qui ont été sélectionnés pour toi aujourd'hui"))
+@else
+    @section('description', __("Découvre ta sélection de verbes irréguliers pour aujourd'hui"))
+@endif
 @section('keywords', '...')
 @section('og_title', __('Mes verbes du jour'))
 @section('og_description', __('Ma sélection de verbes irréguliers pour aujourd\'hui sur IrreguLearn !'))
-@section('og_image', route('share.image', ['type' => 'daily', 'identifier' => $user->username ]))
+@section('og_image', route('share.image', ['type' => 'daily', 'identifier' => $user ? $user->username : 'guest']))
 <x-app-layout>
     <div class="py-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

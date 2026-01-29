@@ -18,7 +18,7 @@ class SearchPage extends Component
     {
         $verbs = [];
         $users = [];
-        $history = Auth::user()->search_history ?? [];
+        $history = Auth::check() ? (Auth::user()->search_history ?? []) : [];
 
         if (strlen($this->query) >= 1) {
             $verbs = Verb::where('infinitive', 'like', "%{$this->query}%")
@@ -27,11 +27,14 @@ class SearchPage extends Component
                 ->limit(10)
                 ->get();
 
-            // Recherche des Utilisateurs (sauf soi-même)
-            $users = User::where('username', 'like', "%{$this->query}%")
-                ->where('id', '!=', Auth::id())
-                ->limit(5)
-                ->get();
+            // Recherche des Utilisateurs
+            $userQuery = User::where('username', 'like', "%{$this->query}%");
+            
+            if (Auth::check()) {
+                $userQuery->where('id', '!=', Auth::id());
+            }
+            
+            $users = $userQuery->limit(5)->get();
         }
 
         return view('livewire.search-page', [
@@ -44,22 +47,22 @@ class SearchPage extends Component
 
     public function selectResult($term, $url)
     {
-        $user = Auth::user();
-        $history = $user->search_history ?? [];
+        if (Auth::check()) {
+            $user = Auth::user();
+            $history = $user->search_history ?? [];
 
-        // Manage history (max 20 items)
-        if (count($history) > 20) {
-            // Remove oldest
-            array_shift($history);
+            // Manage history (max 20 items)
+            if (count($history) > 20) {
+                array_shift($history);
+            }
+
+            if (in_array($term, $history)) {
+                $history = array_filter($history, fn ($t) => $t !== $term);
+            }
+            array_push($history, $term);
+
+            User::where('id', $user->id)->update(['search_history' => $history]);
         }
-
-        if (in_array($term, $history)) {
-            // Remove existing occurrence
-            $history = array_filter($history, fn ($t) => $t !== $term);
-        }
-        array_push($history, $term); // Add to the end
-
-        User::where('id', $user->id)->update(['search_history' => $history]);
 
         // Redirect to the selected result
         return redirect($url);
@@ -67,8 +70,10 @@ class SearchPage extends Component
 
     public function clearHistory()
     {
-        $user = Auth::user();
-        User::where('id', $user->id)->update(['search_history' => null]);
+        if (Auth::check()) {
+            $user = Auth::user();
+            User::where('id', $user->id)->update(['search_history' => null]);
+        }
     }
 
     // Remplir la barre de recherche quand on clique sur un élément de l'historique

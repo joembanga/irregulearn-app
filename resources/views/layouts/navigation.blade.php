@@ -3,6 +3,7 @@
         <div class="flex items-center justify-between h-20">
             <!-- Left: Logo & Sidebar Toggles -->
             <div class="flex items-center gap-4">
+                @auth
                 <!-- Mobile & Desktop Toggle -->
                 <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl text-muted hover:bg-surface hover:text-primary cursor-pointer transition-all duration-200" aria-label="{{ __('Toggle Sidebar') }}">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,6 +11,7 @@
                         <path x-show="sidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h10M4 18h16" />
                     </svg>
                 </button>
+                @endauth
                 
                 <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3">
                     <x-application-logo />
