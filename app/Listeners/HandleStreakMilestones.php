@@ -3,14 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\StreakUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class HandleStreakMilestones implements ShouldQueue
+class HandleStreakMilestones
 {
-    use InteractsWithQueue;
 
     /**
      * Create the event listener.

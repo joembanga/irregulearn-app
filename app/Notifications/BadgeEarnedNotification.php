@@ -36,7 +36,7 @@ class BadgeEarnedNotification extends Notification implements \Illuminate\Contra
     public function toArray($notifiable): array
     {
         return [
-            'message' => "Bravo ! Tu as obtenu le badge \"{$this->badge->name}\" {$this->badge->icon}",
+            'message' => "Bravo ! Tu as obtenu le badge \"{$this->badge->name}\"",
             'icon' => $this->badge->icon,
             'url' => '/profile',
             'badge_id' => $this->badge->id,

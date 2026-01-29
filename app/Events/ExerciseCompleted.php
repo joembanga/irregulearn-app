@@ -21,7 +21,7 @@ class ExerciseCompleted
     public function __construct(
         public User $user,
         public int $xp,
-        public int $mistakes,
+        public int $goodAnswers,
         public ?Category $category = null,
         public array $masteredVerbIds = []
     ) {}

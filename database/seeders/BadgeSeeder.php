@@ -13,103 +13,126 @@ class BadgeSeeder extends Seeder
     public function run(): void
     {
         $definitions = [
-            // XP-based badges
+            // --- COLLECTION : PROGRESSION XP ---
             [
-                'name' => 'Beginner',
-                'icon' => '🌱',
+                'name' => 'First Blood',
+                'icon' => 'zap',
+                'color' => 'orange',
                 'description' => 'Gagne tes premiers 100 XP',
                 'requirement_type' => 'xp',
                 'requirement_value' => 100,
             ],
             [
                 'name' => 'Rising Star',
-                'icon' => '⭐',
+                'icon' => 'star',
+                'color' => 'yellow',
                 'description' => 'Accumule 500 XP',
                 'requirement_type' => 'xp',
                 'requirement_value' => 500,
             ],
             [
                 'name' => 'XP Master',
-                'icon' => '🏆',
+                'icon' => 'trophy',
+                'color' => 'slate',
                 'description' => 'Atteins 1000 XP au total',
                 'requirement_type' => 'xp',
                 'requirement_value' => 1000,
             ],
             [
                 'name' => 'XP Legend',
-                'icon' => '👑',
+                'icon' => 'crown',
+                'color' => 'indigo',
                 'description' => 'Atteins 5000 XP au total',
                 'requirement_type' => 'xp',
                 'requirement_value' => 5000,
             ],
 
-            // Streak-based badges
+            // --- COLLECTION : SÉRIES (STREAKS) ---
             [
-                'name' => 'First Steps',
-                'icon' => '🚶',
-                'description' => 'Maintiens un streak de 3 jours',
-                'requirement_type' => 'streak',
-                'requirement_value' => 3,
-            ],
-            [
-                'name' => 'On Fire',
-                'icon' => '🔥',
-                'description' => 'Garde un streak de 7 jours',
+                'name' => 'Habitual',
+                'icon' => 'flame',
+                'color' => 'red',
+                'description' => '7 jours de pratique consécutifs',
                 'requirement_type' => 'streak',
                 'requirement_value' => 7,
             ],
             [
                 'name' => 'Dedicated',
-                'icon' => '💪',
+                'icon' => 'rocket',
+                'color' => 'blue',
                 'description' => 'Streak de 30 jours !',
                 'requirement_type' => 'streak',
                 'requirement_value' => 30,
             ],
             [
                 'name' => 'Unstoppable',
-                'icon' => '🚀',
+                'icon' => 'shield-check',
+                'color' => 'purple',
                 'description' => 'Streak de 100 jours !',
                 'requirement_type' => 'streak',
                 'requirement_value' => 100,
             ],
 
-            // Category completion badges
+            // --- COLLECTION : PERFECTION ---
             [
-                'name' => 'Explorer',
-                'icon' => '🗺️',
-                'description' => 'Complète ta première catégorie',
-                'requirement_type' => 'category_complete',
+                'name' => 'Perfectionist',
+                'icon' => 'check-circle',
+                'color' => 'emerald',
+                'description' => 'Réussis 5 sessions sans aucune erreur',
+                'requirement_type' => 'perfect_sessions',
+                'requirement_value' => 5,
+            ],
+            [
+                'name' => 'Sniper',
+                'icon' => 'target',
+                'color' => 'rose',
+                'description' => 'Finir 3 sessions avec 100% de réussite',
+                'requirement_type' => 'precision',
+                'requirement_value' => 3,
+            ],
+
+            // --- COLLECTION : VITESSE ---
+            [
+                'name' => 'Speed Demon',
+                'icon' => 'gauge',
+                'color' => 'cyan',
+                'description' => 'Réponds correctement en moins de 3 secondes',
+                'requirement_type' => 'fast_answer',
                 'requirement_value' => 1,
             ],
             [
-                'name' => 'Scholar',
-                'icon' => '📚',
-                'description' => 'Complète 3 catégories',
-                'requirement_type' => 'category_complete',
-                'requirement_value' => 3,
-            ],
-            [
-                'name' => 'Master',
-                'icon' => '🎓',
-                'description' => 'Complète 5 catégories',
-                'requirement_type' => 'category_complete',
-                'requirement_value' => 5,
-            ],
-
-            // Search-based badges
-            [
-                'name' => 'Curious Mind',
-                'icon' => '🔍',
-                'description' => 'Recherche 10 verbes',
-                'requirement_type' => 'search',
+                'name' => 'Lightning Bolt',
+                'icon' => 'zap-off',
+                'color' => 'yellow',
+                'description' => 'Répondre à 10 questions en moins de 30s',
+                'requirement_type' => 'speed_run',
                 'requirement_value' => 10,
             ],
+
+            // --- COLLECTION : SPÉCIAL ---
             [
-                'name' => 'Researcher',
-                'icon' => '🧐',
-                'description' => 'Recherche 50 verbes',
-                'requirement_type' => 'search',
-                'requirement_value' => 50,
+                'name' => 'Nighthawk',
+                'icon' => 'moon',
+                'color' => 'slate',
+                'description' => 'Faire une session entre minuit et 4h du matin',
+                'requirement_type' => 'night_owl',
+                'requirement_value' => 1,
+            ],
+            [
+                'name' => 'Ambassador',
+                'icon' => 'share-2',
+                'color' => 'pink',
+                'description' => 'Partager son score avec la communauté',
+                'requirement_type' => 'social_share',
+                'requirement_value' => 1,
+            ],
+            [
+                'name' => 'Indestructible',
+                'icon' => 'refresh-cw',
+                'color' => 'amber',
+                'description' => 'Récupérer un streak après l\'avoir perdu',
+                'requirement_type' => 'streak_recovery',
+                'requirement_value' => 1,
             ],
         ];
 

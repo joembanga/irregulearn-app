@@ -4,12 +4,8 @@ namespace App\Listeners;
 
 use App\Events\ExerciseCompleted;
 use App\Services\BadgeService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-
-class CheckBadges implements ShouldQueue
+class CheckBadges
 {
-    use InteractsWithQueue;
 
     /**
      * Create the event listener.

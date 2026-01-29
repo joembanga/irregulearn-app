@@ -65,9 +65,9 @@ class BadgeService
 
         // Efficiently get mastery counts per category for this user using a single query
         $categoryMasteryCounts = DB::table('category_verb')
-            ->join('verb_user', 'category_verb.verb_id', '=', 'verb_user.verb_id')
-            ->where('verb_user.user_id', $user->id)
-            ->where('verb_user.mastered', true)
+            ->join('user_verb', 'category_verb.verb_id', '=', 'user_verb.verb_id')
+            ->where('user_verb.user_id', $user->id)
+            ->where('user_verb.mastered', true)
             ->select('category_verb.category_id', DB::raw('count(*) as mastered_count'))
             ->groupBy('category_verb.category_id')
             ->get()

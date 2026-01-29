@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('badges', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ex: "Early Bird", "Business Master"
-            $table->string('icon'); // Emoji ou nom d'icône
-            $table->string('description');
-            $table->string('requirement_type'); // 'xp', 'category_complete', 'streak'
+            $table->string('name');
+            $table->string('icon')->nullable();
+            $table->string('color')->nullable();
+            $table->string('description')->nullable();
+            $table->string('requirement_type');
             $table->integer('requirement_value');
             $table->timestamps();
         });
